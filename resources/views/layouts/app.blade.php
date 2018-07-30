@@ -62,6 +62,14 @@
                                     </form>
                                 </div>
                             </li>
+                            @if(Auth::user()->role == 'Administrador')
+                            <li class="nav-item">
+                                <a class="nav-link" href="/AdministrarUsuarios">Administrar Usuarios</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/RegistrarUsuario">Registrar Usuario</a>
+                            </li>
+                            @endif
                         @endguest
                     </ul>
                 </div>
