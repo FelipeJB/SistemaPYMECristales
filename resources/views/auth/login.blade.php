@@ -13,18 +13,23 @@
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="email" class="col-sm-4 col-form-label text-md-right">Correo Electrónico</label>
+                        @if(session()->has('login_error'))
+                          <div class="alert alert-danger">
+                            {{ session()->get('login_error') }}
+                          </div>
+                        @endif
+                        <div class="form-group{{ $errors->has('identity') ? ' has-error' : '' }} row">
+                          <label for="identity" class="col-md-4 col-form-label text-md-right">Nombre de usuario</label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                          <div class="col-md-6">
+                            <input id="identity" type="identity" class="form-control" name="identity" value="{{ old('identity') }}" autofocus required>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+                            @if ($errors->has('identity'))
+                              <span class="help-block">
+                                  <strong>{{ $errors->first('identity') }}</strong>
+                              </span>
+                            @endif
+                          </div>
                         </div>
 
                         <div class="form-group row">
@@ -59,9 +64,7 @@
                                     Iniciar Sesión
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Recuperar Contraseña
-                                </a>
+
                             </div>
                         </div>
                     </form>

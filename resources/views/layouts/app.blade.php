@@ -45,31 +45,66 @@
                                 <a class="nav-link" href="{{ route('login') }}">Ingresar</a>
                             </li>
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Inicio</a>
+                            </li>
+                            @if(Auth::user()->role == 'Administrador')
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownUsersAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Usuarios <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownUsersAdmin">
+                                    <a class="dropdown-item" href="/AdministrarUsuarios">Administrar Usuarios</a>
+                                    <a class="dropdown-item" href="/RegistrarUsuario">Registrar Usuario</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownProductsAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Productos <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProductsAdmin">
+                                    <a class="dropdown-item" href="/AdministrarProductos">Administrar Productos</a>
+                                    <a class="dropdown-item" href="/CrearProducto">Crear Producto</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownPuntosAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Puntos de Venta <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPuntosAdmin">
+                                    <a class="dropdown-item" href="/AdministrarPuntos">Administrar Puntos de Venta</a>
+                                    <a class="dropdown-item" href="/CrearPunto">Crear Punto de Venta</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/MigrarDatos">Migrar Datos</a>
+                            </li>
+                            @endif
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                                    <a class="dropdown-item" href="/EditarPerfil">Editar Perfil</a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        Cerrar Sesión
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
                             </li>
-                            @if(Auth::user()->role == 'Administrador')
-                            <li class="nav-item">
-                                <a class="nav-link" href="/AdministrarUsuarios">Administrar Usuarios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/RegistrarUsuario">Registrar Usuario</a>
-                            </li>
-                            @endif
+
                         @endguest
                     </ul>
                 </div>
