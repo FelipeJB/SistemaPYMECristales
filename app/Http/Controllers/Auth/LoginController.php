@@ -40,13 +40,25 @@ class LoginController extends Controller
     }
 
     /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        $credentials = $request->only($this->username(), 'password');
+        return $credentials;
+    }
+
+    /**
      * Check either username or email.
      * @return string
      */
     public function username()
     {
         $identity  = request()->get('identity');
-        $fieldName = 'username';
+        $fieldName = 'usrUsuario';
         request()->merge([$fieldName => $identity]);
         return $fieldName;
     }
@@ -77,6 +89,7 @@ class LoginController extends Controller
         $request->session()->put('login_error', trans('auth.failed'));
         throw ValidationException::withMessages(
             [
+                //'error' => [trans('auth.failed')],
                 'error' => [trans('auth.failed')],
             ]
         );

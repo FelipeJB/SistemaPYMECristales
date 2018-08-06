@@ -48,7 +48,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/">Inicio</a>
                             </li>
-                            @if(Auth::user()->role == 'Administrador')
+                            @if(Auth::user()->usrRolID == 1)
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdownUsersAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Usuarios <span class="caret"></span>
@@ -79,6 +79,16 @@
                                     <a class="dropdown-item" href="/CrearPunto">Crear Punto de Venta</a>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownInstaladoresAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Instaladores <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPuntosAdmin">
+                                    <a class="dropdown-item" href="/AdministrarInstaladores">Administrar Instaladores</a>
+                                    <a class="dropdown-item" href="/CrearInstalador">Crear Instalador</a>
+                                </div>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/MigrarDatos">Migrar Datos</a>
                             </li>
@@ -86,12 +96,12 @@
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->usrNombre }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                    <a class="dropdown-item" href="/EditarPerfil">Editar Perfil</a>
+                                    <a class="dropdown-item" href="/EditarPerfil">Cambiar Contraseña</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
