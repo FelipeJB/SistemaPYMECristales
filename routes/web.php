@@ -27,7 +27,7 @@ Route::get('/RegistrarUsuario', function () {
   if(Auth::user()->usrRolID==1){
     return view('auth/register');
   }else{
-    return view('home');
+    return Redirect::to('/');
   }
 })->middleware('auth');
 Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('register');
