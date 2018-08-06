@@ -9632,3 +9632,11 @@ a.text-dark:hover, a.text-dark:focus {
 .close:hover {
   color: #b9a78a;
 }
+
+.section-title {
+  margin-top:30px;
+}
+
+.section-subtitle {
+  margin-top:15px;
+}

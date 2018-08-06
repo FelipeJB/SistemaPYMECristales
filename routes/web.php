@@ -23,5 +23,11 @@ Route::post('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@login'])
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 //Rutas de registro
-Route::get('/register', ['as' => 'register', 'uses' => 'Auth\RegisterController@validator']);
-Route::post('/register', ['as' => 'register', 'uses' => 'Auth\RegisterController@create']);
+Route::get('/RegistrarUsuario', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('auth/register');
+  }else{
+    return view('home');
+  }
+})->middleware('auth');
+Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('register');

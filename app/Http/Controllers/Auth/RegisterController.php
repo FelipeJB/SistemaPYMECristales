@@ -5,68 +5,73 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
 
-    use RegistersUsers;
+  public function registro()
+  {
+      /*Se guardan los datos del usuario dentro de variables desde el formulario*/
+      $nombre = Input::get('name');
+      $username = Input::get('username');
+      $cedula = Input::get('cedula');
+      $rol = Input::get('rol');
+      $password = Input::get('password');
+      $passwordConfirm = Input::get('passwordConfirm');
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+      //validar que se ingresen tods los datos
+      if($nombre == "" || $username == "" || $cedula == "" || $password == "" || $password == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
+      //validar contraseña mayor a 6 dígitos
+      if(strlen($password)<6){
+        return Redirect::back()->with('password', 'La contraseña debe ser mayor a 6 dígitos')
+        ->withInput();
+      }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+      //validar contraseñas iguales
+      if($password != $passwordConfirm){
+        return Redirect::back()->with('passwordConfirm', 'Las contraseñas deben coincidir')
+        ->withInput();
+      }
+
+      //validar nombre de usuario no registrado
+      $isRegistered = User::where("usrUsuario", "=", $username)->get();
+      if (sizeof($isRegistered) != 0){
+        return Redirect::back()->with('username', 'El nombre de usuario ya se encuentra registrado')
+        ->withInput();
+      }
+
+      //validar cédula numérica
+      if(!is_numeric($cedula)){
+        return Redirect::back()->with('cedula', 'Ingrese una cédula válida')
+        ->withInput();
+      }
+
+      try{
+        //hacer registro
+        $newUser = new User();
+        $newUser->usrNombre = $nombre;
+        $newUser->usrUsuario = $username;
+        $newUser->usrCedula = $cedula;
+        $newUser->usrRolID = $rol;
+        $newUser->password = Hash::make($password);
+        $newUser->save();
+
+        //redirigir a la página de registro
+        return Redirect::back()->with('success', 'El usuario se registró exitosamente');
+
+      }catch(Exception $exception){
+        return Redirect::back()->with('error', 'El usuario no pudo ser registrado')->withInput();
+      }
+
+
+  }
+
+
 }
