@@ -4,12 +4,18 @@
 
 @section('content')
 <div class="container">
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card border-primary mb-3">
-                <div class="card-header">Iniciar Sesión</div>
+                <div class="card-header">Ingreso a {{ config('app.name', 'Laravel') }}</div>
 
                 <div class="card-body">
+                  <div class="row justify-content-center">
+
+                      <img src="{{ URL::asset('img/Logo-full.png') }}" class="img-fluid" style="max-height:160px; margin-bottom:20px;"><br><br>
+
+                  </div>
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         @csrf
 
@@ -46,27 +52,21 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        Recordarme
-                                    </label>
-                                </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="remember">
+                                    Recordarme
+                                </label>
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Iniciar Sesión
-                                </button>
-
-
-                            </div>
+                        <div class="form-group row mb-0 justify-content-center">
+                            <button type="submit" class="btn btn-primary">
+                                Iniciar Sesión
+                            </button>
                         </div>
+
                     </form>
                 </div>
             </div>

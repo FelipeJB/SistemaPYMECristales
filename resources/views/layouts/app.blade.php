@@ -12,8 +12,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
@@ -27,6 +25,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
+                <img src="{{ URL::asset('img/Logo-mid.png') }}" width="40" style="margin-right:10px">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>

@@ -20,6 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('usrRolID');
             $table->integer('usrCedula');
+            $table->string('usrApellido');
+            $table->string('usrTipoDocumento');
+            $table->integer('usrActivo');
+            $table->string('usrCiudad');
+            $table->date('usrFechaCreacion');
+            $table->string('usrCelular');
+            $table->string('usrDireccion');
             $table->rememberToken();
             $table->timestamps();
         });

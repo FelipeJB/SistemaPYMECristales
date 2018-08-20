@@ -28,7 +28,7 @@
               </div>
           @endif
 
-          <script type= "text/javascript" src="{{ URL::asset('js/tab_divider.js') }}"></script>
+          <script type= "text/javascript" src="{{ asset('js/tab_divider.js') }}"></script>
 
           <table class="table table-hover">
             <thead>
@@ -57,8 +57,8 @@
           </table>
 
           @if (count($usuarios)>1)
-             <ul class="pagination pagination-sm" id="usersPager"></ul>
-             <script>$('#listaUsuarios').pageMe({pagerSelector:'#usersPager',showPrevNext:true,hidePageNumbers:false,perPage:1});</script>
+             <ul class="pagination pagination-sm" id="myPager" style="float:right"></ul>
+             <script>$('#listaUsuarios').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:1});</script>
           @endif
 
         </div>
