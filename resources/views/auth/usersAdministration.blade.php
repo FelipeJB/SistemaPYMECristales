@@ -31,7 +31,6 @@
           <script type= "text/javascript" src="{{ asset('js/jquery.js') }}"></script>
           <script type= "text/javascript" src="{{ asset('tab_divider/tab_divider.js') }}"></script>
           <script type= "text/javascript" src="{{ asset('tab_divider/tab_divider_bootstrap.js') }}"></script>
-
           <link rel= "stylesheet" href="{{ asset('tab_divider/tab_divider.css') }}">
 
           <table class="table table-hover" id="listaUsuarios">
@@ -68,22 +67,23 @@
           $('#listaUsuarios').DataTable({
             ordering:false,
             paging: true,
+            lengthMenu: [[8, 15, 30], [8, 15, 30]],
             language: {
-               processing:     "Traitement en cours...",
-               search:         "Rechercher&nbsp;:",
-               lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",
-               info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-               infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
-               infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+               processing:     "Procesando...",
+               search:         "Buscar&nbsp;:",
+               lengthMenu:    "Ver _MENU_ elementos",
+               info:           "Mostrando del elemento _START_ hasta el _END_ de _TOTAL_ elementos en total",
+               infoEmpty:      "Mostrando del elemento 0 hasta el 0 de 0 elementos",
+               infoFiltered:   "(filtrado de _MAX_ elementos)",
                infoPostFix:    "",
-               loadingRecords: "Chargement en cours...",
-               zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-               emptyTable:     "Aucune donnée disponible dans le tableau",
+               loadingRecords: "Cargando...",
+               zeroRecords:    "No se encontraron resultados",
+               emptyTable:     "No hay registros en la tabla",
                paginate: {
-                   first:      "Premier",
-                   previous:   "Pr&eacute;c&eacute;dent",
-                   next:       "Suivant",
-                   last:       "Dernier"
+                   first:      "Primero",
+                   previous:   "<<",
+                   next:       ">>",
+                   last:       "Último"
                },
                aria: {
                    sortAscending:  ": activer pour trier la colonne par ordre croissant",
