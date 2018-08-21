@@ -44,7 +44,19 @@ Route::get('/EditarUsuario/{id}', function ($id) {
   if(Auth::user()->usrRolID==1){
     $roles= \App\Rol::where('rusrID','!=',"1")->get();
     $usuario= \App\User::where('id','=',$id)->join('rols', 'rols.rusrID', '=', 'users.usrRolID')->first();
-    return view('auth/userEdit', compact('usuario', 'roles'));
+    $pieces = explode(" ", $usuario->usrDireccion,2);
+    $direccion1=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode("#", $remaining,2);
+    $direccion2=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode("-", $remaining,2);
+    $direccion3=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode(".", $remaining,2);
+    $direccion4=$pieces[0];
+    $remaining=$pieces[1];
+    return view('auth/userEdit', compact('usuario', 'roles', 'direccion1','direccion2','direccion3','direccion4', 'remaining'));
   }else{
     return Redirect::to('/');
   }

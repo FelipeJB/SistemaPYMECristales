@@ -72,7 +72,7 @@ class RegisterController extends Controller
         $newUser->usrCedula = $cedula;
         $newUser->usrCelular = $celular;
         $newUser->usrCiudad = $ciudad;
-        $newUser->usrDireccion = $dir0." ".$dir1."#".$dir2."-".$dir3." ".$dir4;
+        $newUser->usrDireccion = $dir0." ".$dir1."#".$dir2."-".$dir3.".".$dir4;
         $newUser->usrRolID = $rol;
         $newUser->password = Hash::make($password);
         $newUser->usrActivo = 1;

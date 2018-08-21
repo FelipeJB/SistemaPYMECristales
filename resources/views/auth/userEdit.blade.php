@@ -108,15 +108,13 @@
 
                     <div class="col-md-4">
                         <select class="form-control" id="direccion-avenida" name="direccion-avenida" style="width:103px; display:inline; margin-bottom:8px">
-                          <option value="Calle">Calle</option>
-                          <option value="Carrera">Carrera</option>
+                          <option value="Calle" @if($direccion1=="Calle") selected @endif>Calle</option>
+                          <option value="Carrera" @if($direccion1=="Carrera") selected @endif>Carrera</option>
                         </select>
 
 
                         <label for="direccion-1">:</label>
-
-
-                        <input id="direccion-1" type="text" class="form-control{{ Session::has('direccion-1') ? ' is-invalid' : '' }}" name="direccion-1" value="{{ old('direccion-1') }}" style="width:70px; display:inline; margin-bottom:8px" required>
+                        <input id="direccion-1" type="text" class="form-control{{ Session::has('direccion-1') ? ' is-invalid' : '' }}" name="direccion-1" value="{{$direccion2}}" style="width:70px; display:inline; margin-bottom:8px" required>
 
                         @if (Session::has('direccion-1'))
                             <span class="invalid-feedback" role="alert">
@@ -125,9 +123,7 @@
                         @endif
 
                         <label for="direccion-2">#</label>
-
-
-                        <input id="direccion-2" type="text" class="form-control{{ Session::has('direccion-2') ? ' is-invalid' : '' }}" name="direccion-2" value="{{ old('direccion-2') }}" style="width:70px; display:inline; margin-bottom:8px" required>
+                        <input id="direccion-2" type="text" class="form-control{{ Session::has('direccion-2') ? ' is-invalid' : '' }}" name="direccion-2" value="{{$direccion3}}" style="width:70px; display:inline; margin-bottom:8px" required>
 
                         @if (Session::has('direccion-2'))
                             <span class="invalid-feedback" role="alert">
@@ -137,9 +133,7 @@
 
 
                         <label for="direccion-3">-</label>
-
-
-                        <input id="direccion-3" type="text" class="form-control{{ Session::has('direccion-3') ? ' is-invalid' : '' }}" name="direccion-3" value="{{ old('direccion-3') }}" style="width:70px; display:inline; margin-bottom:8px" required>
+                        <input id="direccion-3" type="text" class="form-control{{ Session::has('direccion-3') ? ' is-invalid' : '' }}" name="direccion-3" value="{{$direccion4}}" style="width:70px; display:inline; margin-bottom:8px" required>
 
                         @if (Session::has('direccion-3'))
                             <span class="invalid-feedback" role="alert">
@@ -152,7 +146,7 @@
                     <label for="direccion-detalle" class="col-md-2 col-form-label text-md-right">Detalle Dirección</label>
 
                     <div class="col-md-4">
-                        <input id="direccion-detalle" type="text" class="form-control{{ Session::has('direccion-detalle') ? ' is-invalid' : '' }}" name="direccion-detalle" value="{{ old('direccion-detalle') }}">
+                        <input id="direccion-detalle" type="text" class="form-control{{ Session::has('direccion-detalle') ? ' is-invalid' : '' }}" name="direccion-detalle" value="{{$remaining}}">
 
                         @if (Session::has('direccion-detalle'))
                             <span class="invalid-feedback" role="alert">
