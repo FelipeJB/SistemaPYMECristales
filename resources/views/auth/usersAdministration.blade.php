@@ -46,7 +46,7 @@
                     <td>{{$u->usrCedula}}</td>
                     <td>{{$u->usrNombre." ".$u->usrApellido}}</td>
                     <td>{{$u->usrUsuario}}</td>
-                    <td>{{$u->usrRolID}}</td>
+                    <td>{{$u->rusrDescripcion}}</td>
                     <td align="center">
                       <a href="/EditarUsuario/{{$u->id}}" class='btn btn-info'>Editar</a>
                       @if($u->usrActivo==1)
