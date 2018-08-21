@@ -34,7 +34,7 @@ Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('regi
 //Rutas de Administración de Usuarios
 Route::get('/AdministrarUsuarios', function () {
   if(Auth::user()->usrRolID==1){
-    $usuarios= \App\User::select('*')->join('rols', 'rols.rusrID', '=', 'users.id')->orderBy('usrCedula','ASC')->get();
+    $usuarios= \App\User::select('*')->join('rols', 'rols.rusrID', '=', 'users.usrRolID')->orderBy('usrCedula','ASC')->get();
     return view('auth/usersAdministration', compact('usuarios'));
   }else{
     return Redirect::to('/');
