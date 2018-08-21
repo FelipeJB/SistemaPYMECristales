@@ -31,7 +31,7 @@ Route::get('/RegistrarUsuario', function () {
 })->middleware('auth');
 Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('register');
 
-//Rutas de Administración
+//Rutas de Administración de Usuarios
 Route::get('/AdministrarUsuarios', function () {
   if(Auth::user()->usrRolID==1){
     $usuarios= \App\User::all();
@@ -40,4 +40,5 @@ Route::get('/AdministrarUsuarios', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
-Route::get('/EliminarUsuario/{id}', 'Auth\UserController@delete')->middleware('auth');
+Route::get('/EliminarUsuario/{id}', 'Auth\UserController@desactivate')->middleware('auth');
+Route::get('/ActivarUsuario/{id}', 'Auth\UserController@activate')->middleware('auth');

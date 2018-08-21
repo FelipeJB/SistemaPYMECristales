@@ -9643,6 +9643,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 #listaUsuarios .btn{
  width:80px;
+ padding:3px;
  margin:2px;
 }
 

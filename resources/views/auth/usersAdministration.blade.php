@@ -42,23 +42,27 @@
             </thead>
             <tbody id="listaUsuarios">
               @foreach($usuarios as $u)
-                  <tr>
+                  @if($u->usrActivo==1)<tr class="table-success">@else<tr class="table-danger">@endif
                     <td>{{$u->usrCedula}}</td>
-                    <td>{{$u->usrNombre}}</td>
+                    <td>{{$u->usrNombre." ".$u->usrApellido}}</td>
                     <td>{{$u->usrUsuario}}</td>
                     <td>{{$u->usrRolID}}</td>
                     <td align="center">
                       <a href="/EditarUsuario/{{$u->id}}" class='btn btn-info'>Editar</a>
-                      <a href="/EliminarUsuario/{{$u->id}}" class='btn btn-danger'>Eliminar</a>
+                      @if($u->usrActivo==1)
+                        <a href="/EliminarUsuario/{{$u->id}}" class='btn btn-danger'>Eliminar</a>
+                      @else
+                        <a href="/ActivarUsuario/{{$u->id}}" class='btn btn-success'>Activar</a>
+                      @endif
                     </td>
                   </tr>
               @endforeach
             </tbody>
           </table>
 
-          @if (count($usuarios)>1)
+          @if (count($usuarios)>2)
              <ul class="pagination pagination-sm" id="myPager" style="float:right"></ul>
-             <script>$('#listaUsuarios').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:1});</script>
+             <script>$('#listaUsuarios').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:2});</script>
           @endif
 
         </div>
