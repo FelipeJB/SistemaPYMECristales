@@ -22,8 +22,9 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 //Rutas de Registro
 Route::get('/RegistrarUsuario', function () {
+  $roles= \App\Rol::where('rusrID','!=',"1")->get();
   if(Auth::user()->usrRolID==1){
-    return view('auth/register');
+    return view('auth/register', compact('roles'));
   }else{
     return Redirect::to('/');
   }

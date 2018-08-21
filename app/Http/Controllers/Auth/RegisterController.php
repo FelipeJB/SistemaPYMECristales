@@ -15,15 +15,24 @@ class RegisterController extends Controller
   {
       /*Se guardan los datos del usuario dentro de variables desde el formulario*/
       $nombre = Input::get('name');
+      $apellido = Input::get('apellido');
       $username = Input::get('username');
+      $tipoDocumento = Input::get('tipoDocumento');
       $cedula = Input::get('cedula');
       $rol = Input::get('rol');
       $password = Input::get('password');
       $passwordConfirm = Input::get('passwordConfirm');
+      $ciudad = Input::get('ciudad');
+      $celular = Input::get('celular');
+      $dir0 = Input::get('direccion-avenida');
+      $dir1 = Input::get('direccion-1');
+      $dir2 = Input::get('direccion-2');
+      $dir3 = Input::get('direccion-3');
+      $dir4 = Input::get('direccion-detalle');
 
 
       //validar que se ingresen tods los datos
-      if($nombre == "" || $username == "" || $cedula == "" || $password == "" || $password == ""){
+      if($nombre == "" || $username == "" || $cedula == "" || $password == "" || $password == "" || $apellido == "" || $celular == "" || $dir1 == "" || $dir2 == "" || $dir3 == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
@@ -57,10 +66,17 @@ class RegisterController extends Controller
         //hacer registro
         $newUser = new User();
         $newUser->usrNombre = $nombre;
+        $newUser->usrApellido = $apellido;
         $newUser->usrUsuario = $username;
+        $newUser->usrTipoDocumento = $tipoDocumento;
         $newUser->usrCedula = $cedula;
+        $newUser->usrCelular = $celular;
+        $newUser->usrCiudad = $ciudad;
+        $newUser->usrDireccion = $dir0." ".$dir1."#".$dir2."-".$dir3." ".$dir4;
         $newUser->usrRolID = $rol;
         $newUser->password = Hash::make($password);
+        $newUser->usrActivo = 1;
+        $newUser->usrFechaCreacion = date("Y-m-d");
         $newUser->save();
 
         //redirigir a la página de registro
