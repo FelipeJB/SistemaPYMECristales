@@ -35,7 +35,7 @@
                   <label for="name" class="col-md-2 col-form-label text-md-right">Nombre(s) *</label>
 
                   <div class="col-md-4">
-                      <input id="name" type="text" class="form-control{{ Session::has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+                      <input id="name" type="text" class="form-control{{ Session::has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required>
 
                       @if (Session::has('name'))
                           <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
                   <label for="apellido" class="col-md-2 col-form-label text-md-right">Apellido(s) *</label>
 
                   <div class="col-md-4">
-                      <input id="apellido" type="text" class="form-control{{ Session::has('apellido') ? ' is-invalid' : '' }}" name="apellido" value="{{ old('apellido') }}" required autofocus>
+                      <input id="apellido" type="text" class="form-control{{ Session::has('apellido') ? ' is-invalid' : '' }}" name="apellido" value="{{ old('apellido') }}" required>
 
                       @if (Session::has('apellido'))
                           <span class="invalid-feedback" role="alert">
@@ -62,7 +62,7 @@
                   <label for="username" class="col-md-2 col-form-label text-md-right">Nombre de Usuario *</label>
 
                   <div class="col-md-4">
-                      <input id="username" type="text" class="form-control{{ Session::has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
+                      <input id="username" type="text" class="form-control{{ Session::has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required>
 
                       @if (Session::has('username'))
                           <span class="invalid-feedback" role="alert">
@@ -87,7 +87,7 @@
                   <label for="password" class="col-md-2 col-form-label text-md-right">Contraseña *</label>
 
                   <div class="col-md-4">
-                      <input id="password" type="password" class="form-control{{ Session::has('password') ? ' is-invalid' : '' }}" name="password" value="{{ old('password') }}" required autofocus>
+                      <input id="password" type="password" class="form-control{{ Session::has('password') ? ' is-invalid' : '' }}" name="password" value="{{ old('password') }}" required>
 
                       @if (Session::has('password'))
                           <span class="invalid-feedback" role="alert">
@@ -99,7 +99,7 @@
                   <label for="passwordConfirm" class="col-md-2 col-form-label text-md-right">Confirmar Contraseña *</label>
 
                   <div class="col-md-4">
-                      <input id="passwordConfirm" type="password" class="form-control{{ Session::has('passwordConfirm') ? ' is-invalid' : '' }}" name="passwordConfirm" value="{{ old('passwordConfirm') }}" required autofocus>
+                      <input id="passwordConfirm" type="password" class="form-control{{ Session::has('passwordConfirm') ? ' is-invalid' : '' }}" name="passwordConfirm" value="{{ old('passwordConfirm') }}" required>
 
                       @if (Session::has('passwordConfirm'))
                           <span class="invalid-feedback" role="alert">
@@ -117,14 +117,14 @@
                   <div class="col-md-4">
                       <select class="form-control" id="tipoDocumento" name="tipoDocumento">
                         <option value="CC">Cédula de Ciudadanía</option>
-                        <option value="CE">Cédula de Extrajería</option>
+                        <option value="CE">Cédula de Extranjería</option>
                       </select>
                   </div>
 
                   <label for="cedula" class="col-md-2 col-form-label text-md-right">Número de Documento *</label>
 
                   <div class="col-md-4">
-                      <input id="cedula" type="text" class="form-control{{ Session::has('cedula') ? ' is-invalid' : '' }}" name="cedula" value="{{ old('cedula') }}" required autofocus>
+                      <input id="cedula" type="text" class="form-control{{ Session::has('cedula') ? ' is-invalid' : '' }}" name="cedula" value="{{ old('cedula') }}" required>
 
                       @if (Session::has('cedula'))
                           <span class="invalid-feedback" role="alert">
@@ -148,7 +148,7 @@
                   <label for="celular" class="col-md-2 col-form-label text-md-right">Celular *</label>
 
                   <div class="col-md-4">
-                      <input id="celular" type="text" class="form-control{{ Session::has('celular') ? ' is-invalid' : '' }}" name="celular" value="{{ old('celular') }}" required autofocus>
+                      <input id="celular" type="text" class="form-control{{ Session::has('celular') ? ' is-invalid' : '' }}" name="celular" value="{{ old('celular') }}" required>
 
                       @if (Session::has('celular'))
                           <span class="invalid-feedback" role="alert">
@@ -174,7 +174,7 @@
                       <label for="direccion-1">:</label>
 
 
-                      <input id="direccion-1" type="text" class="form-control{{ Session::has('direccion-1') ? ' is-invalid' : '' }}" name="direccion-1" value="{{ old('direccion-1') }}" style="width:70px; display:inline; margin-bottom:8px" required autofocus>
+                      <input id="direccion-1" type="text" class="form-control{{ Session::has('direccion-1') ? ' is-invalid' : '' }}" name="direccion-1" value="{{ old('direccion-1') }}" style="width:70px; display:inline; margin-bottom:8px" required>
 
                       @if (Session::has('direccion-1'))
                           <span class="invalid-feedback" role="alert">
@@ -185,7 +185,7 @@
                       <label for="direccion-2">#</label>
 
 
-                      <input id="direccion-2" type="text" class="form-control{{ Session::has('direccion-2') ? ' is-invalid' : '' }}" name="direccion-2" value="{{ old('direccion-2') }}" style="width:70px; display:inline; margin-bottom:8px" required autofocus>
+                      <input id="direccion-2" type="text" class="form-control{{ Session::has('direccion-2') ? ' is-invalid' : '' }}" name="direccion-2" value="{{ old('direccion-2') }}" style="width:70px; display:inline; margin-bottom:8px" required>
 
                       @if (Session::has('direccion-2'))
                           <span class="invalid-feedback" role="alert">
@@ -197,7 +197,7 @@
                       <label for="direccion-3">-</label>
 
 
-                      <input id="direccion-3" type="text" class="form-control{{ Session::has('direccion-3') ? ' is-invalid' : '' }}" name="direccion-3" value="{{ old('direccion-3') }}" style="width:70px; display:inline; margin-bottom:8px" required autofocus>
+                      <input id="direccion-3" type="text" class="form-control{{ Session::has('direccion-3') ? ' is-invalid' : '' }}" name="direccion-3" value="{{ old('direccion-3') }}" style="width:70px; display:inline; margin-bottom:8px" required>
 
                       @if (Session::has('direccion-3'))
                           <span class="invalid-feedback" role="alert">

@@ -81,8 +81,8 @@
                emptyTable:     "No hay registros en la tabla",
                paginate: {
                    first:      "Primero",
-                   previous:   "<<",
-                   next:       ">>",
+                   previous:   "<",
+                   next:       ">",
                    last:       "Último"
                },
                aria: {

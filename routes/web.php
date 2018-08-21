@@ -22,8 +22,8 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 //Rutas de Registro
 Route::get('/RegistrarUsuario', function () {
-  $roles= \App\Rol::where('rusrID','!=',"1")->get();
   if(Auth::user()->usrRolID==1){
+    $roles= \App\Rol::where('rusrID','!=',"1")->get();
     return view('auth/register', compact('roles'));
   }else{
     return Redirect::to('/');
@@ -36,6 +36,15 @@ Route::get('/AdministrarUsuarios', function () {
   if(Auth::user()->usrRolID==1){
     $usuarios= \App\User::select('*')->join('rols', 'rols.rusrID', '=', 'users.usrRolID')->orderBy('usrCedula','ASC')->get();
     return view('auth/usersAdministration', compact('usuarios'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/EditarUsuario/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $roles= \App\Rol::where('rusrID','!=',"1")->get();
+    $usuario= \App\User::where('id','=',$id)->join('rols', 'rols.rusrID', '=', 'users.usrRolID')->first();
+    return view('auth/userEdit', compact('usuario', 'roles'));
   }else{
     return Redirect::to('/');
   }
