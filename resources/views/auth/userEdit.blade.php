@@ -24,6 +24,7 @@
 
             <form method="POST" action="/EditarUsuario">
                 @csrf
+                <input id="username" type="hidden" name="username" value="{{$usuario->usrUsuario}}" required>
 
                 <div class="form-group row">
                     <label for="name" class="col-md-2 col-form-label text-md-right">Nombre(s) *</label>

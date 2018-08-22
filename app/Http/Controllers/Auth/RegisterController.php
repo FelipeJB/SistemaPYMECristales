@@ -32,7 +32,7 @@ class RegisterController extends Controller
 
 
       //validar que se ingresen tods los datos
-      if($nombre == "" || $username == "" || $cedula == "" || $password == "" || $password == "" || $apellido == "" || $celular == "" || $dir1 == "" || $dir2 == "" || $dir3 == ""){
+      if($nombre == "" || $username == "" || $cedula == "" || $password == "" || $passwordConfirm == "" || $apellido == "" || $celular == "" || $dir1 == "" || $dir2 == "" || $dir3 == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
@@ -82,7 +82,7 @@ class RegisterController extends Controller
         //redirigir a la página de registro
         return Redirect::back()->with('success', 'El usuario se registró exitosamente');
 
-      }catch(Exception $exception){
+      }catch(\Exception $exception){
         return Redirect::back()->with('error', 'El usuario no pudo ser registrado')->withInput();
       }
 

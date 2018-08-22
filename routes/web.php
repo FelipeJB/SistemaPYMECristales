@@ -61,5 +61,6 @@ Route::get('/EditarUsuario/{id}', function ($id) {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::post('/EditarUsuario', 'Auth\UserController@edit')->middleware('auth');
 Route::get('/EliminarUsuario/{id}', 'Auth\UserController@desactivate')->middleware('auth');
 Route::get('/ActivarUsuario/{id}', 'Auth\UserController@activate')->middleware('auth');
