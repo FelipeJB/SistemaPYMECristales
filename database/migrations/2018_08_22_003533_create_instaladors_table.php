@@ -14,16 +14,16 @@ class CreateInstaladorsTable extends Migration
     public function up()
     {
         Schema::create('instaladors', function (Blueprint $table) {
-            $table->increments('insid');
-            $table->string('usrNombre');
-            $table->string('usrApellido');
-            $table->string('usrTipoDocumento');
-            $table->bigInteger('usrCedula');
-            $table->string('usrCiudad');
-            $table->date('usrFechaCreacion');
-            $table->string('usrCelular');
-            $table->string('usrDireccion');
-            $table->integer('usrActivo');
+            $table->increments('insID');
+            $table->string('insNombre');
+            $table->string('insApellido');
+            $table->string('insTipoDocumento');
+            $table->bigInteger('insCedula');
+            $table->string('insCiudad');
+            $table->date('insFechaCreacion');
+            $table->string('insCelular');
+            $table->string('insDireccion');
+            $table->integer('insActivo');
             $table->timestamps();
         });
     }
