@@ -99,7 +99,7 @@ class UserController extends Controller
         return Redirect::to('/AdministrarUsuarios')->with('success', 'El usuario se modificó exitosamente');
 
       }catch(\Illuminate\Database\QueryException $exception){
-        return Redirect::back()->with('error', 'La cédula debe tener máximo 10 dígitos')->withInput();
+        return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
       }
       catch(\Exception $exception){
         return Redirect::back()->with('error', 'El usuario no pudo ser modificado')->withInput();
