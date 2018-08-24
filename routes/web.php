@@ -64,3 +64,21 @@ Route::get('/EditarUsuario/{id}', function ($id) {
 Route::post('/EditarUsuario', 'Auth\UserController@edit')->middleware('auth');
 Route::get('/EliminarUsuario/{id}', 'Auth\UserController@desactivate')->middleware('auth');
 Route::get('/ActivarUsuario/{id}', 'Auth\UserController@activate')->middleware('auth');
+
+//Rutas de Administración de Instaladores
+Route::get('/CrearInstalador', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('instaladores/registroInstalador', compact('roles'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearInstalador', 'Admin\InstaladorController@create')->middleware('auth');
+Route::get('/AdministrarInstaladores', function () {
+  if(Auth::user()->usrRolID==1){
+    $instaladores= \App\Instalador::all();
+    return view('instaladores/instaladoresAdministration', compact('instaladores'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
