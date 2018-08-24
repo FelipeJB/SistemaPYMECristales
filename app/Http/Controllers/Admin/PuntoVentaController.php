@@ -45,4 +45,38 @@ class PuntoVentaController extends Controller
 
   }
 
+  public function desactivate(Request $request){
+    try {
+      if(Auth::user()->usrRolID==1){
+        $id=$request->id;
+        $punto= PuntoVenta::where('pvID','=',$id)->first();
+        $punto->pvActivo=0;
+        $punto->save();
+        return Redirect::to('/AdministrarPuntos')->with("success", "El punto de venta se desactivó satisfactoriamente");
+      }
+      else{
+        return Redirect::to('/');
+      }
+    } catch (\Exception $e) {
+      return Redirect::to('/AdministrarPuntos')->with("error", "Error desactivando el punto de venta");
+    }
+  }
+
+  public function activate(Request $request){
+    try {
+      if(Auth::user()->usrRolID==1){
+        $id=$request->id;
+        $punto= PuntoVenta::where('pvID','=',$id)->first();
+        $punto->pvActivo=1;
+        $punto->save();
+        return Redirect::to('/AdministrarPuntos')->with("success", "El punto de venta se activó satisfactoriamente");
+      }
+      else{
+        return Redirect::to('/');
+      }
+    } catch (\Exception $e) {
+      return Redirect::to('/AdministrarPuntos')->with("error", "Error activando el punto de venta");
+    }
+  }
+
 }

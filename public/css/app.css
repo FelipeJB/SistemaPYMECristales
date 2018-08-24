@@ -9662,3 +9662,14 @@ a.text-dark:hover, a.text-dark:focus {
   font-weight: 500;
  vertical-align: middle;
 }
+
+#listaPuntos .btn{
+ width:80px;
+ padding:3px;
+ margin:2px;
+}
+
+#listaPuntos td{
+  font-weight: 500;
+ vertical-align: middle;
+}

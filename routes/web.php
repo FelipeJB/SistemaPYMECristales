@@ -115,3 +115,13 @@ Route::get('/CrearPunto', function () {
   }
 })->middleware('auth');
 Route::post('/CrearPunto', 'Admin\PuntoVentaController@create')->middleware('auth');
+Route::get('/AdministrarPuntos', function () {
+  if(Auth::user()->usrRolID==1){
+    $puntos= \App\PuntoVenta::orderBy('pvNombre', 'ASC')->get();
+    return view('puntosVenta/puntoVentaAdministration', compact('puntos'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/EliminarPunto/{id}', 'Admin\PuntoVentaController@desactivate')->middleware('auth');
+Route::get('/ActivarPunto/{id}', 'Admin\PuntoVentaController@activate')->middleware('auth');
