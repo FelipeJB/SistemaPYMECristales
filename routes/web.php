@@ -68,7 +68,7 @@ Route::get('/ActivarUsuario/{id}', 'Auth\UserController@activate')->middleware('
 //Rutas de Administración de Instaladores
 Route::get('/CrearInstalador', function () {
   if(Auth::user()->usrRolID==1){
-    return view('instaladores/registroInstalador', compact('roles'));
+    return view('instaladores/registroInstalador');
   }else{
     return Redirect::to('/');
   }
@@ -105,3 +105,13 @@ Route::get('/EditarInstalador/{id}', function ($id) {
 Route::post('/EditarInstalador', 'Admin\InstaladorController@edit')->middleware('auth');
 Route::get('/EliminarInstalador/{id}', 'Admin\InstaladorController@desactivate')->middleware('auth');
 Route::get('/ActivarInstalador/{id}', 'Admin\InstaladorController@activate')->middleware('auth');
+
+//Rutas de Administración de Puntos de Venta
+Route::get('/CrearPunto', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('puntosVenta/registroPuntoVenta');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearPunto', 'Admin\PuntoVentaController@create')->middleware('auth');
