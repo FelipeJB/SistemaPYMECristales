@@ -51,7 +51,6 @@ class UserController extends Controller
     }
   }
 
-
   public function edit()
   {
       /*Se guardan los datos del usuario dentro de variables desde el formulario*/

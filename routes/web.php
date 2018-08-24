@@ -76,9 +76,32 @@ Route::get('/CrearInstalador', function () {
 Route::post('/CrearInstalador', 'Admin\InstaladorController@create')->middleware('auth');
 Route::get('/AdministrarInstaladores', function () {
   if(Auth::user()->usrRolID==1){
-    $instaladores= \App\Instalador::all();
+    $instaladores= \App\Instalador::all()->sortBy('insCedula');
     return view('instaladores/instaladoresAdministration', compact('instaladores'));
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarInstalador/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $instalador= \App\Instalador::where('insID','=',$id)->first();
+    $pieces = explode(" ", $instalador->insDireccion,2);
+    $direccion1=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode("#", $remaining,2);
+    $direccion2=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode("-", $remaining,2);
+    $direccion3=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode(".", $remaining,2);
+    $direccion4=$pieces[0];
+    $remaining=$pieces[1];
+    return view('instaladores/instaladorEdit', compact('instalador', 'direccion1','direccion2','direccion3','direccion4', 'remaining'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarInstalador', 'Admin\InstaladorController@edit')->middleware('auth');
+Route::get('/EliminarInstalador/{id}', 'Admin\InstaladorController@desactivate')->middleware('auth');
+Route::get('/ActivarInstalador/{id}', 'Admin\InstaladorController@activate')->middleware('auth');

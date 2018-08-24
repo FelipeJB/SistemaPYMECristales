@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Instalador extends Model
 {
+  protected $primaryKey  = 'insID';
+
   protected $fillable = [
-      'insId', 'insNombre', 'insApellido', 'insTipoDocumento', 'insCedula', 'insCiudad', 'insFechaCreacion', 'insCelular', 'insDireccion', 'insActivo'
+      'insID', 'insNombre', 'insApellido', 'insTipoDocumento', 'insCedula', 'insCiudad', 'insFechaCreacion', 'insCelular', 'insDireccion', 'insActivo'
   ];
 }
