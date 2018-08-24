@@ -123,5 +123,26 @@ Route::get('/AdministrarPuntos', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarPunto/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $punto= \App\PuntoVenta::where('pvID','=',$id)->first();
+    $pieces = explode(" ", $punto->pvDireccion,2);
+    $direccion1=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode("#", $remaining,2);
+    $direccion2=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode("-", $remaining,2);
+    $direccion3=$pieces[0];
+    $remaining=$pieces[1];
+    $pieces = explode(".", $remaining,2);
+    $direccion4=$pieces[0];
+    $remaining=$pieces[1];
+    return view('puntosVenta/puntoVentaEdit', compact('punto', 'direccion1','direccion2','direccion3','direccion4', 'remaining'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarPunto', 'Admin\PuntoVentaController@edit')->middleware('auth');
 Route::get('/EliminarPunto/{id}', 'Admin\PuntoVentaController@desactivate')->middleware('auth');
 Route::get('/ActivarPunto/{id}', 'Admin\PuntoVentaController@activate')->middleware('auth');

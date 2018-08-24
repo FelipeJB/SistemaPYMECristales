@@ -64,7 +64,7 @@ class InstaladorController extends Controller
 
   public function edit()
   {
-      /*Se guardan los datos del usuario dentro de variables desde el formulario*/
+      /*Se guardan los datos del instalador dentro de variables desde el formulario*/
       $id = Input::get('insID');
       $nombre = Input::get('name');
       $apellido = Input::get('apellido');

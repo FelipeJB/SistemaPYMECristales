@@ -45,6 +45,42 @@ class PuntoVentaController extends Controller
 
   }
 
+  public function edit()
+  {
+      /*Se guardan los datos del punto de venta dentro de variables desde el formulario*/
+      $id = Input::get('pvID');
+      $nombre = Input::get('name');
+      $dir0 = Input::get('direccion-avenida');
+      $dir1 = Input::get('direccion-1');
+      $dir2 = Input::get('direccion-2');
+      $dir3 = Input::get('direccion-3');
+      $dir4 = Input::get('direccion-detalle');
+
+      //validar que se ingresen tods los datos
+      if($nombre == "" || $dir1 == "" || $dir2 == "" || $dir3 == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
+
+      try{
+        //guardar punto de venta
+        $punto = PuntoVenta::where('pvID','=',$id)->first();
+        $punto->pvNombre = $nombre;
+        $punto->pvDireccion = $dir0." ".$dir1."#".$dir2."-".$dir3.".".$dir4;
+        $punto->save();
+
+        //redirigir a la página de administración
+        return Redirect::to('/AdministrarPuntos')->with('success', 'El punto de venta se modificó exitosamente');
+
+      }catch(\Illuminate\Database\QueryException $exception){
+        return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
+      }
+      catch(\Exception $exception){
+        return Redirect::back()->with('error', 'El punto de venta no pudo ser modificado')->withInput();
+      }
+
+  }
+
   public function desactivate(Request $request){
     try {
       if(Auth::user()->usrRolID==1){
