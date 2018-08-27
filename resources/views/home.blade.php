@@ -21,8 +21,11 @@
               </ul>
               <h3>Productos</h3>
               <ul>
-                <li><a href="/AdministrarProductos">Administrar Productos</a></li>
-                <li><a href="/CrearProducto">Crear Producto</a></li>
+                <li><a href="/AdministrarDisenos">Administrar Diseños</a></li>
+                <li><a href="/AdministrarMilimetrajes">Administrar Milimetrajes</a></li>
+                <li><a href="/AdministrarColores">Administrar Colores</a></li>
+                <li><a href="/AdministrarProductos">Administrar Sistema</a></li>
+                <li><a href="/AdministrarComponentes">Administrar Componentes de Sistema</a></li>
               </ul>
               <h3>Puntos de Venta</h3>
               <ul>

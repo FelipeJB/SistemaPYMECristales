@@ -66,8 +66,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProductsAdmin">
-                                    <a class="dropdown-item" href="/AdministrarProductos">Administrar Productos</a>
-                                    <a class="dropdown-item" href="/CrearProducto">Crear Producto</a>
+                                  <a class="dropdown-item" href="/AdministrarDisenos">Administrar Diseños</a>
+                                  <a class="dropdown-item" href="/AdministrarMilimetrajes">Administrar Milimetrajes</a>
+                                  <a class="dropdown-item" href="/AdministrarColores">Administrar Colores</a>
+                                  <a class="dropdown-item" href="/AdministrarProductos">Administrar Sistema</a>
+                                  <a class="dropdown-item" href="/AdministrarComponentes">Administrar Componentes de Sistema</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

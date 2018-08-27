@@ -146,3 +146,15 @@ Route::get('/EditarPunto/{id}', function ($id) {
 Route::post('/EditarPunto', 'Admin\PuntoVentaController@edit')->middleware('auth');
 Route::get('/EliminarPunto/{id}', 'Admin\PuntoVentaController@desactivate')->middleware('auth');
 Route::get('/ActivarPunto/{id}', 'Admin\PuntoVentaController@activate')->middleware('auth');
+
+//Rutas de Administración de Productos
+Route::get('/AdministrarDisenos', function () {
+  if(Auth::user()->usrRolID==1){
+    $disenos= \App\Diseno::orderBy('dsnCodigo', 'ASC')->get();
+    return view('productos/disenoAdministration', compact('disenos'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/EliminarDiseno/{id}', 'Admin\DisenoController@desactivate')->middleware('auth');
+Route::get('/ActivarDiseno/{id}', 'Admin\DisenoController@activate')->middleware('auth');
