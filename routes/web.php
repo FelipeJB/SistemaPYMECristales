@@ -164,5 +164,14 @@ Route::get('/AdministrarDisenos', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarDiseno/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $diseno= \App\Diseno::where('dsnID','=',$id)->first();
+    return view('productos/disenoEdit', compact('diseno'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarDiseno', 'Admin\DisenoController@edit')->middleware('auth');
 Route::get('/EliminarDiseno/{id}', 'Admin\DisenoController@desactivate')->middleware('auth');
 Route::get('/ActivarDiseno/{id}', 'Admin\DisenoController@activate')->middleware('auth');
