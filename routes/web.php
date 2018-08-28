@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('home');
 })->middleware('auth');
@@ -193,5 +182,14 @@ Route::get('/AdministrarColores', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarColor/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $color= \App\Color::where('clrID','=',$id)->first();
+    return view('productos/colorEdit', compact('color'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarColor', 'Admin\ColorController@edit')->middleware('auth');
 Route::get('/EliminarColor/{id}', 'Admin\ColorController@desactivate')->middleware('auth');
 Route::get('/ActivarColor/{id}', 'Admin\ColorController@activate')->middleware('auth');

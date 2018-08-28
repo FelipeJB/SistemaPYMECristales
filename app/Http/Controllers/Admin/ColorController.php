@@ -21,7 +21,7 @@ class ColorController extends Controller
       $precioVenta = Input::get('precioVenta');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == "" | $precioCompra == "" | $precioVenta == ""){
+      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
@@ -59,32 +59,48 @@ class ColorController extends Controller
 
   public function edit()
   {
-      /*Se guardan los datos del diseño dentro de variables desde el formulario*/
-      $id = Input::get('dsnID');
+      /*Se guardan los datos del color dentro de variables desde el formulario*/
+      $id = Input::get('clrID');
       $codigo = Input::get('codigo');
       $descripcion = Input::get('descripcion');
+      $precioCompra = Input::get('precioCompra');
+      $precioVenta = Input::get('precioVenta');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == ""){
+      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
 
+      //validar precio compra numérico
+      if(!is_numeric($precioCompra)){
+        return Redirect::back()->with('precioCompra', 'Ingrese un precio válido')
+        ->withInput();
+      }
+
+      //validar precio venta numérico
+      if(!is_numeric($precioVenta)){
+        return Redirect::back()->with('precioVenta', 'Ingrese un precio válido')
+        ->withInput();
+      }
+
       try{
-        //guardar diseño
-        $diseno = Diseno::where('dsnID','=',$id)->first();
-        $diseno->dsnCodigo = $codigo;
-        $diseno->dsnDescripcion = $descripcion;
-        $diseno->save();
+        //guardar color
+        $color = Color::where('clrID','=',$id)->first();
+        $color->clrCodigo = $codigo;
+        $color->clrDescripcion = $descripcion;
+        $color->clrPrecioCompra = $precioCompra;
+        $color->clrPrecioVenta = $precioVenta;
+        $color->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarDisenos')->with('success', 'El diseño se modificó exitosamente');
+        return Redirect::to('/AdministrarColores')->with('success', 'El color se modificó exitosamente');
 
       }catch(\Illuminate\Database\QueryException $exception){
         return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
       }
-      catch(\Exception $exception){
-        return Redirect::back()->with('error', 'El diseño no pudo ser modificado')->withInput();
+      catch(Exception $exception){
+        return Redirect::back()->with('error', 'El color no pudo ser modificado')->withInput();
       }
 
   }
