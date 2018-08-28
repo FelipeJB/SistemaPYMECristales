@@ -195,3 +195,13 @@ Route::get('/EliminarColor/{id}', 'Admin\ColorController@desactivate')->middlewa
 Route::get('/ActivarColor/{id}', 'Admin\ColorController@activate')->middleware('auth');
 
 //Rutas de Administración de Productos: Milimetrajes
+Route::get('/AdministrarMilimetrajes', function () {
+  if(Auth::user()->usrRolID==1){
+    $milimetrajes= \App\Milimetraje::orderBy('mlmNumero', 'ASC')->get();
+    return view('productos/milimetrajeAdministration', compact('milimetrajes'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/EliminarMilimetraje/{id}', 'Admin\MilimetrajeController@desactivate')->middleware('auth');
+Route::get('/ActivarMilimetraje/{id}', 'Admin\MilimetrajeController@activate')->middleware('auth');

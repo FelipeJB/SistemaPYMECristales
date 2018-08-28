@@ -9695,3 +9695,14 @@ a.text-dark:hover, a.text-dark:focus {
   font-weight: 500;
  vertical-align: middle;
 }
+
+#listaMilimetrajes .btn{
+ width:80px;
+ padding:3px;
+ margin:2px;
+}
+
+#listaMilimetrajes td{
+  font-weight: 500;
+ vertical-align: middle;
+}
