@@ -36,9 +36,9 @@
           <table class="table table-hover" id="listaSistemas">
             <thead>
               <tr class="table-secondary">
-                <th>Código Word Office</th>
-                <th>Tipo</th>
+                <th>Código World Office</th>
                 <th>Descripción</th>
+                <th>Tipo</th>
                 <th>Precio de Compra</th>
                 <th>Precio de Venta</th>
                 <th style="text-align:center">Acciones</th>
@@ -48,8 +48,8 @@
               @foreach($sistemas as $s)
                   @if($s->stmActivo==1)<tr class="table-success">@else<tr class="table-danger">@endif
                     <td>{{$s->stmCodigoWO}}</td>
-                    <td>{{$s->stmTipo}}</td>
                     <td>{{$s->stmDescripcion}}</td>
+                    <td>{{$s->stmTipo}}</td>
                     <td>{{$s->stmPrecioCompra}}</td>
                     <td>{{$s->stmPrecioVenta}}</td>
                     <td align="center">
@@ -59,7 +59,7 @@
                       @else
                         <a href="/ActivarSistema/{{$s->stmID}}" class='btn btn-success'>Activar</a>
                       @endif
-                      <a href="/EditarSistema/{{$s->stmID}}" class='btn btn-info'>Elementos</a>
+                      <a href="/AdministrarSistemas/Elementos/{{$s->stmID}}" class='btn btn-info'>Elementos</a>
                     </td>
                   </tr>
               @endforeach
@@ -96,7 +96,7 @@
           });
           </script>
 
-          <br><br><a href="/CrearColor" class='btn btn-success' style="float:right;">Agregar Sistema</a>
+          <br><br><a href="/CrearSistema" class='btn btn-success' style="float:right;">Agregar Sistema</a>
 
         </div>
     </div>

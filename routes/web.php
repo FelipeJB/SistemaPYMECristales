@@ -224,11 +224,21 @@ Route::get('/EliminarMilimetraje/{id}', 'Admin\MilimetrajeController@desactivate
 Route::get('/ActivarMilimetraje/{id}', 'Admin\MilimetrajeController@activate')->middleware('auth');
 
 //Rutas de Administración de Productos: Sistemas
+Route::get('/CrearSistema', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('productos/registroSistema');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearSistema', 'Admin\SistemaController@create')->middleware('auth');
 Route::get('/AdministrarSistemas', function () {
   if(Auth::user()->usrRolID==1){
-    $sistemas= \App\Sistema::orderBy('stmTipo', 'ASC')->get();
+    $sistemas= \App\Sistema::orderBy('stmDescripcion', 'ASC')->get();
     return view('productos/sistemaAdministration', compact('sistemas'));
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EliminarSistema/{id}', 'Admin\SistemaController@desactivate')->middleware('auth');
+Route::get('/ActivarSistema/{id}', 'Admin\SistemaController@activate')->middleware('auth');
