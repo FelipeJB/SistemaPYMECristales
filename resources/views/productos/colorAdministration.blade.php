@@ -93,7 +93,7 @@
           });
           </script>
 
-          <br><br><a href="/CrearColor" class='btn btn-success' style="float:right;">Agregar Diseño</a>
+          <br><br><a href="/CrearColor" class='btn btn-success' style="float:right;">Agregar Color</a>
 
         </div>
     </div>

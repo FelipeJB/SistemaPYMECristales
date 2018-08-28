@@ -14,29 +14,45 @@ class ColorController extends Controller
 
   public function create()
   {
-      /*Se guardan los datos del diseño dentro de variables desde el formulario*/
+      /*Se guardan los datos del color dentro de variables desde el formulario*/
       $codigo = Input::get('codigo');
       $descripcion = Input::get('descripcion');
+      $precioCompra = Input::get('precioCompra');
+      $precioVenta = Input::get('precioVenta');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == ""){
+      if($codigo == "" || $descripcion == "" | $precioCompra == "" | $precioVenta == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
 
+      //validar precio compra numérico
+      if(!is_numeric($precioCompra)){
+        return Redirect::back()->with('precioCompra', 'Ingrese un precio válido')
+        ->withInput();
+      }
+
+      //validar precio venta numérico
+      if(!is_numeric($precioVenta)){
+        return Redirect::back()->with('precioVenta', 'Ingrese un precio válido')
+        ->withInput();
+      }
+
       try{
-        //creación del diseño
-        $newDiseno = new Diseno();
-        $newDiseno->dsnCodigo = $codigo;
-        $newDiseno->dsnDescripcion = $descripcion;
-        $newDiseno->dsnActivo = 1;
-        $newDiseno->save();
+        //creación del color
+        $newColor = new Color();
+        $newColor->clrCodigo = $codigo;
+        $newColor->clrDescripcion = $descripcion;
+        $newColor->clrPrecioCompra = $precioCompra;
+        $newColor->clrPrecioVenta = $precioVenta;
+        $newColor->clrActivo = 1;
+        $newColor->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarDisenos')->with('success', 'El diseño se registró exitosamente');
+        return Redirect::to('/AdministrarColores')->with('success', 'El color se registró exitosamente');
 
       }catch(\Exception $exception){
-        return Redirect::to('/AdministrarDisenos')->with('error', 'El diseño no pudo ser registrado')->withInput();
+        return Redirect::to('/AdministrarColores')->with('error', 'El color no pudo ser registrado')->withInput();
       }
 
   }

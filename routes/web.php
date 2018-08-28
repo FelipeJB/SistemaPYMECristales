@@ -177,6 +177,14 @@ Route::get('/EliminarDiseno/{id}', 'Admin\DisenoController@desactivate')->middle
 Route::get('/ActivarDiseno/{id}', 'Admin\DisenoController@activate')->middleware('auth');
 
 //Rutas de Administración de Productos: Colores
+Route::get('/CrearColor', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('productos/registroColor');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearColor', 'Admin\ColorController@create')->middleware('auth');
 Route::get('/AdministrarColores', function () {
   if(Auth::user()->usrRolID==1){
     $colores= \App\Color::orderBy('clrCodigo', 'ASC')->get();
