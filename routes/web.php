@@ -147,7 +147,7 @@ Route::post('/EditarPunto', 'Admin\PuntoVentaController@edit')->middleware('auth
 Route::get('/EliminarPunto/{id}', 'Admin\PuntoVentaController@desactivate')->middleware('auth');
 Route::get('/ActivarPunto/{id}', 'Admin\PuntoVentaController@activate')->middleware('auth');
 
-//Rutas de Administración de Productos
+//Rutas de Administración de Productos: Diseños
 Route::get('/CrearDiseno', function () {
   if(Auth::user()->usrRolID==1){
     return view('productos/registroDiseno');
@@ -175,3 +175,15 @@ Route::get('/EditarDiseno/{id}', function ($id) {
 Route::post('/EditarDiseno', 'Admin\DisenoController@edit')->middleware('auth');
 Route::get('/EliminarDiseno/{id}', 'Admin\DisenoController@desactivate')->middleware('auth');
 Route::get('/ActivarDiseno/{id}', 'Admin\DisenoController@activate')->middleware('auth');
+
+//Rutas de Administración de Productos: Colores
+Route::get('/AdministrarColores', function () {
+  if(Auth::user()->usrRolID==1){
+    $colores= \App\Color::orderBy('clrCodigo', 'ASC')->get();
+    return view('productos/colorAdministration', compact('colores'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/EliminarColor/{id}', 'Admin\ColorController@desactivate')->middleware('auth');
+Route::get('/ActivarColor/{id}', 'Admin\ColorController@activate')->middleware('auth');

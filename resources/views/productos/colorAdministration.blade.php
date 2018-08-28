@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Administrar Diseños')
+@section('titulo', 'Administrar Colores')
 
 @section('content')
 <div class="container">
@@ -8,11 +8,11 @@
         <div class="col-md-12">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Administrar Diseños</li>
+            <li class="breadcrumb-item active">Administrar Colores</li>
           </ol>
 
-          <h2 class="section-title">Administrar Diseños</h2>
-          <p class="section-subtitle">A continuación se listan los diseños registrados en el sistema.</p><br>
+          <h2 class="section-title">Administrar Colores</h2>
+          <p class="section-subtitle">A continuación se listan los colores registrados en el sistema.</p><br>
 
           @if(Session::has('error'))
               <div class="alert alert-dismissible alert-danger">
@@ -33,25 +33,29 @@
           <script type= "text/javascript" src="{{ asset('tab_divider/tab_divider_bootstrap.js') }}"></script>
           <link rel= "stylesheet" href="{{ asset('tab_divider/tab_divider.css') }}">
 
-          <table class="table table-hover" id="listaDisenos">
+          <table class="table table-hover" id="listaColores">
             <thead>
               <tr class="table-secondary">
                 <th>Código</th>
                 <th>Descripción</th>
+                <th>Precio de Compra</th>
+                <th>Precio de Venta</th>
                 <th style="text-align:center">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($disenos as $d)
-                  @if($d->dsnActivo==1)<tr class="table-success">@else<tr class="table-danger">@endif
-                    <td>{{$d->dsnCodigo}}</td>
-                    <td>{{$d->dsnDescripcion}}</td>
+              @foreach($colores as $c)
+                  @if($c->clrActivo==1)<tr class="table-success">@else<tr class="table-danger">@endif
+                    <td>{{$c->clrCodigo}}</td>
+                    <td>{{$c->clrDescripcion}}</td>
+                    <td>{{$c->clrPrecioCompra}}</td>
+                    <td>{{$c->clrPrecioVenta}}</td>
                     <td align="center">
-                      <a href="/EditarDiseno/{{$d->dsnID}}" class='btn btn-info'>Editar</a>
-                      @if($d->dsnActivo==1)
-                        <a href="/EliminarDiseno/{{$d->dsnID}}" class='btn btn-danger'>Eliminar</a>
+                      <a href="/EditarColor/{{$c->clrID}}" class='btn btn-info'>Editar</a>
+                      @if($c->clrActivo==1)
+                        <a href="/EliminarColor/{{$c->clrID}}" class='btn btn-danger'>Eliminar</a>
                       @else
-                        <a href="/ActivarDiseno/{{$d->dsnID}}" class='btn btn-success'>Activar</a>
+                        <a href="/ActivarColor/{{$c->clrID}}" class='btn btn-success'>Activar</a>
                       @endif
                     </td>
                   </tr>
@@ -60,7 +64,7 @@
           </table>
 
           <script>
-          $('#listaDisenos').DataTable({
+          $('#listaColores').DataTable({
             ordering:false,
             paging: true,
             lengthMenu: [[8, 15, 30], [8, 15, 30]],
@@ -89,7 +93,7 @@
           });
           </script>
 
-          <br><br><a href="/CrearDiseno" class='btn btn-success' style="float:right;">Agregar Diseño</a>
+          <br><br><a href="/CrearColor" class='btn btn-success' style="float:right;">Agregar Diseño</a>
 
         </div>
     </div>
