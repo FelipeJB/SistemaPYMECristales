@@ -29,6 +29,13 @@ class MilimetrajeController extends Controller
         ->withInput();
       }
 
+      //validar milimetraje no registrado
+      $isRegistered = Milimetraje::where("mlmNumero", "=", $numero)->get();
+      if (sizeof($isRegistered) != 0){
+        return Redirect::back()->with('numero', 'Este número de milimetraje ya se encuentra registrado')
+        ->withInput();
+      }
+
       try{
         //creación del milimetraje
         $newMilimetraje = new Milimetraje();
@@ -47,32 +54,43 @@ class MilimetrajeController extends Controller
 
   public function edit()
   {
-      /*Se guardan los datos del diseño dentro de variables desde el formulario*/
-      $id = Input::get('dsnID');
-      $codigo = Input::get('codigo');
-      $descripcion = Input::get('descripcion');
+      /*Se guardan los datos del milimetraje dentro de variables desde el formulario*/
+      $id = Input::get('mlmID');
+      $numero = Input::get('numero');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == ""){
+      if($numero == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
 
+      //validar número numérico
+      if(!is_numeric($numero)){
+        return Redirect::back()->with('numero', 'Ingrese un número válido')
+        ->withInput();
+      }
+
+      //validar milimetraje no registrado
+      $isRegistered = Milimetraje::where("mlmNumero", "=", $numero)->where("mlmID", "!=", $id)->get();
+      if (sizeof($isRegistered) != 0){
+        return Redirect::back()->with('numero', 'Este número de milimetraje ya se encuentra registrado')
+        ->withInput();
+      }
+
       try{
-        //guardar diseño
-        $diseno = Diseno::where('dsnID','=',$id)->first();
-        $diseno->dsnCodigo = $codigo;
-        $diseno->dsnDescripcion = $descripcion;
-        $diseno->save();
+        //guardar milimetraje
+        $milimetraje = Milimetraje::where('mlmID','=',$id)->first();
+        $milimetraje->mlmNumero = $numero;
+        $milimetraje->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarMilimetrajes')->with('success', 'El diseño se modificó exitosamente');
+        return Redirect::to('/AdministrarMilimetrajes')->with('success', 'El milimetraje se modificó exitosamente');
 
       }catch(\Illuminate\Database\QueryException $exception){
         return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
       }
       catch(\Exception $exception){
-        return Redirect::back()->with('error', 'El diseño no pudo ser modificado')->withInput();
+        return Redirect::back()->with('error', 'El milimetraje no pudo ser modificado')->withInput();
       }
 
   }
