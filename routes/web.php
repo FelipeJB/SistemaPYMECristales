@@ -240,5 +240,16 @@ Route::get('/AdministrarSistemas', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarSistema/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $sistema= \App\Sistema::where('stmID','=',$id)->first();
+    return view('productos/sistemaEdit', compact('sistema'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarSistema', 'Admin\SistemaController@edit')->middleware('auth');
 Route::get('/EliminarSistema/{id}', 'Admin\SistemaController@desactivate')->middleware('auth');
 Route::get('/ActivarSistema/{id}', 'Admin\SistemaController@activate')->middleware('auth');
+
+//Rutas de Administración de Productos: Sistemas Detalle

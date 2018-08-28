@@ -99,7 +99,7 @@ class ColorController extends Controller
       }catch(\Illuminate\Database\QueryException $exception){
         return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
       }
-      catch(Exception $exception){
+      catch(\Exception $exception){
         return Redirect::back()->with('error', 'El color no pudo ser modificado')->withInput();
       }
 

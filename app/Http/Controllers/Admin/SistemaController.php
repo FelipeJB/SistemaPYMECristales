@@ -61,10 +61,11 @@ class SistemaController extends Controller
 
   public function edit()
   {
-      /*Se guardan los datos del color dentro de variables desde el formulario*/
-      $id = Input::get('clrID');
+      /*Se guardan los datos del sistema dentro de variables desde el formulario*/
+      $id = Input::get('stmID');
       $codigo = Input::get('codigo');
       $descripcion = Input::get('descripcion');
+      $tipo = Input::get('tipo');
       $precioCompra = Input::get('precioCompra');
       $precioVenta = Input::get('precioVenta');
 
@@ -87,22 +88,23 @@ class SistemaController extends Controller
       }
 
       try{
-        //guardar color
-        $color = Color::where('clrID','=',$id)->first();
-        $color->clrCodigo = $codigo;
-        $color->clrDescripcion = $descripcion;
-        $color->clrPrecioCompra = $precioCompra;
-        $color->clrPrecioVenta = $precioVenta;
-        $color->save();
+        //guardar sistema
+        $sistema = Sistema::where('stmID','=',$id)->first();
+        $sistema->stmCodigoWO = $codigo;
+        $sistema->stmTipo = $tipo;
+        $sistema->stmDescripcion = $descripcion;
+        $sistema->stmPrecioCompra = $precioCompra;
+        $sistema->stmPrecioVenta = $precioVenta;
+        $sistema->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarColores')->with('success', 'El color se modificó exitosamente');
+        return Redirect::to('/AdministrarSistemas')->with('success', 'El sistema se modificó exitosamente');
 
       }catch(\Illuminate\Database\QueryException $exception){
         return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
       }
-      catch(Exception $exception){
-        return Redirect::back()->with('error', 'El color no pudo ser modificado')->withInput();
+      catch(\Exception $exception){
+        return Redirect::back()->with('error', 'El sistema no pudo ser modificado')->withInput();
       }
 
   }
