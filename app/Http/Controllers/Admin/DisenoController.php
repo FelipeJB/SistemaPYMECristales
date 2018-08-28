@@ -12,6 +12,35 @@ use Illuminate\Support\Facades\Redirect;
 class DisenoController extends Controller
 {
 
+  public function create()
+  {
+      /*Se guardan los datos del diseño dentro de variables desde el formulario*/
+      $codigo = Input::get('codigo');
+      $descripcion = Input::get('descripcion');
+
+      //validar que se ingresen tods los datos
+      if($codigo == "" || $descripcion == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
+
+      try{
+        //creación del diseño
+        $newDiseno = new Diseno();
+        $newDiseno->dsnCodigo = $codigo;
+        $newDiseno->dsnDescripcion = $descripcion;
+        $newDiseno->dsnActivo = 1;
+        $newDiseno->save();
+
+        //redirigir a la página de administración
+        return Redirect::to('/AdministrarDisenos')->with('success', 'El diseño se registró exitosamente');
+
+      }catch(\Exception $exception){
+        return Redirect::to('/AdministrarDisenos')->with('error', 'El diseño no pudo ser registrado')->withInput();
+      }
+
+  }
+
   public function desactivate(Request $request){
     try {
       if(Auth::user()->usrRolID==1){

@@ -72,7 +72,7 @@
                processing:     "Procesando...",
                search:         "Buscar&nbsp;:",
                lengthMenu:    "Ver _MENU_ elementos",
-               info:           "Mostrando del elemento _START_ hasta el _END_ de _TOTAL_ elementos en total",
+               info:           "Mostrando del elemento _START_ hasta el _END_ de _TOTAL_ en total",
                infoEmpty:      "Mostrando del elemento 0 hasta el 0 de 0 elementos",
                infoFiltered:   "(filtrado de _MAX_ elementos)",
                infoPostFix:    "",
