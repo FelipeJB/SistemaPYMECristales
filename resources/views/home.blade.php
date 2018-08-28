@@ -24,8 +24,7 @@
                 <li><a href="/AdministrarDisenos">Administrar Diseños</a></li>
                 <li><a href="/AdministrarMilimetrajes">Administrar Milimetrajes</a></li>
                 <li><a href="/AdministrarColores">Administrar Colores</a></li>
-                <li><a href="/AdministrarProductos">Administrar Sistema</a></li>
-                <li><a href="/AdministrarComponentes">Administrar Componentes de Sistema</a></li>
+                <li><a href="/AdministrarSistemas">Administrar Sistemas</a></li>
               </ul>
               <h3>Puntos de Venta</h3>
               <ul>

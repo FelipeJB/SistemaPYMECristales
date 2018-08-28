@@ -69,8 +69,7 @@
                                   <a class="dropdown-item" href="/AdministrarDisenos">Administrar Diseños</a>
                                   <a class="dropdown-item" href="/AdministrarMilimetrajes">Administrar Milimetrajes</a>
                                   <a class="dropdown-item" href="/AdministrarColores">Administrar Colores</a>
-                                  <a class="dropdown-item" href="/AdministrarProductos">Administrar Sistema</a>
-                                  <a class="dropdown-item" href="/AdministrarComponentes">Administrar Componentes de Sistema</a>
+                                  <a class="dropdown-item" href="/AdministrarSistemas">Administrar Sistemas</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

@@ -222,3 +222,13 @@ Route::get('/EditarMilimetraje/{id}', function ($id) {
 Route::post('/EditarMilimetraje', 'Admin\MilimetrajeController@edit')->middleware('auth');
 Route::get('/EliminarMilimetraje/{id}', 'Admin\MilimetrajeController@desactivate')->middleware('auth');
 Route::get('/ActivarMilimetraje/{id}', 'Admin\MilimetrajeController@activate')->middleware('auth');
+
+//Rutas de Administración de Productos: Sistemas
+Route::get('/AdministrarSistemas', function () {
+  if(Auth::user()->usrRolID==1){
+    $sistemas= \App\Sistema::orderBy('stmTipo', 'ASC')->get();
+    return view('productos/sistemaAdministration', compact('sistemas'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
