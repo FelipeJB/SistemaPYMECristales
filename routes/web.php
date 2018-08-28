@@ -193,3 +193,5 @@ Route::get('/EditarColor/{id}', function ($id) {
 Route::post('/EditarColor', 'Admin\ColorController@edit')->middleware('auth');
 Route::get('/EliminarColor/{id}', 'Admin\ColorController@desactivate')->middleware('auth');
 Route::get('/ActivarColor/{id}', 'Admin\ColorController@activate')->middleware('auth');
+
+//Rutas de Administración de Productos: Milimetrajes
