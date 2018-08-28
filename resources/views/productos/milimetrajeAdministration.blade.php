@@ -43,7 +43,7 @@
             <tbody>
               @foreach($milimetrajes as $m)
                   @if($m->mlmActivo==1)<tr class="table-success">@else<tr class="table-danger">@endif
-                    <td>{{$m->mlmNumero}}</td>
+                    <td>{{$m->mlmNumero}} mm</td>
                     <td align="center">
                       <a href="/EditarMilimetraje/{{$m->mlmID}}" class='btn btn-info'>Editar</a>
                       @if($m->mlmActivo==1)
@@ -87,7 +87,7 @@
           });
           </script>
 
-          <br><br><a href="/CrearDiseno" class='btn btn-success' style="float:right;">Agregar Milimetraje</a>
+          <br><br><a href="/CrearMilimetraje" class='btn btn-success' style="float:right;">Agregar Milimetraje</a>
 
         </div>
     </div>

@@ -195,6 +195,14 @@ Route::get('/EliminarColor/{id}', 'Admin\ColorController@desactivate')->middlewa
 Route::get('/ActivarColor/{id}', 'Admin\ColorController@activate')->middleware('auth');
 
 //Rutas de Administración de Productos: Milimetrajes
+Route::get('/CrearMilimetraje', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('productos/registroMilimetraje');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearMilimetraje', 'Admin\MilimetrajeController@create')->middleware('auth');
 Route::get('/AdministrarMilimetrajes', function () {
   if(Auth::user()->usrRolID==1){
     $milimetrajes= \App\Milimetraje::orderBy('mlmNumero', 'ASC')->get();
@@ -203,5 +211,14 @@ Route::get('/AdministrarMilimetrajes', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarMilimetraje/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $milimetraje= \App\Milimetraje::where('mlmID','=',$id)->first();
+    return view('productos/milimetrajeEdit', compact('milimetraje'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarMilimetraje', 'Admin\MilimetrajeController@edit')->middleware('auth');
 Route::get('/EliminarMilimetraje/{id}', 'Admin\MilimetrajeController@desactivate')->middleware('auth');
 Route::get('/ActivarMilimetraje/{id}', 'Admin\MilimetrajeController@activate')->middleware('auth');

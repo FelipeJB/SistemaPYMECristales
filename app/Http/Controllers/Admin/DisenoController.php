@@ -36,7 +36,7 @@ class DisenoController extends Controller
         return Redirect::to('/AdministrarDisenos')->with('success', 'El diseño se registró exitosamente');
 
       }catch(\Exception $exception){
-        return Redirect::to('/AdministrarDisenos')->with('error', 'El diseño no pudo ser registrado')->withInput();
+        return Redirect::back()->with('error', 'El diseño no pudo ser registrado')->withInput();
       }
 
   }

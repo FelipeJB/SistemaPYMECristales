@@ -52,7 +52,7 @@ class ColorController extends Controller
         return Redirect::to('/AdministrarColores')->with('success', 'El color se registró exitosamente');
 
       }catch(\Exception $exception){
-        return Redirect::to('/AdministrarColores')->with('error', 'El color no pudo ser registrado')->withInput();
+        return Redirect::back()->with('error', 'El color no pudo ser registrado')->withInput();
       }
 
   }

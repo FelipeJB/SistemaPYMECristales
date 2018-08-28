@@ -14,29 +14,33 @@ class MilimetrajeController extends Controller
 
   public function create()
   {
-      /*Se guardan los datos del diseño dentro de variables desde el formulario*/
-      $codigo = Input::get('codigo');
-      $descripcion = Input::get('descripcion');
+      /*Se guardan los datos del milimetraje dentro de variables desde el formulario*/
+      $numero = Input::get('numero');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == ""){
+      if($numero == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
 
+      //validar número numérico
+      if(!is_numeric($numero)){
+        return Redirect::back()->with('numero', 'Ingrese un número válido')
+        ->withInput();
+      }
+
       try{
-        //creación del diseño
-        $newDiseno = new Diseno();
-        $newDiseno->dsnCodigo = $codigo;
-        $newDiseno->dsnDescripcion = $descripcion;
-        $newDiseno->dsnActivo = 1;
-        $newDiseno->save();
+        //creación del milimetraje
+        $newMilimetraje = new Milimetraje();
+        $newMilimetraje->mlmNumero = $numero;
+        $newMilimetraje->mlmActivo = 1;
+        $newMilimetraje->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarDisenos')->with('success', 'El diseño se registró exitosamente');
+        return Redirect::to('/AdministrarMilimetrajes')->with('success', 'El milimetraje se registró exitosamente');
 
       }catch(\Exception $exception){
-        return Redirect::to('/AdministrarDisenos')->with('error', 'El diseño no pudo ser registrado')->withInput();
+        return Redirect::back()->with('error', 'El milimetraje no pudo ser registrado')->withInput();
       }
 
   }
@@ -62,7 +66,7 @@ class MilimetrajeController extends Controller
         $diseno->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarDisenos')->with('success', 'El diseño se modificó exitosamente');
+        return Redirect::to('/AdministrarMilimetrajes')->with('success', 'El diseño se modificó exitosamente');
 
       }catch(\Illuminate\Database\QueryException $exception){
         return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
