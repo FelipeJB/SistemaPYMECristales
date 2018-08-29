@@ -92,7 +92,7 @@
           });
           </script>
 
-          <br><br><a href="/CrearSistema" class='btn btn-success' style="float:right;">Agregar Elemento</a>
+          <br><br><a href="/CrearElemento/{{$sistema->stmID}}" class='btn btn-success' style="float:right;">Agregar Elemento</a>
 
         </div>
     </div>

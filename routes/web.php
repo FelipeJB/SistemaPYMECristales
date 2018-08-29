@@ -253,6 +253,15 @@ Route::get('/EliminarSistema/{id}', 'Admin\SistemaController@desactivate')->midd
 Route::get('/ActivarSistema/{id}', 'Admin\SistemaController@activate')->middleware('auth');
 
 //Rutas de Administración de Productos: Sistemas Detalle
+Route::get('/CrearElemento/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $sistema= \App\Sistema::where('stmID','=',$id)->first();
+    return view('productos/registroComponente', compact('sistema'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearElemento', 'Admin\SistemaDetalleController@create')->middleware('auth');
 Route::get('/AdministrarSistemas/Elementos/{id}', function ($id) {
   if(Auth::user()->usrRolID==1){
     $sistema= \App\Sistema::where('stmID','=',$id)->first();

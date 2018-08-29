@@ -14,47 +14,40 @@ class SistemaDetalleController extends Controller
 
   public function create()
   {
-      /*Se guardan los datos del sistema dentro de variables desde el formulario*/
+      /*Se guardan los datos del sistemaDetalle dentro de variables desde el formulario*/
+      $idSistema = Input::get('stmID');
       $codigo = Input::get('codigo');
       $descripcion = Input::get('descripcion');
-      $tipo = Input::get('tipo');
-      $precioCompra = Input::get('precioCompra');
-      $precioVenta = Input::get('precioVenta');
+      $cantidad = Input::get('cantidad');
 
       //validar que se ingresen todos los datos
-      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == ""){
+      if($codigo == "" || $descripcion == "" || $cantidad == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
 
-      //validar precio compra numérico
-      if(!is_numeric($precioCompra)){
-        return Redirect::back()->with('precioCompra', 'Ingrese un precio válido')
+      //validar precio cantidad numérica
+      if(!is_numeric($cantidad)){
+        return Redirect::back()->with('cantidad', 'Ingrese una cantidad válida')
         ->withInput();
       }
 
-      //validar precio venta numérico
-      if(!is_numeric($precioVenta)){
-        return Redirect::back()->with('precioVenta', 'Ingrese un precio válido')
-        ->withInput();
-      }
 
       try{
-        //creación del sistema
-        $newSistema = new Sistema();
-        $newSistema->stmTipo = $tipo;
-        $newSistema->stmCodigoWO = $codigo;
-        $newSistema->stmDescripcion = $descripcion;
-        $newSistema->stmPrecioCompra = $precioCompra;
-        $newSistema->stmPrecioVenta = $precioVenta;
-        $newSistema->stmActivo = 1;
-        $newSistema->save();
+        //creación del sistemaDetalle
+        $newSistemaD = new SistemaDetalle();
+        $newSistemaD->stmdSistemaID = $idSistema;
+        $newSistemaD->stmdCodigoWO = $codigo;
+        $newSistemaD->stmdDescripcion = $descripcion;
+        $newSistemaD->stmdCantidad = $cantidad;
+        $newSistemaD->stmdActivo = 1;
+        $newSistemaD->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarSistemas')->with('success', 'El sistema se registró exitosamente');
+        return Redirect::to('/AdministrarSistemas/Elementos/'.$idSistema)->with('success', 'El elemento se registró exitosamente');
 
       }catch(\Exception $exception){
-        return Redirect::back()->with('error', 'El sistema no pudo ser registrado')->withInput();
+        return Redirect::back()->with('error', 'El elemento no pudo ser registrado')->withInput();
       }
 
   }
