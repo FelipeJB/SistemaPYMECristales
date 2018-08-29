@@ -271,5 +271,19 @@ Route::get('/AdministrarSistemas/Elementos/{id}', function ($id) {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarElemento/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $elemento= \App\SistemaDetalle::where('stmdID','=',$id)->first();
+    $sistema= \App\Sistema::where('stmID','=',$elemento->stmdSistemaID)->first();
+    return view('productos/componenteEdit', compact('sistema', 'elemento'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarElemento', 'Admin\SistemaDetalleController@edit')->middleware('auth');
 Route::get('/EliminarElemento/{idSistema}/{id}', 'Admin\SistemaDetalleController@desactivate')->middleware('auth');
 Route::get('/ActivarElemento/{idSistema}/{id}', 'Admin\SistemaDetalleController@activate')->middleware('auth');
+
+//Rutas de Administración de Productos: Precio Vidrio
+
+//Rutas de Administración de Productos: CodigoWO

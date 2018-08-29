@@ -26,12 +26,11 @@ class SistemaDetalleController extends Controller
         ->withInput();
       }
 
-      //validar precio cantidad numérica
+      //validar cantidad numérica
       if(!is_numeric($cantidad)){
         return Redirect::back()->with('cantidad', 'Ingrese una cantidad válida')
         ->withInput();
       }
-
 
       try{
         //creación del sistemaDetalle
@@ -54,50 +53,40 @@ class SistemaDetalleController extends Controller
 
   public function edit()
   {
-      /*Se guardan los datos del sistema dentro de variables desde el formulario*/
-      $id = Input::get('stmID');
+      /*Se guardan los datos del sistemaDetalle dentro de variables desde el formulario*/
+      $id = Input::get('stmdID');
       $codigo = Input::get('codigo');
       $descripcion = Input::get('descripcion');
-      $tipo = Input::get('tipo');
-      $precioCompra = Input::get('precioCompra');
-      $precioVenta = Input::get('precioVenta');
+      $cantidad = Input::get('cantidad');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == ""){
+      if($codigo == "" || $descripcion == "" || $cantidad == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
 
-      //validar precio compra numérico
-      if(!is_numeric($precioCompra)){
-        return Redirect::back()->with('precioCompra', 'Ingrese un precio válido')
-        ->withInput();
-      }
-
-      //validar precio venta numérico
-      if(!is_numeric($precioVenta)){
-        return Redirect::back()->with('precioVenta', 'Ingrese un precio válido')
+      //validar cantidad numérica
+      if(!is_numeric($cantidad)){
+        return Redirect::back()->with('cantidad', 'Ingrese una cantidad válida')
         ->withInput();
       }
 
       try{
-        //guardar sistema
-        $sistema = Sistema::where('stmID','=',$id)->first();
-        $sistema->stmCodigoWO = $codigo;
-        $sistema->stmTipo = $tipo;
-        $sistema->stmDescripcion = $descripcion;
-        $sistema->stmPrecioCompra = $precioCompra;
-        $sistema->stmPrecioVenta = $precioVenta;
-        $sistema->save();
+        //guardar sistemaDetalle
+        $sistemaD = SistemaDetalle::where('stmdID','=',$id)->first();
+        $sistemaD->stmdCodigoWO = $codigo;
+        $sistemaD->stmdDescripcion = $descripcion;
+        $sistemaD->stmdCantidad = $cantidad;
+        $sistemaD->save();
 
         //redirigir a la página de administración
-        return Redirect::to('/AdministrarSistemas')->with('success', 'El sistema se modificó exitosamente');
+        return Redirect::to('/AdministrarSistemas/Elementos/'.$sistemaD->stmdSistemaID)->with('success', 'El elemento se modificó exitosamente');
 
       }catch(\Illuminate\Database\QueryException $exception){
         return Redirect::back()->with('error', 'Error en la base de datos')->withInput();
       }
       catch(\Exception $exception){
-        return Redirect::back()->with('error', 'El sistema no pudo ser modificado')->withInput();
+        return Redirect::back()->with('error', 'El elemento no pudo ser modificado')->withInput();
       }
 
   }
