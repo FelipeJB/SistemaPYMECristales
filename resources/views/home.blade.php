@@ -14,32 +14,45 @@
             <p>A continuación se listan las posibles acciones que puede realizar.</p><br>
 
             @if(Auth::user()->usrRolID == 1)
-              <h3>Usuarios</h3>
-              <ul>
-                <li><a href="/AdministrarUsuarios">Administrar Usuarios</a></li>
-                <li><a href="/RegistrarUsuario">Registrar Usuario</a></li>
-              </ul>
-              <h3>Productos</h3>
-              <ul>
-                <li><a href="/AdministrarDisenos">Administrar Diseños</a></li>
-                <li><a href="/AdministrarMilimetrajes">Administrar Milimetrajes</a></li>
-                <li><a href="/AdministrarColores">Administrar Colores</a></li>
-                <li><a href="/AdministrarSistemas">Administrar Sistemas</a></li>
-              </ul>
-              <h3>Puntos de Venta</h3>
-              <ul>
-                <li><a href="/AdministrarPuntos">Administrar Puntos de Venta</a></li>
-                <li><a href="/CrearPunto">Crear Punto de Venta</a></li>
-              </ul>
-              <h3>Instaladores</h3>
-              <ul>
-                <li><a href="/AdministrarInstaladores">Administrar Instaladores</a></li>
-                <li><a href="/CrearInstalador">Crear Instalador</a></li>
-              </ul>
-              <h3>Datos</h3>
-              <ul>
-                <li><a href="/MigrarDatos">Migrar Datos</a></li>
-              </ul>
+              <div class="row">
+                <div class="col-md-4">
+                  <h3>Usuarios</h3>
+                  <ul>
+                    <li><a href="/AdministrarUsuarios">Administrar Usuarios</a></li>
+                    <li><a href="/RegistrarUsuario">Registrar Usuario</a></li>
+                  </ul>
+                  <h3>Productos</h3>
+                  <ul>
+                    <li><a href="/AdministrarDisenos">Administrar Diseños</a></li>
+                    <li><a href="/AdministrarMilimetrajes">Administrar Milimetrajes</a></li>
+                    <li><a href="/AdministrarColores">Administrar Colores</a></li>
+                    <li><a href="/AdministrarSistemas">Administrar Sistemas</a></li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <h3>Vidrios</h3>
+                  <ul>
+                    <li><a href="/AdministrarPrecios">Administrar Precios</a></li>
+                    <li><a href="/AdministrarCodigos">Administrar Códigos</a></li>
+                  </ul>
+                  <h3>Puntos de Venta</h3>
+                  <ul>
+                    <li><a href="/AdministrarPuntos">Administrar Puntos de Venta</a></li>
+                    <li><a href="/CrearPunto">Crear Punto de Venta</a></li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <h3>Instaladores</h3>
+                  <ul>
+                    <li><a href="/AdministrarInstaladores">Administrar Instaladores</a></li>
+                    <li><a href="/CrearInstalador">Crear Instalador</a></li>
+                  </ul>
+                  <h3>Datos</h3>
+                  <ul>
+                    <li><a href="/MigrarDatos">Migrar Datos</a></li>
+                  </ul>
+                </div>
+              </div>
             @endif
 
           </div>

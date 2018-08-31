@@ -285,5 +285,13 @@ Route::get('/EliminarElemento/{idSistema}/{id}', 'Admin\SistemaDetalleController
 Route::get('/ActivarElemento/{idSistema}/{id}', 'Admin\SistemaDetalleController@activate')->middleware('auth');
 
 //Rutas de Administración de Productos: Precio Vidrio
+Route::get('/AdministrarPrecios', function () {
+  if(Auth::user()->usrRolID==1){
+    $precios= \App\PrecioVidrio::orderBy('pvdSistemaID', 'ASC')->get();
+    return view('vidrios/precioAdministration', compact('precios'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
 
 //Rutas de Administración de Productos: CodigoWO

@@ -73,6 +73,16 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
+                                <a id="navbarDropdownVidriosAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Vidrios <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProductsVidrios">
+                                  <a class="dropdown-item" href="/AdministrarPrecios">Administrar Precios</a>
+                                  <a class="dropdown-item" href="/AdministrarCodigos">Administrar Códigos</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a id="navbarDropdownPuntosAdmin" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Puntos de Venta <span class="caret"></span>
                                 </a>
