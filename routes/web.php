@@ -297,7 +297,12 @@ Route::get('/AdministrarPrecios', function () {
 //Rutas de Administración de Productos: CodigoWO
 Route::get('/AdministrarCodigos', function () {
   if(Auth::user()->usrRolID==1){
-    $codigos= \App\CodigoWOVidrio::orderBy('cdgColorID', 'ASC')->get();
+    $codigos= DB::table('codigo_wo_vidrios')
+            ->join('colors', 'codigo_wo_vidrios.cdgColorID', '=', 'colors.clrID')
+            ->join('milimetrajes', 'codigo_wo_vidrios.cdgMilimID', '=', 'milimetrajes.mlmID')
+            ->where('colors.clrActivo','=','1')
+            ->where('milimetrajes.mlmActivo','=','1')
+            ->get();
     return view('vidrios/codigoAdministration', compact('codigos'));
   }else{
     return Redirect::to('/');

@@ -9728,3 +9728,25 @@ a.text-dark:hover, a.text-dark:focus {
   font-weight: 500;
  vertical-align: middle;
 }
+
+#listaCodigos .btn{
+ width:80px;
+ padding:3px;
+ margin:2px;
+}
+
+#listaCodigos td{
+  font-weight: 500;
+ vertical-align: middle;
+}
+
+#listaPrecios .btn{
+ width:80px;
+ padding:3px;
+ margin:2px;
+}
+
+#listaPrecios td{
+  font-weight: 500;
+ vertical-align: middle;
+}
