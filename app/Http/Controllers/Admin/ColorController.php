@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Auth;
 use App\Color;
+use App\Milimetraje;
+use App\CodigoWOVidrio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -47,6 +49,16 @@ class ColorController extends Controller
         $newColor->clrPrecioVenta = $precioVenta;
         $newColor->clrActivo = 1;
         $newColor->save();
+
+        //creación de códigos WO
+        $milimetrajes=Milimetraje::select('mlmID')->get();
+        foreach($milimetrajes as $m){
+          $codigo = new CodigoWoVidrio();
+          $codigo->cdgMilimID = $m->mlmID;
+          $codigo->cdgColorID = $newColor->clrID;
+          $codigo->cdgWO = "Indefinido";
+          $codigo->save();
+        }
 
         //redirigir a la página de administración
         return Redirect::to('/AdministrarColores')->with('success', 'El color se registró exitosamente');

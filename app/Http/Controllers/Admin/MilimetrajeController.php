@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use Auth;
+use App\Color;
 use App\Milimetraje;
+use App\CodigoWOVidrio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -42,6 +44,16 @@ class MilimetrajeController extends Controller
         $newMilimetraje->mlmNumero = $numero;
         $newMilimetraje->mlmActivo = 1;
         $newMilimetraje->save();
+
+        //creación de códigos WO
+        $colores=Color::select('clrID')->get();
+        foreach($colores as $c){
+          $codigo = new CodigoWoVidrio();
+          $codigo->cdgMilimID = $newMilimetraje->mlmID;
+          $codigo->cdgColorID = $c->clrID;
+          $codigo->cdgWO = "Indefinido";
+          $codigo->save();
+        }
 
         //redirigir a la página de administración
         return Redirect::to('/AdministrarMilimetrajes')->with('success', 'El milimetraje se registró exitosamente');

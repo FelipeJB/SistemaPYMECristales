@@ -295,3 +295,11 @@ Route::get('/AdministrarPrecios', function () {
 })->middleware('auth');
 
 //Rutas de Administración de Productos: CodigoWO
+Route::get('/AdministrarCodigos', function () {
+  if(Auth::user()->usrRolID==1){
+    $codigos= \App\CodigoWOVidrio::orderBy('cdgColorID', 'ASC')->get();
+    return view('vidrios/codigoAdministration', compact('codigos'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
