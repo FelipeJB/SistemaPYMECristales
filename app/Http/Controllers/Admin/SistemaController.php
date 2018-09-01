@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Auth;
 use App\Sistema;
+use App\Milimetraje;
+use App\PrecioVidrio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -49,6 +51,17 @@ class SistemaController extends Controller
         $newSistema->stmPrecioVenta = $precioVenta;
         $newSistema->stmActivo = 1;
         $newSistema->save();
+
+        //creación de precios
+        $milimetrajes=Milimetraje::select('mlmID')->get();
+        foreach($milimetrajes as $m){
+          $precio = new PrecioVidrio();
+          $precio->pvdMilimID = $m->mlmID;
+          $precio->pvdSistemaID = $newSistema->stmID;
+          $precio->pvdPrecioCompra = 0;
+          $precio->pvdPrecioVenta = 0;
+          $precio->save();
+        }
 
         //redirigir a la página de administración
         return Redirect::to('/AdministrarSistemas')->with('success', 'El sistema se registró exitosamente');

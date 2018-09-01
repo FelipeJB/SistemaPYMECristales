@@ -293,12 +293,28 @@ Route::get('/ActivarElemento/{idSistema}/{id}', 'Admin\SistemaDetalleController@
 //Rutas de Administración de Productos: Precio Vidrio
 Route::get('/AdministrarPrecios', function () {
   if(Auth::user()->usrRolID==1){
-    $precios= \App\PrecioVidrio::orderBy('pvdSistemaID', 'ASC')->get();
+    $precios= DB::table('precio_vidrios')
+            ->join('sistemas', 'precio_vidrios.pvdSistemaID', '=', 'sistemas.stmID')
+            ->join('milimetrajes', 'precio_vidrios.pvdMilimID', '=', 'milimetrajes.mlmID')
+            ->where('sistemas.stmActivo','=','1')
+            ->where('milimetrajes.mlmActivo','=','1')->get();
     return view('vidrios/precioAdministration', compact('precios'));
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarPrecio/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $precio= DB::table('precio_vidrios')
+            ->join('sistemas', 'precio_vidrios.pvdSistemaID', '=', 'sistemas.stmID')
+            ->join('milimetrajes', 'precio_vidrios.pvdMilimID', '=', 'milimetrajes.mlmID')
+            ->where('precio_vidrios.pvdID','=',$id)->first();
+    return view('vidrios/precioEdit', compact('precio'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarPrecio', 'Admin\PrecioVidrioController@edit')->middleware('auth');
 
 //Rutas de Administración de Productos: CodigoWO
 Route::get('/AdministrarCodigos', function () {

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Auth;
 use App\Color;
+use App\Sistema;
 use App\Milimetraje;
+use App\PrecioVidrio;
 use App\CodigoWOVidrio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,6 +55,17 @@ class MilimetrajeController extends Controller
           $codigo->cdgColorID = $c->clrID;
           $codigo->cdgWO = "Indefinido";
           $codigo->save();
+        }
+
+        //creación de precios
+        $sistemas=Sistema::select('stmID')->get();
+        foreach($sistemas as $s){
+          $precio = new PrecioVidrio();
+          $precio->pvdMilimID = $newMilimetraje->mlmID;
+          $precio->pvdSistemaID = $s->stmID;
+          $precio->pvdPrecioCompra = 0;
+          $precio->pvdPrecioVenta = 0;
+          $precio->save();
         }
 
         //redirigir a la página de administración
