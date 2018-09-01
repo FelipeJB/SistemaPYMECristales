@@ -301,10 +301,21 @@ Route::get('/AdministrarCodigos', function () {
             ->join('colors', 'codigo_wo_vidrios.cdgColorID', '=', 'colors.clrID')
             ->join('milimetrajes', 'codigo_wo_vidrios.cdgMilimID', '=', 'milimetrajes.mlmID')
             ->where('colors.clrActivo','=','1')
-            ->where('milimetrajes.mlmActivo','=','1')
-            ->get();
+            ->where('milimetrajes.mlmActivo','=','1')->get();
     return view('vidrios/codigoAdministration', compact('codigos'));
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/EditarCodigo/{id}', function ($id) {
+  if(Auth::user()->usrRolID==1){
+    $codigo= DB::table('codigo_wo_vidrios')
+            ->join('colors', 'codigo_wo_vidrios.cdgColorID', '=', 'colors.clrID')
+            ->join('milimetrajes', 'codigo_wo_vidrios.cdgMilimID', '=', 'milimetrajes.mlmID')
+            ->where('codigo_wo_vidrios.cdgID','=',$id)->first();
+    return view('vidrios/codigoEdit', compact('codigo'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EditarCodigo', 'Admin\CodigoWOVidrioController@edit')->middleware('auth');
