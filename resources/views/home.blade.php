@@ -9,6 +9,14 @@
           <ol class="breadcrumb">
             <li class="breadcrumb-item active">Inicio</li>
           </ol>
+
+          @if(Session::has('success'))
+              <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong><i class="fa fa-check"></i></strong> {!! Session::get('success') !!}
+              </div>
+          @endif
+
           <div class="jumbotron">
             <h2>Bienvenido/a {{ Auth::user()->usrNombre }}</h2>
             <p>A continuación se listan las posibles acciones que puede realizar.</p><br>

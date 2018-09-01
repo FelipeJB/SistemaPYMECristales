@@ -20,6 +20,12 @@ Route::get('/RegistrarUsuario', function () {
 })->middleware('auth');
 Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('register');
 
+//Rutas de Cambio de contraseña
+Route::get('/EditarClave', function () {
+    return view('auth/passwordEdit');
+})->middleware('auth');
+Route::post('/EditarClave', 'Auth\UserController@editPassword');
+
 //Rutas de Administración de Usuarios
 Route::get('/AdministrarUsuarios', function () {
   if(Auth::user()->usrRolID==1){

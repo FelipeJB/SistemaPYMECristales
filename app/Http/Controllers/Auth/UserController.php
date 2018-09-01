@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 
 class UserController extends Controller
@@ -105,6 +106,39 @@ class UserController extends Controller
       }
 
   }
+
+  public function editPassword()
+    {
+        /*Se guardan los datos del usuario dentro de variables desde el formulario*/
+        $contraVieja = Input::get('passwordNow');
+        $contraNueva1 = Input::get('password');
+        $contraNueva2 = Input::get('passwordConfirm');
+
+        if (Hash::check($contraVieja, Auth::user()->password)) {
+
+          //validar contraseñas iguales
+          if($contraNueva1 != $contraNueva2){
+            return Redirect::back()->with("password", "Las contraseñas nuevas no coinciden");
+          }
+
+          //validar 6 caracteres mínimo
+          else if(strlen($contraNueva1)<6){
+            return Redirect::back()->with("password", "La contraseña debe tener 6 caracteres o más");
+          }
+
+          else{
+          $user = Auth::user();
+          $user->password=Hash::make($contraNueva1);
+          $user->save();
+          return Redirect::to('/')->with("success", "La contraseña se modificó exitosamente");;
+          }
+
+        }
+        else{
+          return Redirect::back()->with("passwordNow", "Contraseña actual incorrecta");
+        }
+
+    }
 
 
 
