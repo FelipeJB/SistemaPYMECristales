@@ -106,6 +106,27 @@
                                 <a class="nav-link" href="/MigrarDatos">Migrar Datos</a>
                             </li>
                             @endif
+                            @if(Auth::user()->usrRolID == 2)
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownVentas" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Ventas <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownVentas">
+                                    <a class="dropdown-item" href="/RegistrarVenta">Registrar Venta</a>
+                                    <a class="dropdown-item" href="/ConsultarVenta">Consultar estado de Venta</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownGarantias" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Garantías <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownGarantias">
+                                  <a class="dropdown-item" href="/RegistrarGarantia">Registrar Garantía</a>
+                                </div>
+                            </li>
+                            @endif
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

@@ -63,6 +63,22 @@
               </div>
             @endif
 
+            @if(Auth::user()->usrRolID == 2)
+              <div class="row">
+                <div class="col-md-4">
+                  <h3>Ventas</h3>
+                  <ul>
+                    <li><a href="/RegistrarVenta">Registrar Venta</a></li>
+                    <li><a href="/ConsultarVenta">Consultar estado de Venta</a></li>
+                  </ul>
+                  <h3>Garantías</h3>
+                  <ul>
+                    <li><a href="/RegistrarGarantia">Registrar Garantía</a></li>
+                  </ul>
+                </div>
+              </div>
+            @endif
+
           </div>
         </div>
     </div>
