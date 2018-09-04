@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Auth;
 use App\Color;
 use App\Milimetraje;
-use App\CodigoWOVidrio;
+use App\CodigoWoVidrio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;

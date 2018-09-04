@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Auth;
-use App\CodigoWOVidrio;
+use App\CodigoWoVidrio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -26,7 +26,7 @@ class CodigoWOVidrioController extends Controller
 
       try{
         //guardar código
-        $codigoWO = CodigoWOVidrio::where('cdgID','=',$id)->first();
+        $codigoWO = CodigoWoVidrio::where('cdgID','=',$id)->first();
         $codigoWO->cdgWO = $codigo;
         $codigoWO->save();
 
