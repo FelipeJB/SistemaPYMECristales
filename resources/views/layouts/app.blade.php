@@ -115,6 +115,7 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownVentas">
                                     <a class="dropdown-item" href="/RegistrarVenta">Registrar Venta</a>
                                     <a class="dropdown-item" href="/ConsultarVenta">Consultar estado de Venta</a>
+                                    <a class="dropdown-item" href="/GenerarInformeVenta">Generar informe de Venta</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

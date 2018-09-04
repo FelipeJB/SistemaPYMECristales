@@ -70,6 +70,7 @@
                   <ul>
                     <li><a href="/RegistrarVenta">Registrar Venta</a></li>
                     <li><a href="/ConsultarVenta">Consultar estado de Venta</a></li>
+                    <li><a href="/GenerarInformeVenta">Generar informe de Venta</a></li>
                   </ul>
                   <h3>Garantías</h3>
                   <ul>

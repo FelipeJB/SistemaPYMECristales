@@ -341,3 +341,19 @@ Route::get('/EditarCodigo/{id}', function ($id) {
   }
 })->middleware('auth');
 Route::post('/EditarCodigo', 'Admin\CodigoWOVidrioController@edit')->middleware('auth');
+
+//Rutas de Ventas
+Route::get('/RegistrarCliente', function () {
+  if(Auth::user()->usrRolID==2){
+    return view('ventas/registroCliente');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/RegistrarVenta', function () {
+  if(Auth::user()->usrRolID==2){
+    return view('ventas/registroVenta1');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
