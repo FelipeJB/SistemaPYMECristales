@@ -350,6 +350,7 @@ Route::get('/RegistrarCliente', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::post('/RegistrarCliente', 'Ventas\ClienteController@create')->middleware('auth');
 Route::get('/RegistrarVenta', function () {
   if(Auth::user()->usrRolID==2){
     return view('ventas/registroVenta1');
@@ -357,3 +358,4 @@ Route::get('/RegistrarVenta', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::post('/RegistrarVenta', 'Ventas\VentaController@validateClient')->middleware('auth');

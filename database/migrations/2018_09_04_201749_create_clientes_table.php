@@ -23,7 +23,7 @@ class CreateClientesTable extends Migration
             $table->string('cltCiudad');
             $table->date('cltFechaCreacion');
             $table->string('cltCelular1');
-            $table->string('cltCelular2');
+            $table->string('cltCelular2')->nullable();
             $table->string('cltDireccion');
             $table->string('cltTipoCliente');
             $table->integer('cltTarifaICA');
