@@ -359,3 +359,12 @@ Route::get('/RegistrarVenta', function () {
   }
 })->middleware('auth');
 Route::post('/RegistrarVenta', 'Ventas\VentaController@validateClient')->middleware('auth');
+Route::get('/CrearOrden', function () {
+  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
+    $cliente = Request::session()->get('cliente');
+    return view('ventas/registroVenta2', compact('cliente'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearOrden', 'Ventas\VentaController@createOrder')->middleware('auth');

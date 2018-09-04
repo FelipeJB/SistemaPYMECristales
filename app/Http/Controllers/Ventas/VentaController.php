@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Ventas;
 
 use Auth;
 use App\Cliente;
-use Illuminate\Http\Request;
+use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -25,7 +25,7 @@ class VentaController extends Controller
 
       //validar número numérico
       if(!is_numeric($numero)){
-        return Redirect::back()->with('numero', 'Ingrese un número válido')
+        return Redirect::back()->with('numero', 'Ingrese un número de documento válido')
         ->withInput();
       }
 
@@ -35,10 +35,11 @@ class VentaController extends Controller
         return Redirect::back()->with('numero', 'No se encontró el cliente en los registros')
         ->withInput();
       }else{
-        //seguir con el proceso
+        Request::session()->put('cliente', $cliente);
+        return Redirect::to('/CrearOrden');
       }
 
-
   }
+
 
 }
