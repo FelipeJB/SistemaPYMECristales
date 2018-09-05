@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ventas;
 
 use Auth;
 use App\Cliente;
+use App\Orden;
 use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -47,14 +48,20 @@ class VentaController extends Controller
     $punto = Input::get('punto');
     $formaPago = Input::get('formaPago');
 
-    //crear Orden
+    //crear orden
+    $newOrden = new Orden();
+    $newOrden->ordPuntoVentaID = $punto;
+    $newOrden->ordVendedorID = Auth::user()->id;
+    $newOrden->ordFormaPagoID = $formaPago;
+    $newOrden->ordEstadoInstalacionID = 0;
+    $newOrden->ordMigrado = 0;
 
     //guardar orden en sesión
+    Request::session()->put('orden', $newOrden);
 
     //redirigir al siguiente formulario
+    return Redirect::to('/CrearDetalle');
 
   }
-
-
 
 }
