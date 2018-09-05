@@ -93,7 +93,8 @@
           </script>
 
           <br><br><a href="/CrearElemento/{{$sistema->stmID}}" class='btn btn-success' style="float:right;">Agregar Elemento</a>
-
+          <br><br><hr>
+          
         </div>
     </div>
 </div>

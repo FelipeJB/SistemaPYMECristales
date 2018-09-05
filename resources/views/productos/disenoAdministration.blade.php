@@ -90,7 +90,8 @@
           </script>
 
           <br><br><a href="/CrearDiseno" class='btn btn-success' style="float:right;">Agregar Diseño</a>
-
+          <br><br><hr>
+          
         </div>
     </div>
 </div>

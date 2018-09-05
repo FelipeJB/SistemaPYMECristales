@@ -55,7 +55,7 @@
               @endforeach
             </tbody>
           </table>
-
+          <hr>
           <script>
           $('#listaCodigos').DataTable({
             ordering: true,
@@ -79,8 +79,8 @@
                    last:       "Último"
                },
                aria: {
-                   sortAscending:  ": activer pour trier la colonne par ordre croissant",
-                   sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                   sortAscending:  ": activar para ordenar la columna en orden ascendente",
+                   sortDescending: ": activar para ordenar la columna en orden descendiente"
                }
            }
           });

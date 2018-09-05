@@ -88,6 +88,7 @@
           </script>
 
           <br><br><a href="/CrearMilimetraje" class='btn btn-success' style="float:right;">Agregar Milimetraje</a>
+          <br><br><hr>
 
         </div>
     </div>

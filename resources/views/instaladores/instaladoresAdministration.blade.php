@@ -61,7 +61,7 @@
               @endforeach
             </tbody>
           </table>
-
+          <hr>
           <script>
           $('#listaInstaladores').DataTable({
             ordering:false,

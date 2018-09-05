@@ -58,7 +58,7 @@
               @endforeach
             </tbody>
           </table>
-
+          <hr>
           <script>
           $('#listaPuntos').DataTable({
             ordering:false,

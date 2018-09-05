@@ -62,7 +62,7 @@
               @endforeach
             </tbody>
           </table>
-
+          <hr>
           <script>
           $('#listaUsuarios').DataTable({
             ordering:false,

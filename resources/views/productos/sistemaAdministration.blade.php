@@ -97,6 +97,7 @@
           </script>
 
           <br><br><a href="/CrearSistema" class='btn btn-success' style="float:right;">Agregar Sistema</a>
+          <br><br><hr>
 
         </div>
     </div>
