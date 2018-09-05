@@ -362,7 +362,8 @@ Route::post('/RegistrarVenta', 'Ventas\VentaController@validateClient')->middlew
 Route::get('/CrearOrden', function () {
   if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
     $cliente = Request::session()->get('cliente');
-    return view('ventas/registroVenta2', compact('cliente'));
+    $puntos = \App\PuntoVenta::all();
+    return view('ventas/registroVenta2', compact('cliente', 'puntos'));
   }else{
     return Redirect::to('/');
   }

@@ -111,7 +111,7 @@
                   <div class="col-md-2 offset-md-10">
                     <br>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Agregrar
+                        Agregar
                     </button>
                   </div>
               </div>
