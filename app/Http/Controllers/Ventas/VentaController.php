@@ -41,5 +41,12 @@ class VentaController extends Controller
 
   }
 
+  public function createOrder()
+  {
+  
+
+  }
+
+
 
 }

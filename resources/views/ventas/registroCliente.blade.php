@@ -214,18 +214,14 @@
                       @endif
                   </div>
 
-                  <label for="apellido" class="col-md-2 col-form-label text-md-right">Tipo de Cliente *</label>
+                  <label for="tipoCliente" class="col-md-2 col-form-label text-md-right">Tipo de Cliente *</label>
 
                   <div class="col-md-4">
-                      <input id="apellido" type="text" class="form-control{{ Session::has('apellido') ? ' is-invalid' : '' }}" name="apellido" value="{{ old('apellido') }}" required>
-
-                      @if (Session::has('apellido'))
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ Session::get('apellido') }}</strong>
-                          </span>
-                      @endif
+                      <select class="form-control" id="tipoCliente" name="tipoCliente">
+                        <option value="Tipo 1">Tipo 1</option>
+                        <option value="Tipo 2">Tipo 2</option>
+                      </select>
                   </div>
-
               </div>
 
               <div class="form-group row mb-0">
@@ -238,6 +234,23 @@
               </div>
 
           </form>
+
+          <hr>
+          <div class="row justify-content-center" style="margin-top:25px;">
+            <div class="col-md-6">
+              <center>
+                <h3>Progreso</h3>
+              </center>
+              <div class="alert alert-light">
+                <center>
+                <p class="badge badge-secondary" style="font-size:13px; margin:5px 8px">Seleccionar Cliente</p>
+                <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
+                <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
+                <p class="badge" style="font-size:13px; margin:5px 5px">Resumen</p>
+              </center>
+              </div>
+            </div>
+          </div>
 
 
         </div>

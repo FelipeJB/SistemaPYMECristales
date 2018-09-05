@@ -363,7 +363,8 @@ Route::get('/CrearOrden', function () {
   if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
     $cliente = Request::session()->get('cliente');
     $puntos = \App\PuntoVenta::all();
-    return view('ventas/registroVenta2', compact('cliente', 'puntos'));
+    $formasPago = \App\FormaPago::all();
+    return view('ventas/registroVenta2', compact('cliente', 'puntos', 'formasPago'));
   }else{
     return Redirect::to('/');
   }
