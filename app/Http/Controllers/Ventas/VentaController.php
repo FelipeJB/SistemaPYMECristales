@@ -64,4 +64,18 @@ class VentaController extends Controller
 
   }
 
+  public function createDetail()
+  {
+    //Verificar si se desea seguir agregando o finalizar
+    switch ($request->input('action')) {
+    case 'continue':
+        
+        break;
+    case 'finish':
+
+        break;
+    }
+
+  }
+
 }

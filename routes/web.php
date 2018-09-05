@@ -370,3 +370,14 @@ Route::get('/CrearOrden', function () {
   }
 })->middleware('auth');
 Route::post('/CrearOrden', 'Ventas\VentaController@createOrder')->middleware('auth');
+Route::get('/CrearDetalle', function () {
+  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente') && Request::session()->has('orden')){
+    $orden = Request::session()->get('orden');
+    $detalles= [];
+    if(Request::session()->has('detalles')){$detalles = Request::session()->get('detalles');}
+    return view('ventas/registroVenta3', compact('orden', 'detalles'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearDetalle', 'Ventas\VentaController@createDetail')->middleware('auth');
