@@ -29,7 +29,7 @@ class VentaController extends Controller
         ->withInput();
       }
 
-      //validar cliente registrado
+      //validar cliente registrado y redirigir al siguiente formulario guardando el cliente en la sesión
       $cliente = Cliente::where("cltCedula", "=", $numero)->first();
       if ($cliente==null){
         return Redirect::back()->with('numero', 'No se encontró el cliente en los registros')
@@ -43,7 +43,15 @@ class VentaController extends Controller
 
   public function createOrder()
   {
-  
+    /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+    $punto = Input::get('punto');
+    $formaPago = Input::get('formaPago');
+
+    //crear Orden
+
+    //guardar orden en sesión
+
+    //redirigir al siguiente formulario
 
   }
 
