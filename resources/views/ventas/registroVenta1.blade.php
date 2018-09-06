@@ -70,10 +70,10 @@
               </center>
               <div class="alert alert-light">
                 <center>
-                <p class="badge badge-secondary" style="font-size:13px; margin:5px 8px">Seleccionar Cliente</p>
-                <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
-                <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
-                <p class="badge" style="font-size:13px; margin:5px 5px">Resumen</p>
+                  <p class="badge badge-secondary" style="font-size:13px; margin:5px 8px">Seleccionar Cliente</p>
+                  <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
+                  <p class="badge" style="font-size:13px; margin:5px 5px">Confirmación</p>
+                  <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
               </center>
               </div>
             </div>

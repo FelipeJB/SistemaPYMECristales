@@ -31,8 +31,8 @@ class CreateOrdenDetallesTable extends Migration
             $table->dateTime('orddFechaMedidas')->nullable();
             $table->integer('orddAuxiliarID')->nullable();
             $table->string('orddObservaciones')->nullable();
-            $table->integer('orddAlto')->nullable();
-            $table->integer('orddAncho')->nullable();
+            $table->decimal('orddAlto',5,3)->nullable();
+            $table->decimal('orddAncho',5,3)->nullable();
             $table->integer('orddRelacion')->nullable();
             $table->integer('orddValorAdicional')->nullable();
             $table->string('orddDescripcionAdicional')->nullable();

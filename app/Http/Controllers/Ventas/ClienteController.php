@@ -82,7 +82,7 @@ class ClienteController extends Controller
 
       //guardado del cliente en sesión y redirección al siguiente formulario
       Request::session()->put('cliente', $newCliente);
-      return Redirect::to('/CrearOrden');
+      return Redirect::to('/CrearDetalle');
 
     }catch(Exception $exception){
       return Redirect::back()->with('error', 'El cliente no pudo ser registrado')->withInput();

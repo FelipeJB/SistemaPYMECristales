@@ -359,25 +359,29 @@ Route::get('/RegistrarVenta', function () {
   }
 })->middleware('auth');
 Route::post('/RegistrarVenta', 'Ventas\VentaController@validateClient')->middleware('auth');
-Route::get('/CrearOrden', function () {
+Route::get('/CrearDetalle', function () {
   if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
     $cliente = Request::session()->get('cliente');
-    $puntos = \App\PuntoVenta::all();
-    $formasPago = \App\FormaPago::all();
-    return view('ventas/registroVenta2', compact('cliente', 'puntos', 'formasPago'));
-  }else{
-    return Redirect::to('/');
-  }
-})->middleware('auth');
-Route::post('/CrearOrden', 'Ventas\VentaController@createOrder')->middleware('auth');
-Route::get('/CrearDetalle', function () {
-  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente') && Request::session()->has('orden')){
-    $orden = Request::session()->get('orden');
+    $sistemas= \App\Sistema::all();
+    $milimetrajes= \App\Milimetraje::all();
+    $colores= \App\Color::all();
+    $disenos= \App\Diseno::all();
     $detalles= [];
     if(Request::session()->has('detalles')){$detalles = Request::session()->get('detalles');}
-    return view('ventas/registroVenta3', compact('orden', 'detalles'));
+    return view('ventas/registroVenta2', compact('detalles', 'cliente', 'sistemas', 'milimetrajes', 'colores', 'disenos'));
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
 Route::post('/CrearDetalle', 'Ventas\VentaController@createDetail')->middleware('auth');
+Route::get('/CrearOrden', function () {
+  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
+    $cliente = Request::session()->get('cliente');
+    $puntos = \App\PuntoVenta::all();
+    $formasPago = \App\FormaPago::all();
+    return view('ventas/registroVenta3', compact('cliente', 'puntos', 'formasPago'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/CrearOrden', 'Ventas\VentaController@createOrder')->middleware('auth');

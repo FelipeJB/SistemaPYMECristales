@@ -37,7 +37,7 @@ class VentaController extends Controller
         ->withInput();
       }else{
         Request::session()->put('cliente', $cliente);
-        return Redirect::to('/CrearOrden');
+        return Redirect::to('/CrearDetalle');
       }
 
   }
@@ -69,7 +69,7 @@ class VentaController extends Controller
     //Verificar si se desea seguir agregando o finalizar
     switch ($request->input('action')) {
     case 'continue':
-        
+
         break;
     case 'finish':
 

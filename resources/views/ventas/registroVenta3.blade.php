@@ -11,8 +11,8 @@
             <li class="breadcrumb-item active">Registrar Venta</li>
           </ol>
 
-          <h2 class="section-title">Registrar Detalle de Venta {{count($detalles)+1}}</h2>
-          <p class="section-subtitle">Ingrese los datos del detalle número {{count($detalles)+1}} de la orden de venta.</p><br>
+          <h2 class="section-title">Registrar Venta a {{$cliente->cltNombre}} {{$cliente->cltApellido}}</h2>
+          <p class="section-subtitle">Ingrese los datos de la orden de venta.</p><br>
 
           @if(Session::has('error'))
               <div class="alert alert-dismissible alert-danger">
@@ -28,22 +28,39 @@
               </div>
           @endif
 
-          <form method="POST" action="/CrearDetalle">
+          <form method="POST" action="/CrearOrden">
               @csrf
 
+              <div class="form-group row">
+
+                <label for="punto" class="col-md-2 col-form-label text-md-right">Punto de Venta *</label>
+
+                <div class="col-md-4">
+                    <select class="form-control" id="punto" name="punto">
+                      @foreach($puntos as $p)
+                        <option value="{{$p->pvID}}">{{$p->pvNombre}}</option>
+                      @endforeach
+                    </select>
+                </div>
+
+                  <label for="formaPago" class="col-md-2 col-form-label text-md-right">Forma de pago *</label>
+
+                  <div class="col-md-4">
+                      <select class="form-control" id="formaPago" name="formaPago">
+                        @foreach($formasPago as $f)
+                          <option value="{{$f->fpID}}">{{$f->fpDescripcion}}</option>
+                        @endforeach
+                      </select>
+                  </div>
+
+              </div>
 
 
               <div class="form-group row mb-0">
-                  <div class="col-md-2 offset-md-8">
+                  <div class="col-md-2 offset-md-10">
                     <br>
-                    <button type="submit" name="action" value="continue" class="btn btn-primary btn-block">
-                        Nuevo Detalle
-                    </button>
-                  </div>
-                  <div class="col-md-2">
-                    <br>
-                    <button type="submit" name="action" value="finish" class="btn btn-success btn-block">
-                        Finalizar
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Continuar
                     </button>
                   </div>
               </div>
@@ -59,8 +76,8 @@
               <div class="alert alert-light">
                 <center>
                 <p class="badge badge-success" style="font-size:13px; margin:5px 8px">Seleccionar Cliente</p>
-                <p class="badge badge-success" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
-                <p class="badge badge-secondary" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
+                <p class="badge badge-secondary" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
+                <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
                 <p class="badge" style="font-size:13px; margin:5px 5px">Resumen</p>
               </center>
               </div>
