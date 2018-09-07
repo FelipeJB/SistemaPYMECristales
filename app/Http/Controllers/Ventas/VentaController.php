@@ -6,6 +6,9 @@ use Auth;
 use App\Cliente;
 use App\Orden;
 use App\OrdenDetalle;
+use App\Sistema;
+use App\Color;
+use App\PrecioVidrio;
 use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -136,8 +139,17 @@ class VentaController extends Controller
     $newDetalle->orddRelacion = $relacion;
     $newDetalle->orddValorAdicional = $adicional;
     $newDetalle->orddDescripcionAdicional = $motivo;
-    $newDetalle->orddTotal = 100;
-    $newDetalle->orddTotalCompra = 90;
+
+    //Cálculo del precio total de venta
+    $sistema = Sistema::where('stmID','=',$sistema)->first();
+    $color =  Color::where('clrID','=',$color)->first();
+    $precio = PrecioVidrio::where('pvdMilimID','=',$milimetraje)->where('pvdSistemaID','=',$sistema)->first();
+    $precioVidrio = ($ancho*$alto*$precio->pvdPrecioVenta*(100-$descuento))/100000000;
+    $newDetalle->orddTotal = $precioVidrio + $sistema->stmPrecioVenta + $color->clrPrecioVenta + $adicional + ($toalleros*50000);
+
+    //Cálculo del precio total de compra
+    $precioVidrioCompra = ($ancho*$alto*$precio->precioCompra)/1000000;
+    $newDetalle->orddTotalCompra = $precioVidrioCompra + $sistema->stmPrecioCompra + $color->clrPrecioCompra + $adicional + ($toalleros*50000);
 
     //guardar orden detalle en sesión
     $detalles = Request::session()->get('detalles');

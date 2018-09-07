@@ -141,7 +141,7 @@
                   <label for="observaciones" class="col-md-2 col-form-label text-md-right">Observaciones</label>
 
                   <div class="col-md-4">
-                      <input id="observaciones" type="text" class="form-control{{ Session::has('observaciones') ? ' is-invalid' : '' }}" name="observaciones" value="{{ old('observaciones') }}" required>
+                      <input id="observaciones" type="text" class="form-control{{ Session::has('observaciones') ? ' is-invalid' : '' }}" name="observaciones" value="{{ old('observaciones') }}">
 
                       @if (Session::has('observaciones'))
                           <span class="invalid-feedback" role="alert">

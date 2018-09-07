@@ -363,10 +363,10 @@ Route::post('/RegistrarVenta', 'Ventas\VentaController@validateClient')->middlew
 Route::get('/CrearDetalle', function () {
   if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
     $cliente = Request::session()->get('cliente');
-    $sistemas= \App\Sistema::all();
-    $milimetrajes= \App\Milimetraje::all();
-    $colores= \App\Color::all();
-    $disenos= \App\Diseno::all();
+    $sistemas= \App\Sistema::where('stmActivo','=',1)->get();
+    $milimetrajes= \App\Milimetraje::where('mlmActivo','=',1)->get();
+    $colores= \App\Color::where('clrActivo','=',1)->get();
+    $disenos= \App\Diseno::where('dsnActivo','=',1)->get();
     $detalles= [];
     if(Request::session()->has('detalles')){$detalles = Request::session()->get('detalles');}
     return view('ventas/registroVenta2', compact('detalles', 'cliente', 'sistemas', 'milimetrajes', 'colores', 'disenos'));
