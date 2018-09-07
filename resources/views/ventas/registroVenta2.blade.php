@@ -80,16 +80,137 @@
 
               </div>
 
-              //Descuento
-              //CantVidrio
-              //CantToalleros
-              //Alto
-              //Ancho
-              //Relacion
-              //Adicional
-              //Valor Adicional
-              //Descripcion Adicional
-              //Observaciones
+              <div class="form-group row">
+                  <label for="vidrios" class="col-md-2 col-form-label text-md-right">Cantidad de Vidrios *</label>
+
+                  <div class="col-md-4">
+                      <input id="vidrios" type="text" class="form-control{{ Session::has('vidrios') ? ' is-invalid' : '' }}" name="vidrios" value="{{ old('vidrios') }}" required>
+
+                      @if (Session::has('vidrios'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('vidrios') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+                  <label for="toalleros" class="col-md-2 col-form-label text-md-right">Cantidad de Toalleros *</label>
+
+                  <div class="col-md-4">
+                      <input id="toalleros" type="text" class="form-control{{ Session::has('toalleros') ? ' is-invalid' : '' }}" name="toalleros" value="{{ old('toalleros') }}" required>
+
+                      @if (Session::has('toalleros'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('toalleros') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+              </div>
+
+              <div class="form-group row">
+                <label for="adicional" class="col-md-2 col-form-label text-md-right">Valor Adicional</label>
+
+                <div class="col-md-4 input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                  </div>
+                    <input id="adicional" type="text" class="form-control{{ Session::has('adicional') ? ' is-invalid' : '' }}" name="adicional" value="{{ old('adicional') }}">
+                    @if (Session::has('adicional'))
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ Session::get('adicional') }}</strong>
+                        </span>
+                    @endif
+                </div>
+
+                  <label for="motivo" class="col-md-2 col-form-label text-md-right">Motivo Valor Adicional</label>
+
+                  <div class="col-md-4">
+                      <input id="motivo" type="text" class="form-control{{ Session::has('motivo') ? ' is-invalid' : '' }}" name="motivo" value="{{ old('motivo') }}">
+
+                      @if (Session::has('motivo'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('motivo') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+              </div>
+
+              <div class="form-group row">
+
+                  <label for="observaciones" class="col-md-2 col-form-label text-md-right">Observaciones</label>
+
+                  <div class="col-md-4">
+                      <input id="observaciones" type="text" class="form-control{{ Session::has('observaciones') ? ' is-invalid' : '' }}" name="observaciones" value="{{ old('observaciones') }}" required>
+
+                      @if (Session::has('observaciones'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('observaciones') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+                  <label for="relacion" class="col-md-2 col-form-label text-md-right">Relación *</label>
+
+                  <div class="col-md-4">
+                      <select class="form-control" id="relacion" name="relacion">
+                        <option value="0">Ninguna</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                  </div>
+
+              </div>
+
+              <div class="form-group row">
+                  <label for="alto" class="col-md-2 col-form-label text-md-right">Alto *</label>
+
+                  <div class="col-md-2 input-group">
+                      <input id="alto" type="text" class="form-control{{ Session::has('alto') ? ' is-invalid' : '' }}" name="alto" value="{{ old('alto') }}" required>
+                      <div class="input-group-append">
+                        <span class="input-group-text">cm</span>
+                      </div>
+
+                      @if (Session::has('alto'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('alto') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+                  <label for="ancho" class="col-md-2 col-form-label text-md-right">Ancho *</label>
+
+                  <div class="col-md-2 input-group">
+                      <input id="ancho" type="text" class="form-control{{ Session::has('ancho') ? ' is-invalid' : '' }}" name="ancho" value="{{ old('ancho') }}" required>
+                      <div class="input-group-append">
+                        <span class="input-group-text">cm</span>
+                      </div>
+
+                      @if (Session::has('ancho'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('ancho') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+                  <label for="descuento" class="col-md-2 col-form-label text-md-right">Descuento </label>
+
+                  <div class="col-md-2 input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                      <input id="descuento" type="text" class="form-control{{ Session::has('descuento') ? ' is-invalid' : '' }}" name="descuento" value="{{ old('descuento') }}">
+                      @if (Session::has('descuento'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('descuento') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+              </div>
 
               <div class="form-group row mb-0">
                   <div class="col-md-2 offset-md-8">
