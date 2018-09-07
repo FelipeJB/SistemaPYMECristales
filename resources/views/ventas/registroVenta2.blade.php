@@ -171,7 +171,7 @@
                   <div class="col-md-2 input-group">
                       <input id="alto" type="text" class="form-control{{ Session::has('alto') ? ' is-invalid' : '' }}" name="alto" value="{{ old('alto') }}" required>
                       <div class="input-group-append">
-                        <span class="input-group-text">cm</span>
+                        <span class="input-group-text">mm</span>
                       </div>
 
                       @if (Session::has('alto'))
@@ -186,7 +186,7 @@
                   <div class="col-md-2 input-group">
                       <input id="ancho" type="text" class="form-control{{ Session::has('ancho') ? ' is-invalid' : '' }}" name="ancho" value="{{ old('ancho') }}" required>
                       <div class="input-group-append">
-                        <span class="input-group-text">cm</span>
+                        <span class="input-group-text">mm</span>
                       </div>
 
                       @if (Session::has('ancho'))
@@ -199,10 +199,11 @@
                   <label for="descuento" class="col-md-2 col-form-label text-md-right">Descuento </label>
 
                   <div class="col-md-2 input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">$</span>
-                    </div>
+
                       <input id="descuento" type="text" class="form-control{{ Session::has('descuento') ? ' is-invalid' : '' }}" name="descuento" value="{{ old('descuento') }}">
+                      <div class="input-group-append">
+                        <span class="input-group-text">%</span>
+                      </div>
                       @if (Session::has('descuento'))
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ Session::get('descuento') }}</strong>

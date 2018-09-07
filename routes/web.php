@@ -353,6 +353,7 @@ Route::get('/RegistrarCliente', function () {
 Route::post('/RegistrarCliente', 'Ventas\ClienteController@create')->middleware('auth');
 Route::get('/RegistrarVenta', function () {
   if(Auth::user()->usrRolID==2){
+    Request::session()->put('detalles', []);
     return view('ventas/registroVenta1');
   }else{
     return Redirect::to('/');
