@@ -141,15 +141,15 @@ class VentaController extends Controller
     $newDetalle->orddDescripcionAdicional = $motivo;
 
     //Cálculo del precio total de venta
-    $sistema = Sistema::where('stmID','=',$sistema)->first();
-    $color =  Color::where('clrID','=',$color)->first();
+    $stm = Sistema::where('stmID','=',$sistema)->first();
+    $clr =  Color::where('clrID','=',$color)->first();
     $precio = PrecioVidrio::where('pvdMilimID','=',$milimetraje)->where('pvdSistemaID','=',$sistema)->first();
     $precioVidrio = ($ancho*$alto*$precio->pvdPrecioVenta*(100-$descuento))/100000000;
-    $newDetalle->orddTotal = $precioVidrio + $sistema->stmPrecioVenta + $color->clrPrecioVenta + $adicional + ($toalleros*50000);
+    $newDetalle->orddTotal = $precioVidrio + $stm->stmPrecioVenta + $clr->clrPrecioVenta + $adicional + ($toalleros*50000);
 
     //Cálculo del precio total de compra
     $precioVidrioCompra = ($ancho*$alto*$precio->precioCompra)/1000000;
-    $newDetalle->orddTotalCompra = $precioVidrioCompra + $sistema->stmPrecioCompra + $color->clrPrecioCompra + $adicional + ($toalleros*50000);
+    $newDetalle->orddTotalCompra = $precioVidrioCompra + $stm->stmPrecioCompra + $clr->clrPrecioCompra + $adicional + ($toalleros*50000);
 
     //guardar orden detalle en sesión
     $detalles = Request::session()->get('detalles');
