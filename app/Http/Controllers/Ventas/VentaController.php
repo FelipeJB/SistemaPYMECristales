@@ -116,7 +116,7 @@ class VentaController extends Controller
     }
 
     //validar valor adicional numérico
-    if(!is_numeric($adicional)){
+    if(!is_numeric($adicional) && $adicional!=""){
       return Redirect::back()->with('adicional', 'Ingrese un valor válido')
       ->withInput();
     }
@@ -132,7 +132,7 @@ class VentaController extends Controller
     $newDetalle->orddColorID = $color;
     $newDetalle->orddDisenoID = $diseno;
     $newDetalle->orddEstadoMedidasID = 1;
-    $newDetalle->orddAuxiliarID = Auth::user()->id;
+    $newDetalle->orddAuxiliarID = 0;
     $newDetalle->orddObservaciones = $observaciones;
     $newDetalle->orddAlto = $alto;
     $newDetalle->orddAncho = $ancho;
@@ -145,11 +145,11 @@ class VentaController extends Controller
     $clr =  Color::where('clrID','=',$color)->first();
     $precio = PrecioVidrio::where('pvdMilimID','=',$milimetraje)->where('pvdSistemaID','=',$sistema)->first();
     $precioVidrio = ($ancho*$alto*$precio->pvdPrecioVenta*(100-$descuento))/100000000;
-    $newDetalle->orddTotal = $precioVidrio + $stm->stmPrecioVenta + $clr->clrPrecioVenta + $adicional + ($toalleros*50000);
+    $newDetalle->orddTotal = $this->roundUpToAny(($precioVidrio + $stm->stmPrecioVenta + $clr->clrPrecioVenta + $adicional + ($toalleros*50000)),50);
 
     //Cálculo del precio total de compra
     $precioVidrioCompra = ($ancho*$alto*$precio->precioCompra)/1000000;
-    $newDetalle->orddTotalCompra = $precioVidrioCompra + $stm->stmPrecioCompra + $clr->clrPrecioCompra + $adicional + ($toalleros*50000);
+    $newDetalle->orddTotalCompra = $this->roundUpToAny(($precioVidrioCompra + $stm->stmPrecioCompra + $clr->clrPrecioCompra + $adicional + ($toalleros*50000)),50);
 
     //guardar orden detalle en sesión
     $detalles = Request::session()->get('detalles');
@@ -163,10 +163,37 @@ class VentaController extends Controller
 
         break;
     case 'finish':
-            return Redirect::to('/Confirmar');
+            return Redirect::to('/ConfirmarDetalles');
         break;
     }
 
+  }
+
+  public function deleteDetail($id) {
+    if(Request::session()->has('cliente') && Request::session()->has('detalles') && Auth::user()->usrRolID==2){
+      if(count(Request::session()->get('detalles'))>=$id){
+        $detalles = Request::session()->get('detalles');
+        array_splice($detalles, $id-1,1);
+        for($i=$id-1;$i<count($detalles);$i++){
+          $detalles[$i]->orddItem--;
+        }
+        Request::session()->put('detalles', $detalles);
+        return Redirect::back()->with('success', 'El detalle se eliminó exitosamente');
+      }
+    }
+    return Redirect::to('/');
+  }
+
+  public function cancelOrder() {
+    if(Request::session()->has('cliente') && Request::session()->has('detalles') && Auth::user()->usrRolID==2){
+      Request::session()->put('detalles', null);
+      Request::session()->put('cliente', null);
+    }
+    return Redirect::to('/');
+  }
+
+  private function roundUpToAny($n,$x=5) {
+    return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x;
   }
 
 }

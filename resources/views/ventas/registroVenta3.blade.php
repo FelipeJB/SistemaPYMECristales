@@ -11,8 +11,9 @@
             <li class="breadcrumb-item active">Registrar Venta</li>
           </ol>
 
-          <h2 class="section-title">Registrar Venta a {{$cliente->cltNombre}} {{$cliente->cltApellido}}</h2>
-          <p class="section-subtitle">Ingrese los datos de la orden de venta.</p><br>
+          <h2 class="section-title">Confirmar Detalles de venta</h2>
+          <h4>Cliente: {{$cliente->cltNombre}} {{$cliente->cltApellido}}</h4>
+          <p class="section-subtitle">A continuación se muestra el resumen de los detalles de la venta.</p><br>
 
           @if(Session::has('error'))
               <div class="alert alert-dismissible alert-danger">
@@ -28,44 +29,48 @@
               </div>
           @endif
 
-          <form method="POST" action="/CrearOrden">
-              @csrf
+          @foreach($detalles as $d)
 
-              <div class="form-group row">
-
-                <label for="punto" class="col-md-2 col-form-label text-md-right">Punto de Venta *</label>
-
-                <div class="col-md-4">
-                    <select class="form-control" id="punto" name="punto">
-                      @foreach($puntos as $p)
-                        <option value="{{$p->pvID}}">{{$p->pvNombre}}</option>
-                      @endforeach
-                    </select>
+            <div class="card">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-sm-10">
+                    <h4 class="card-title">Detalle {{$d->orddItem}}</h4>
+                    <h6>Sistema {{$sistemas[$d->orddItem-1]->stmDescripcion}} color {{$colores[$d->orddItem-1]->clrDescripcion}} diseño
+                      {{$disenos[$d->orddItem-1]->dsnDescripcion}} {{$milimetrajes[$d->orddItem-1]->mlmNumero}}mm, {{$d->orddCantVidrio}}
+                      vidrios, {{$d->orddCantToalleros}} toalleros
+                      @if($d->orddRelacion>0)
+                      , relación: {{$d->orddRelacion}}
+                      @endif
+                      .</h6>
+                    <h6>Precio: <b>${{number_format($d->orddTotal)}}</b></h6>
+                  </div>
+                  <div class="col-md-2">
+                    <a href="/EliminarDetalle/{{$d->orddItem}}" class='btn btn-danger btn-block'>Eliminar</a>
+                  </div>
                 </div>
-
-                  <label for="formaPago" class="col-md-2 col-form-label text-md-right">Forma de pago *</label>
-
-                  <div class="col-md-4">
-                      <select class="form-control" id="formaPago" name="formaPago">
-                        @foreach($formasPago as $f)
-                          <option value="{{$f->fpID}}">{{$f->fpDescripcion}}</option>
-                        @endforeach
-                      </select>
-                  </div>
-
               </div>
+            </div>
 
+          @endforeach
+          <div class="row justify-content-center">
+            <h5 style="margin-top:10px">Precio total: <b>${{number_format($total)}}</b></h5>
+          </div>
 
-              <div class="form-group row mb-0">
-                  <div class="col-md-2 offset-md-10">
-                    <br>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Continuar
-                    </button>
-                  </div>
+          <div class="row mb-0">
+              <div class="col-lg-2 offset-lg-6">
+                <br>
+                <a href="/CancelarOrden" class='btn btn-danger btn-block'>Cancelar</a>
               </div>
-
-          </form>
+              <div class="col-lg-2">
+                <br>
+                <a href="/CrearDetalle" class='btn btn-primary btn-block'>Nuevo Detalle</a>
+              </div>
+              <div class="col-lg-2">
+                <br>
+                <a href="/CrearOrden" class='btn btn-success btn-block'>Confirmar</a>
+              </div>
+          </div>
 
           <hr>
           <div class="row justify-content-center" style="margin-top:25px;">
@@ -75,10 +80,10 @@
               </center>
               <div class="alert alert-light">
                 <center>
-                <p class="badge badge-success" style="font-size:13px; margin:5px 8px">Seleccionar Cliente</p>
-                <p class="badge badge-secondary" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
-                <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
-                <p class="badge" style="font-size:13px; margin:5px 5px">Resumen</p>
+                  <p class="badge badge-success" style="font-size:13px; margin:5px 8px">Seleccionar Cliente</p>
+                  <p class="badge badge-success" style="font-size:13px; margin:5px 5px">Registrar Detalles</p>
+                  <p class="badge badge-secondary" style="font-size:13px; margin:5px 5px">Confirmación</p>
+                  <p class="badge" style="font-size:13px; margin:5px 5px">Registrar Orden</p>
               </center>
               </div>
             </div>

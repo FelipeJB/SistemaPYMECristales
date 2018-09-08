@@ -375,6 +375,28 @@ Route::get('/CrearDetalle', function () {
   }
 })->middleware('auth');
 Route::post('/CrearDetalle', 'Ventas\VentaController@createDetail')->middleware('auth');
+Route::get('/ConfirmarDetalles', function () {
+  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente') && Request::session()->has('detalles') && count(Request::session()->get('detalles'))>0){
+    $cliente = Request::session()->get('cliente');
+    $detalles = Request::session()->get('detalles');
+    $total = 0;
+    $sistemas = $colores = $milimetrajes = $disenos = [];
+    foreach($detalles as $d){
+      array_push($sistemas, \App\Sistema::where('stmID','=',$d->orddSistemaID)->first());
+      array_push($colores, \App\Color::where('clrID','=',$d->orddColorID)->first());
+      array_push($milimetrajes, \App\Milimetraje::where('mlmID','=',$d->orddMilimID)->first());
+      array_push($disenos, \App\Diseno::where('dsnID','=',$d->orddDisenoID)->first());
+      $total = $total + $d->orddTotal;
+    }
+    return view('ventas/registroVenta3', compact('detalles', 'cliente', 'total', 'sistemas', 'milimetrajes', 'colores', 'disenos'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/EliminarDetalle/{id}', 'Ventas\VentaController@deleteDetail')->middleware('auth');
+Route::get('/CancelarOrden', 'Ventas\VentaController@cancelOrder')->middleware('auth');
+
+
 Route::get('/CrearOrden', function () {
   if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
     $cliente = Request::session()->get('cliente');
