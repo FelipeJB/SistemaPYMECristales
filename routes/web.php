@@ -9,7 +9,7 @@ Route::get('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@showLogin
 Route::post('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@login']);
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
-//Rutas de Registro
+//Rutas de Registro de Usuarios
 Route::get('/RegistrarUsuario', function () {
   if(Auth::user()->usrRolID==1){
     $roles= \App\Rol::where('rusrID','!=',"1")->get();
@@ -19,6 +19,17 @@ Route::get('/RegistrarUsuario', function () {
   }
 })->middleware('auth');
 Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('register');
+
+//Rutas de Registro de Garantías
+Route::get('/RegistrarGarantia', function () {
+  if(Auth::user()->usrRolID == 2){
+    Request::session()->put('detalles', []);
+    return view('garantias/registroGarantia');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/RegistrarGarantia', 'Auth\RegisterController@registro')->name('register');
 
 //Rutas de Cambio de contraseña
 Route::get('/EditarClave', function () {
