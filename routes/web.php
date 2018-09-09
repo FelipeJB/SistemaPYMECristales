@@ -395,16 +395,32 @@ Route::get('/ConfirmarDetalles', function () {
 })->middleware('auth');
 Route::get('/EliminarDetalle/{id}', 'Ventas\VentaController@deleteDetail')->middleware('auth');
 Route::get('/CancelarOrden', 'Ventas\VentaController@cancelOrder')->middleware('auth');
-
-
 Route::get('/CrearOrden', function () {
-  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente')){
+  if(Auth::user()->usrRolID==2 && Request::session()->has('cliente') && Request::session()->has('detalles') && count(Request::session()->get('detalles'))>0){
     $cliente = Request::session()->get('cliente');
     $puntos = \App\PuntoVenta::all();
     $formasPago = \App\FormaPago::all();
-    return view('ventas/registroVenta3', compact('cliente', 'puntos', 'formasPago'));
+    $valorTotal = 0;
+    $detalles = Request::session()->get('detalles');
+    foreach($detalles as $d){
+      $valorTotal = $valorTotal + $d->orddTotal;
+    }
+    $total = 0;
+    return view('ventas/registroVenta4', compact('cliente', 'puntos', 'formasPago', 'valorTotal'));
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
 Route::post('/CrearOrden', 'Ventas\VentaController@createOrder')->middleware('auth');
+Route::get('/FinalizarVenta/{id}', function ($id) {
+  if(Auth::user()->usrRolID==2){
+    $venta= \App\Orden::where('ordID','=',$id)->get();
+    if(count($venta)>0){
+        return view('ventas/registroVenta5', compact('id'));
+    }else{
+        return Redirect::to('/');
+    }
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');

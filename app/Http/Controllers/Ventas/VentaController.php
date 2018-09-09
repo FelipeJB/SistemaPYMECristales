@@ -51,20 +51,60 @@ class VentaController extends Controller
     /*Se guardan los datos de la orden dentro de variables desde el formulario*/
     $punto = Input::get('punto');
     $formaPago = Input::get('formaPago');
+    $abono = Input::get('abono');
+    $observaciones = Input::get('observaciones');
+
+    // Se calcula el precio total de compra y de venta
+    $total = $totalCompra = 0;
+    $detalles = Request::session()->get('detalles');
+    foreach($detalles as $d){
+      $total = $total + $d->orddTotal;
+      $totalCompra = $totalCompra + $d->orddTotal;
+    }
+
+    //validar abono numérico
+    if(!is_numeric($abono) || $abono < 0 || $abono > $totalCompra){
+      return Redirect::back()->with('abono', 'Ingrese un abono válido')
+      ->withInput();
+    }
+
+    //guardar Cliente si no está registrado
+    $cliente = Request::session()->get('cliente');
+    if($cliente->cltID == null){
+      $cliente->save();
+    }
 
     //crear orden
     $newOrden = new Orden();
+    $newOrden->ordNumeroPedido = 0;
+    $newOrden->ordClienteID = $cliente->cltID;
     $newOrden->ordPuntoVentaID = $punto;
+    $newOrden->ordTotal = $total;
+    $newOrden->ordTotalCompra = $totalCompra;
+    $newOrden->ordSaldo = $total - $abono;
+    $newOrden->ordAbono = $abono;
+    $newOrden->ordObservaciones = $observaciones;
     $newOrden->ordVendedorID = Auth::user()->id;
     $newOrden->ordFormaPagoID = $formaPago;
-    $newOrden->ordEstadoInstalacionID = 0;
+    $newOrden->ordEstadoInstalacionID = 1;
+    $newOrden->ordFecha = date("Y-m-d");
     $newOrden->ordMigrado = 0;
+    $newOrden->save();
+    $newOrden->ordNumeroPedido = $newOrden->ordID;
+    $newOrden->save();
 
-    //guardar orden en sesión
-    Request::session()->put('orden', $newOrden);
+    //crear Detalles
+    foreach($detalles as $d){
+      $d->orddOrdenID=$newOrden->ordID;
+      $d->save();
+    }
 
-    //redirigir al siguiente formulario
-    return Redirect::to('/CrearDetalle');
+    //Ingresar valores vacíos a los datos de sesión
+    Request::session()->put('detalles', null);
+    Request::session()->put('cliente', null);
+
+    //redirigir a la página siguiente
+    return Redirect::to('/FinalizarVenta/'.$newOrden->ordID);
 
   }
 
