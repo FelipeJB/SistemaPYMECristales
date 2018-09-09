@@ -435,7 +435,7 @@ Route::get('/ConsultarVenta/{id}', function ($id) {
   if(Auth::user()->usrRolID==2){
     $venta = \App\Orden::where('ordID','=',$id)->get();
     if(count($venta)>0){
-        $estado = \App\Estado::where('stdID','=',$venta->ordEstadoInstalacionID)->first();
+        $estado = \App\Estado::where('stdID','=',$venta[0]->ordEstadoInstalacionID)->first();
         return view('ventas/estadoVenta', compact('id', 'estado'));
     }else{
         return Redirect::to('/');
