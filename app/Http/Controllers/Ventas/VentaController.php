@@ -232,6 +232,18 @@ class VentaController extends Controller
     return Redirect::to('/');
   }
 
+  public function createOrderDocument($id)
+  {
+    //Obtener datos para el documento
+    $orden = \App\Orden::where('ordID','=',$id)->first();
+    $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
+    $cliente = \App\Cliente::where('cltID','=',$orden->ordClienteID)->first();
+
+    //Generar informe de venta
+
+
+  }
+
   private function roundUpToAny($n,$x=5) {
     return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x;
   }

@@ -424,3 +424,31 @@ Route::get('/FinalizarVenta/{id}', function ($id) {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/ConsultarVenta', function () {
+  if(Auth::user()->usrRolID==2){
+    return view('ventas/consultaVenta');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/ConsultarVenta/{id}', function ($id) {
+  if(Auth::user()->usrRolID==2){
+    $venta = \App\Orden::where('ordID','=',$id)->get();
+    if(count($venta)>0){
+        $estado = \App\Estado::where('stdID','=',$venta->ordEstadoInstalacionID)->first();
+        return view('ventas/estadoVenta', compact('id', 'estado'));
+    }else{
+        return Redirect::to('/');
+    }
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/GenerarInformeVenta', function () {
+  if(Auth::user()->usrRolID==2){
+    return view('ventas/generarInforme');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
