@@ -20,17 +20,6 @@ Route::get('/RegistrarUsuario', function () {
 })->middleware('auth');
 Route::post('/RegistrarUsuario', 'Auth\RegisterController@registro')->name('register');
 
-//Rutas de Registro de Garantías
-Route::get('/RegistrarGarantia', function () {
-  if(Auth::user()->usrRolID == 2){
-    Request::session()->put('detalles', []);
-    return view('garantias/registroGarantia');
-  }else{
-    return Redirect::to('/');
-  }
-})->middleware('auth');
-Route::post('/RegistrarGarantia', 'Auth\RegisterController@registro')->name('register');
-
 //Rutas de Cambio de contraseña
 Route::get('/EditarClave', function () {
     return view('auth/passwordEdit');
@@ -463,3 +452,22 @@ Route::get('/GenerarInformeVenta', function () {
   }
 })->middleware('auth');
 Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
+
+//Rutas de Registro de Garantías
+Route::get('/RegistrarGarantia', function () {
+  if(Auth::user()->usrRolID == 2){
+    return view('garantias/registroGarantia');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/RegistrarGarantia', 'Garantias\GarantiaController@validateOrderNumber')->middleware('auth');
+Route::get('/RegistrarGarantiaForm/{idOrd}', function ($idOrd) {
+  if(Auth::user()->usrRolID == 2){
+    $orden = \App\Orden::where("ordID", "=", $idOrd)->first();
+    return view('garantias/registroGarantiaForm', compact('orden'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/RegistrarGarantiaForm', 'Garantias\GarantiaController@register')->middleware('auth');

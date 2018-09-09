@@ -242,6 +242,8 @@ class VentaController extends Controller
     //Generar informe de venta
 
 
+
+    return Redirect::to('/')->with('success', 'Documento generado existosamente');
   }
 
   private function roundUpToAny($n,$x=5) {
