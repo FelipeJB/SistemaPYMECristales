@@ -431,6 +431,7 @@ Route::get('/ConsultarVenta', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::post('/ConsultarVenta', 'Ventas\VentaController@validateOrderNumberConsulta')->middleware('auth');
 Route::get('/ConsultarVenta/{id}', function ($id) {
   if(Auth::user()->usrRolID==2){
     $venta = \App\Orden::where('ordID','=',$id)->get();
@@ -451,6 +452,7 @@ Route::get('/GenerarInformeVenta', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::post('/GenerarInformeVenta', 'Ventas\VentaController@validateOrderNumberInforme')->middleware('auth');
 Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
 
 //Rutas de Registro de Garantías
