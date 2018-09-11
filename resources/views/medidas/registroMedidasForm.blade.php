@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Registrar Garantia')
+@section('titulo', 'Tomar Medidas')
 
 @section('content')
 <div class="container">
@@ -8,11 +8,11 @@
         <div class="col-md-12">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Registrar Garantía</li>
+            <li class="breadcrumb-item active">Tomar Medidas</li>
           </ol>
 
-          <h2 class="section-title">Registrar Garantia</h2>
-          <p class="section-subtitle">Ingrese el número de orden a la cual se le registrará la garantía.</p><br>
+          <h2 class="section-title">Tomar Medidas</h2>
+          <p class="section-subtitle">Subtítulo</p><br>
 
           @if(Session::has('error'))
               <div class="alert alert-dismissible alert-danger">
@@ -28,36 +28,30 @@
               </div>
           @endif
 
-          <form method="POST" action="/RegistrarGarantia">
+          <form method="POST" action="/RegistrarMedidasForm">
               @csrf
+              <input id="ordID" type="hidden" name="ordID" value="{{$orden->ordID}}" required>
 
               <div class="form-group row">
 
-                  <label for="numero" class="col-md-4 col-form-label text-md-right">Número de Orden *</label>
-
-                  <div class="col-md-4">
-                      <input id="numero" type="text" class="form-control{{ Session::has('numero') ? ' is-invalid' : '' }}" name="numero" value="{{ old('numero') }}" required>
-
-                      @if (Session::has('numero'))
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ Session::get('numero') }}</strong>
-                          </span>
-                      @endif
-                  </div>
 
               </div>
+
 
               <div class="form-group row mb-0">
                   <div class="col-md-2 offset-md-10">
                     <br>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Continuar
+                        Registrar
                     </button>
                   </div>
               </div>
 
           </form>
+
           <hr>
+
+
 
         </div>
     </div>

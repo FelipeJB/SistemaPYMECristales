@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('titulo', 'Registrar Garantia')
+@section('titulo', 'Tomar Medidas')
 
 @section('content')
 <div class="container">
@@ -8,11 +8,11 @@
         <div class="col-md-12">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-            <li class="breadcrumb-item active">Registrar Garantía</li>
+            <li class="breadcrumb-item active">Tomar Medidas</li>
           </ol>
 
-          <h2 class="section-title">Registrar Garantia</h2>
-          <p class="section-subtitle">Ingrese el número de orden a la cual se le registrará la garantía.</p><br>
+          <h2 class="section-title">Tomar Medidas</h2>
+          <p class="section-subtitle">Ingrese el número de orden a la cual se le tomarán las medidas.</p><br>
 
           @if(Session::has('error'))
               <div class="alert alert-dismissible alert-danger">
@@ -28,7 +28,7 @@
               </div>
           @endif
 
-          <form method="POST" action="/RegistrarGarantia">
+          <form method="POST" action="/RegistrarMedidas">
               @csrf
 
               <div class="form-group row">

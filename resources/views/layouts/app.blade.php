@@ -128,6 +128,17 @@
                                 </div>
                             </li>
                             @endif
+                            @if(Auth::user()->usrRolID == 3)
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownMedidas" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Medidas <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMedidas">
+                                    <a class="dropdown-item" href="/RegistrarMedidas">Tomar Medidas</a>
+                                </div>
+                            </li>
+                            @endif
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

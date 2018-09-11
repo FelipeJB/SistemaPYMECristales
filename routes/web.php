@@ -473,3 +473,22 @@ Route::get('/RegistrarGarantiaForm/{idOrd}', function ($idOrd) {
   }
 })->middleware('auth');
 Route::post('/RegistrarGarantiaForm', 'Garantias\GarantiaController@register')->middleware('auth');
+
+//Rutas de Registro de Medidass
+Route::get('/RegistrarMedidas', function () {
+  if(Auth::user()->usrRolID == 3){
+    return view('medidas/registroMedidas');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/RegistrarMedidas', 'Medidas\MedidaController@validateOrderNumber')->middleware('auth');
+Route::get('/RegistrarMedidasForm/{idMed}', function ($idMed) {
+  if(Auth::user()->usrRolID == 3){
+    $orden = \App\Orden::where("ordID", "=", $idMed)->first();
+    return view('Medidas/registroMedidasForm', compact('orden'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/RegistrarMedidasForm', 'Medidas\MedidaController@register')->middleware('auth');

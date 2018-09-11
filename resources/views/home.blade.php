@@ -79,6 +79,16 @@
                 </div>
               </div>
             @endif
+            @if(Auth::user()->usrRolID == 3)
+              <div class="row">
+                <div class="col-md-4">
+                  <h3>Medidas</h3>
+                  <ul>
+                    <li><a href="/RegistrarMedidas">Tomar Medidas</a></li>
+                  </ul>
+                </div>
+              </div>
+            @endif
 
           </div>
         </div>
