@@ -36,7 +36,20 @@ class MedidaController extends Controller
         return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
         ->withInput();
       }else{
-        return Redirect::to('/RegistrarMedidasForm/'.$numero);
+        $detalles = OrdenDetalle::where("orddOrdenID", "=", $numero)->get();
+        $medidas = 0;
+        foreach ($detalles as $d){
+          $medida = MedidaVidrio::where("mvdOrddID", "=", $d->orddID)->first();
+          if ($medida != null){
+            $medidas++;
+          }
+        }
+        if ($medidas == count($detalles)){
+          return Redirect::back()->with('numero', 'La orden ingresada ya tiene medidas registradas')
+          ->withInput();
+        }else{
+          return Redirect::to('/RegistrarMedidasForm/'.$numero.'/1');
+        }
       }
 
   }

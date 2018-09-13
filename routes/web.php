@@ -483,10 +483,28 @@ Route::get('/RegistrarMedidas', function () {
   }
 })->middleware('auth');
 Route::post('/RegistrarMedidas', 'Medidas\MedidaController@validateOrderNumber')->middleware('auth');
-Route::get('/RegistrarMedidasForm/{idMed}', function ($idMed) {
+Route::get('/RegistrarMedidasForm/{idMed}/{idItem}', function ($idMed, $idItem) {
   if(Auth::user()->usrRolID == 3){
     $orden = \App\Orden::where("ordID", "=", $idMed)->first();
-    return view('Medidas/registroMedidasForm', compact('orden'));
+    $numDetalles = \App\OrdenDetalle::where("orddOrdenID", "=", $idMed)->count();
+    $detalle = DB::table('orden_detalles')
+          ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
+          ->join('sistemas', 'orden_detalles.orddSistemaID', '=', 'sistemas.stmID')
+          ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
+          ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
+          ->where("orden_detalles.orddOrdenID", "=", $idMed)->where("orddItem", "=", $idItem)->first();
+    $medida = \App\MedidaVidrio::where("mvdOrddID", "=", $detalle->orddID)->first();
+    if($medida != null){
+      if($idItem<$numDetalles){
+        return Redirect::to('/RegistrarMedidasForm/'.$idMed.'/'.($idItem +1));
+      }
+      else{
+        return Redirect::to('/ConfirmarMedidas/');
+      }
+    }
+    else{
+      return view('Medidas/registroMedidasForm', compact('orden', 'detalle'));
+    }
   }else{
     return Redirect::to('/');
   }

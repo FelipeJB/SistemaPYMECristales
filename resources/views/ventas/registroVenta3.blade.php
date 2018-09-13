@@ -37,7 +37,7 @@
                   <div class="col-sm-10">
                     <h4 class="card-title">Detalle {{$d->orddItem}}</h4>
                     <h6>Sistema {{$sistemas[$d->orddItem-1]->stmDescripcion}} color {{$colores[$d->orddItem-1]->clrDescripcion}} diseño
-                      {{$disenos[$d->orddItem-1]->dsnDescripcion}} {{$milimetrajes[$d->orddItem-1]->mlmNumero}}mm, {{$d->orddAlto}}mm Alto * {{$d->orddAncho}}mm Ancho,  {{$d->orddCantVidrio}}
+                      {{$disenos[$d->orddItem-1]->dsnCodigo}} {{$milimetrajes[$d->orddItem-1]->mlmNumero}}mm, {{$d->orddAlto}}mm Alto * {{$d->orddAncho}}mm Ancho,  {{$d->orddCantVidrio}}
                       vidrios, {{$d->orddCantToalleros}} toalleros
                       @if($d->orddRelacion>0)
                       , relación: {{$d->orddRelacion}}
