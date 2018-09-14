@@ -36,6 +36,7 @@ class CreateOrdenDetallesTable extends Migration
             $table->integer('orddRelacion')->nullable();
             $table->integer('orddValorAdicional')->nullable();
             $table->string('orddDescripcionAdicional')->nullable();
+            $table->string('orddLadoPuerta')->nullable();
             $table->timestamps();
         });
     }

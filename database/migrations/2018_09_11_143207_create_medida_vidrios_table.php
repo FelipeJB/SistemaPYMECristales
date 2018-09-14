@@ -22,6 +22,7 @@ class CreateMedidaVidriosTable extends Migration
             $table->integer('mvdCantBoquetes');
             $table->integer('mvdCantBPB');
             $table->integer('mvdCantChaflan');
+            $table->string('mvdTipo');
             $table->timestamps();
         });
     }
