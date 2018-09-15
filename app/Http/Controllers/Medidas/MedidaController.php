@@ -45,7 +45,7 @@ class MedidaController extends Controller
           }
         }
         if ($medidas == count($detalles)){
-          return Redirect::back()->with('numero', 'La orden ingresada ya tiene medidas registradas')
+          return Redirect::back()->with('numero', 'La orden ingresada ya tiene todas sus medidas registradas')
           ->withInput();
         }else{
           return Redirect::to('/RegistrarMedidasForm/'.$numero.'/1');
