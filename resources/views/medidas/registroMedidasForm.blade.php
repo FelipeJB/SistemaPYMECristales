@@ -203,7 +203,7 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-2 offset-md-10">
                       <br>
-                      <button type="submit" name="action" value="noNegistrarMedidas" class="btn btn-primary btn-block">
+                      <button type="submit" name="action" value="noRegistrarMedidas" class="btn btn-primary btn-block">
                           Continuar
                       </button>
                     </div>
