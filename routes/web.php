@@ -571,4 +571,16 @@ Route::get('/EditarMedida/{item}', function ($item) {
 })->middleware('auth');
 Route::post('/EditarMedida', 'Medidas\MedidaController@edit')->middleware('auth');
 Route::get('/CancelarMedidas', 'Medidas\MedidaController@cancel')->middleware('auth');
-Route::get('/CrearMedidas', 'Medidas\MedidaController@confirm')->middleware('auth'); //validar hasta rol
+Route::get('/CrearMedidas', 'Medidas\MedidaController@confirm')->middleware('auth');
+Route::get('/FinalizarMedidas/{id}', function ($id) {
+  if(Auth::user()->usrRolID==2){
+    $venta= \App\Orden::where('ordID','=',$id)->get();
+    if(count($venta)>0 && $venta[0]->orddEstadoInstalacionID >=2){
+        return view('medidas/finalizarMedidas', compact('id'));
+    }else{
+        return Redirect::to('/');
+    }
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');

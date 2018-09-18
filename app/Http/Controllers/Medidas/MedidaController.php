@@ -287,8 +287,41 @@ class MedidaController extends Controller
 
   public function confirm()
   {
+    if(Auth::user()->usrRolID == 3){
+      if(Request::session()->has('medidas') && Request::session()->has('orden')){
+        $numOrden = Request::session()->get('orden');
+        $medidas = Request::session()->get('medidas');
+        $registros = MedidaVidrio::where("mvdOrdID", "=", $numOrden)->count();
+        $total = OrdenDetalle::where("orddOrdenID", "=", $numOrden)->count();
+        if((count($medidas) + $registros) == $total){
+            //calcular Medidas
+            $this->calcularMedidas($medidas);
 
+            //guardar Medidas y actualizar estado de orden y de detalles
 
+            //borrar datos de sesión
+            Request::session()->put('orden', null);
+            Request::session()->put('medidas', null);
+
+            //redirigir a la página siguiente
+            return Redirect::to('/FinalizarMedidas/'.$numOrden);
+
+        }else{
+            return Redirect::back()->with('error','Se deben registrar todas las medidas');
+        }
+      } else{
+        return Redirect::to('/RegistrarMedidas');
+      }
+    }else{
+      return Redirect::to('/');
+    }
+  }
+
+  private function calcularMedidas($medidas)
+  {
+    foreach ($medidas as $m){
+      
+    }
   }
 
   public function cancel()
