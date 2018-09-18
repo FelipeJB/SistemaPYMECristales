@@ -474,7 +474,7 @@ Route::get('/RegistrarGarantiaForm/{idOrd}', function ($idOrd) {
 })->middleware('auth');
 Route::post('/RegistrarGarantiaForm', 'Garantias\GarantiaController@register')->middleware('auth');
 
-//Rutas de Registro de Medidass
+//Rutas de Registro de Medidas
 Route::get('/RegistrarMedidas', function () {
   if(Auth::user()->usrRolID == 3){
     return view('medidas/registroMedidas');
@@ -493,20 +493,43 @@ Route::get('/RegistrarMedidasForm/{idMed}/{idItem}', function ($idMed, $idItem) 
           ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
           ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
           ->where("orden_detalles.orddOrdenID", "=", $idMed)->where("orddItem", "=", $idItem)->first();
-    $medida = \App\MedidaVidrio::where("mvdOrddID", "=", $detalle->orddID)->first();
+    $medida = null;
+    if($detalle != null){
+      $medida = \App\MedidaVidrio::where("mvdOrddID", "=", $detalle->orddID)->first();
+    }
     if($medida != null){
       if($idItem<$numDetalles){
         return Redirect::to('/RegistrarMedidasForm/'.$idMed.'/'.($idItem +1));
       }
       else{
-        return Redirect::to('/ConfirmarMedidas/');
+        return Redirect::to('/ConfirmarMedidas');
       }
     }
     else{
-      return view('Medidas/registroMedidasForm', compact('orden', 'detalle'));
+      if(Request::session()->has('medidas') && Request::session()->has('orden')){
+        if($idItem<=$numDetalles){
+          return view('medidas/registroMedidasForm', compact('orden', 'detalle'));
+        }else{
+          return Redirect::to('/ConfirmarMedidas/');
+        }
+      }else{
+        return Redirect::to('/RegistrarMedidas');
+      }
     }
   }else{
     return Redirect::to('/');
   }
 })->middleware('auth');
 Route::post('/RegistrarMedidasForm', 'Medidas\MedidaController@register')->middleware('auth');
+Route::get('/ConfirmarMedidas', function () {
+  if(Auth::user()->usrRolID == 3){
+    if(Request::session()->has('medidas')){
+
+    } else{
+      return Redirect::to('/RegistrarMedidas');
+    }
+    return view('medidas/confirmacionMedidas');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
