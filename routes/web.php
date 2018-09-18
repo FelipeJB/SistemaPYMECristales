@@ -510,7 +510,7 @@ Route::get('/RegistrarMedidasForm/{idMed}/{idItem}', function ($idMed, $idItem) 
         if($idItem<=$numDetalles){
           return view('medidas/registroMedidasForm', compact('orden', 'detalle'));
         }else{
-          return Redirect::to('/ConfirmarMedidas/');
+          return Redirect::to('/ConfirmarMedidas');
         }
       }else{
         return Redirect::to('/RegistrarMedidas');
@@ -569,5 +569,6 @@ Route::get('/EditarMedida/{item}', function ($item) {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::post('/EditarMedida', 'Medidas\MedidaController@edit')->middleware('auth');
 Route::get('/CancelarMedidas', 'Medidas\MedidaController@cancel')->middleware('auth');
 Route::get('/CrearMedidas', 'Medidas\MedidaController@confirm')->middleware('auth'); //validar hasta rol

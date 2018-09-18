@@ -42,9 +42,10 @@
             </div>
           </div>
 
-          <form method="POST" action="/RegistrarMedidasForm">
+          <form method="POST" action="/EditarMedida">
               @csrf
               <input id="item" type="hidden" name="item" value="{{$item}}" required>
+              <input id="orddID" type="hidden" name="orddID" value="{{$detalle->orddID}}" required>
 
               <fieldset class="formMedidasPositivas" style="margin-top: 20px; display:none">
                 <div class="form-group row">

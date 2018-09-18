@@ -177,6 +177,114 @@ class MedidaController extends Controller
 
   }
 
+  public function edit()
+  {
+    /*Se guardan los datos dentro de variables desde el formulario*/
+    $idDetalle = Input::get('orddID');
+    $item = Input::get('item');
+    $ladoPuerta = Input::get('lado');
+    $alto = Input::get('alto');
+    $ancho1 = Input::get('ancho1');
+    $ancho2 = Input::get('ancho2');
+    $anchoPuerta = Input::get('anchoPuerta');
+    $observaciones = Input::get('observaciones');
+    $motivo = Input::get('motivo');
+    $medida = new DatosMedida();
+    $detalle = OrdenDetalle::where("orddID", "=", $idDetalle)->first();
+    $sistema = Sistema::where("stmID", "=", $detalle->orddSistemaID)->first();
+
+    switch (Request::input('action')) {
+    case 'registrarMedidas':
+            //Caso en el cual se pudo tomar las medidas
+
+            //validar que se ingresen todos los datos
+            if($alto == "" || $ancho1 == "" || $ancho2 == ""){
+              return Redirect::back()->with('error', 'Se deben ingresar todos los datos marcados con un (*)')
+              ->withInput();
+            }
+
+            //validar que se ingrese el anchoPuerta si es batiente y que sea numérico
+            if ($sistema->stmTipo == "Batiente"){
+              if($anchoPuerta == ""){
+                return Redirect::back()->with('error', 'Se deben ingresar todos los datos marcados con un (*)')
+                ->withInput();
+              }
+              else if(!is_numeric($anchoPuerta)){
+                return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
+                ->withInput();
+              }
+            }
+
+            //validar que las medidas sean numéricas
+            if(!is_numeric($ancho1)){
+              return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
+              ->withInput();
+            }
+            if(!is_numeric($ancho2)){
+              return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
+              ->withInput();
+            }
+            if(!is_numeric($alto)){
+              return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
+              ->withInput();
+            }
+
+            //Ingresar datos en datosmedida
+            $medida->esPositiva = true;
+            $medida->alto = $alto;
+            $medida->ancho1 = $ancho1;
+            $medida->ancho2 = $ancho2;
+            $medida->ladoPuerta = $ladoPuerta;
+            $medida->observaciones = $observaciones;
+            $medida->idDetalle = $idDetalle;
+            if ($sistema->stmTipo == "Batiente"){
+              $medida->esBatiente = true;
+              $medida->anchoPuerta = $anchoPuerta;
+            }else {
+              $medida->esBatiente = false;
+            }
+            if ($detalle->orddRelacion !=0){
+              $medida->esCompuesto = true;
+            }else {
+              $medida->esCompuesto = false;
+            }
+
+        break;
+    case 'noRegistrarMedidas':
+           //Caso en el cual no se pudo tomar las medidas
+
+           //validar que se ingresen tods los datos
+           if($motivo == ""){
+             return Redirect::back()->with('error', 'Si la toma de medidas no pudo ser realizada se debe ingresar un motivo')
+             ->withInput();
+           }
+
+           //Ingresar datos en datosmedida
+           $medida->esPositiva = false;
+           $medida->razonNegativa = $motivo;
+           $medida->idDetalle = $idDetalle;
+
+        break;
+    case 'cancelar':
+           //Caso en el cual se cancela la edición
+
+           //redirigir a confirmación
+           return Redirect::to('/ConfirmarMedidas');
+
+
+        break;
+    }
+
+    //guardar la medida en sesión
+    $medidas = Request::session()->get('medidas');
+    $medidas[$item] = $medida;
+    Request::session()->put('medidas', $medidas);
+
+    //se redirige a la página de confirmación
+    return Redirect::to('/ConfirmarMedidas')->with('success','Se editaron los datos de la medida satisfactoriamente');
+
+  }
+
   public function confirm()
   {
 
