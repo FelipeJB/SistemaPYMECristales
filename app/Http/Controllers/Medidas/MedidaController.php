@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Medidas;
 
+use Auth;
 use App\User;
 use App\Sistema;
 use App\Orden;
@@ -180,6 +181,15 @@ class MedidaController extends Controller
   {
 
 
+  }
+
+  public function cancel()
+  {
+    if(Request::session()->has('orden') && Request::session()->has('medidas') && Auth::user()->usrRolID==3){
+      Request::session()->put('orden', null);
+      Request::session()->put('medidas', null);
+    }
+    return Redirect::to('/');
   }
 
 }

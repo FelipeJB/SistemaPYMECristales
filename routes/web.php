@@ -550,3 +550,6 @@ Route::get('/ConfirmarMedidas', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
+//editar medidas
+Route::get('/CancelarMedidas', 'Medidas\MedidaController@cancel')->middleware('auth');
+Route::get('/CrearMedidas', 'Medidas\MedidaController@confirm')->middleware('auth'); //validar hasta rol
