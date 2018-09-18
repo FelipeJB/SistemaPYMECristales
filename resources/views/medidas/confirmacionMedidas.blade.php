@@ -62,7 +62,7 @@
 
                   </div>
                   <div class="col-md-2">
-                    <a href="/EditarMedida/{{$detalles[$i]->orddItem}}" class='btn btn-primary btn-block'>Editar</a>
+                    <a href="/EditarMedida/{{$i}}" class='btn btn-primary btn-block'>Editar</a>
                   </div>
                 </div>
               </div>

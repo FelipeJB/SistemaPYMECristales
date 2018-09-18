@@ -550,6 +550,24 @@ Route::get('/ConfirmarMedidas', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
-//editar medidas
+Route::get('/EditarMedida/{item}', function ($item) {
+  if(Auth::user()->usrRolID == 3){
+    $medidas= Request::session()->get('medidas');
+    if($medidas!=null && $item <count($medidas)){
+      $medida = $medidas[$item];
+      $detalle = DB::table('orden_detalles')
+            ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
+            ->join('sistemas', 'orden_detalles.orddSistemaID', '=', 'sistemas.stmID')
+            ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
+            ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
+            ->where("orden_detalles.orddID", "=", $medida->idDetalle)->first();
+      return view('medidas/edicionMedidas', compact('medida', 'detalle', 'item'));
+    }else{
+      return Redirect::back();
+    }
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
 Route::get('/CancelarMedidas', 'Medidas\MedidaController@cancel')->middleware('auth');
 Route::get('/CrearMedidas', 'Medidas\MedidaController@confirm')->middleware('auth'); //validar hasta rol
