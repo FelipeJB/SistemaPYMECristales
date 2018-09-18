@@ -9,6 +9,6 @@ class MedidaVidrio extends Model
   protected $primaryKey  = 'mvdID';
 
   protected $fillable = [
-      'mvdID', 'mvdOrddID', 'mvdAlto', 'mvdAncho', 'mvdCantPerforaciones', 'mvdCantBoquetes', 'mvdCantBPB', 'mvdCantChaflan', 'mvdTipo'
+      'mvdID', 'mvdOrddID', 'mvdOrdID', 'mvdAlto', 'mvdAncho', 'mvdCantPerforaciones', 'mvdCantBoquetes', 'mvdCantBPB', 'mvdCantChaflan', 'mvdTipo'
   ];
 }

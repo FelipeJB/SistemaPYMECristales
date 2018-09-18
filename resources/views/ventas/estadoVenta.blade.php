@@ -17,7 +17,7 @@
               <div class="col-lg-6 offset-lg-3">
                 <center><h3 style="margin-top:30px">{{$estado->stdDescripcion}}</h3></center>
                 <div class="progress">
-                  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{{$estado->stdID/6}}" aria-valuemin="0" aria-valuemax="1" style="width: {{($estado->stdID/4)*100}}%"></div>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{{$estado->stdID/6}}" aria-valuemin="0" aria-valuemax="1" style="width: {{($estado->stdID/4)*100}}%"></div>
                 </div>
               </div>
           </div>

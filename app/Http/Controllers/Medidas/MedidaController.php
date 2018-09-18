@@ -145,12 +145,13 @@ class MedidaController extends Controller
            //Ingresar datos en datosmedida
            $medida->esPositiva = false;
            $medida->razonNegativa = $motivo;
+           $medida->idDetalle = $idDetalle;
 
         break;
     }
 
     //guardar la medida en sesión
-    if(!Request::session()->get('orden') == $idOrden){
+    if(Request::session()->get('orden') != $idOrden){
       return Redirect::to('/RegistrarMedidas')->with('error', 'Orden no válida');
     }else{
       $medidas = Request::session()->get('medidas');
@@ -161,7 +162,7 @@ class MedidaController extends Controller
           $existe = $i;
         }
       }
-      if($existe !=-1){
+      if($existe  >= 0){
         $medidas[$existe] = $medida;
         Request::session()->put('medidas', $medidas);
       }else{

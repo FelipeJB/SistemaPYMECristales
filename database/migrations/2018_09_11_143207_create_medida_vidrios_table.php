@@ -16,6 +16,7 @@ class CreateMedidaVidriosTable extends Migration
         Schema::create('medida_vidrios', function (Blueprint $table) {
             $table->increments('mvdID');
             $table->integer('mvdOrddID');
+            $table->integer('mvdOrdID');
             $table->integer('mvdAlto');
             $table->integer('mvdAncho');
             $table->integer('mvdCantPerforaciones');

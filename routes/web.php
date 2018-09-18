@@ -523,12 +523,29 @@ Route::get('/RegistrarMedidasForm/{idMed}/{idItem}', function ($idMed, $idItem) 
 Route::post('/RegistrarMedidasForm', 'Medidas\MedidaController@register')->middleware('auth');
 Route::get('/ConfirmarMedidas', function () {
   if(Auth::user()->usrRolID == 3){
-    if(Request::session()->has('medidas')){
-
+    if(Request::session()->has('medidas') && Request::session()->has('orden')){
+      $numOrden = Request::session()->get('orden');
+      $medidas = Request::session()->get('medidas');
+      $registros = \App\MedidaVidrio::where("mvdOrdID", "=", $numOrden)->count();
+      $total = \App\OrdenDetalle::where("orddOrdenID", "=", $numOrden)->count();
+      $detalles = [];
+      if((count($medidas) + $registros) == $total){
+          foreach($medidas as $m){
+            $detalle = DB::table('orden_detalles')
+                  ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
+                  ->join('sistemas', 'orden_detalles.orddSistemaID', '=', 'sistemas.stmID')
+                  ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
+                  ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
+                  ->where("orden_detalles.orddID", "=", $m->idDetalle)->first();
+            array_push($detalles, $detalle);
+          }
+          return view('medidas/confirmacionMedidas', compact('numOrden','medidas', 'detalles'));
+      }else{
+          return Redirect::back()->with('error','Se deben registrar todas las medidas');
+      }
     } else{
       return Redirect::to('/RegistrarMedidas');
     }
-    return view('medidas/confirmacionMedidas');
   }else{
     return Redirect::to('/');
   }

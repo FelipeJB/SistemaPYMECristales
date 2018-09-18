@@ -62,6 +62,9 @@
                           <span class="input-group-text">$</span>
                         </div>
                         <input id="precioCompra" type="text" class="form-control{{ Session::has('precioCompra') ? ' is-invalid' : '' }}" name="precioCompra" value="{{$precio->pvdPrecioCompra}}" required>
+                        <div class="input-group-append">
+                          <span class="input-group-text">/m<sup>2</sup></span>
+                        </div>
 
                         @if (Session::has('precioCompra'))
                             <span class="invalid-feedback" role="alert">
@@ -77,7 +80,10 @@
                           <span class="input-group-text">$</span>
                         </div>
                         <input id="precioVenta" type="text" class="form-control{{ Session::has('precioVenta') ? ' is-invalid' : '' }}" name="precioVenta" value="{{$precio->pvdPrecioVenta}}" required>
-
+                        <div class="input-group-append">
+                          <span class="input-group-text">/m<sup>2</sup></span>
+                        </div>
+                        
                         @if (Session::has('precioVenta'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ Session::get('precioVenta') }}</strong>
