@@ -86,6 +86,62 @@
 
                 <div class="form-group row">
 
+                    <label for="perforaciones" class="col-md-2 col-form-label text-md-right">Perforaciones *</label>
+
+                    <div class="col-md-4">
+                        <input id="perforaciones" type="text" class="form-control{{ Session::has('perforaciones') ? ' is-invalid' : '' }}" name="perforaciones" value="{{$sistema->stmCantPerforaciones}}" required>
+
+                        @if (Session::has('perforaciones'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ Session::get('perforaciones') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <label for="boquetes" class="col-md-2 col-form-label text-md-right">Boquetes *</label>
+
+                    <div class="col-md-4">
+                        <input id="boquetes" type="text" class="form-control{{ Session::has('boquetes') ? ' is-invalid' : '' }}" name="boquetes" value="{{$sistema->stmCantBoquetes}}" required>
+
+                        @if (Session::has('boquetes'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ Session::get('boquetes') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <label for="bpb" class="col-md-2 col-form-label text-md-right">BPB *</label>
+
+                    <div class="col-md-4">
+                        <input id="bpb" type="text" class="form-control{{ Session::has('bpb') ? ' is-invalid' : '' }}" name="bpb" value="{{$sistema->stmCantBPB}}" required>
+
+                        @if (Session::has('bpb'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ Session::get('bpb') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <label for="chaflan" class="col-md-2 col-form-label text-md-right">Chaflán *</label>
+
+                    <div class="col-md-4">
+                        <input id="chaflan" type="text" class="form-control{{ Session::has('chaflan') ? ' is-invalid' : '' }}" name="chaflan" value="{{$sistema->stmCantChaflan}}" required>
+
+                        @if (Session::has('chaflan'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ Session::get('chaflan') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
                     <label for="codigo" class="col-md-2 col-form-label text-md-right">Código World Office*</label>
 
                     <div class="col-md-4">

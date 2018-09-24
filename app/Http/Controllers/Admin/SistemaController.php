@@ -22,9 +22,13 @@ class SistemaController extends Controller
       $tipo = Input::get('tipo');
       $precioCompra = Input::get('precioCompra');
       $precioVenta = Input::get('precioVenta');
+      $perforaciones = Input::get('perforaciones');
+      $boquetes = Input::get('boquetes');
+      $bpb = Input::get('bpb');
+      $chaflan = Input::get('chaflan');
 
       //validar que se ingresen todos los datos
-      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == ""){
+      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == "" || $perforaciones == "" || $boquetes == "" || $bpb == "" || $chaflan == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
@@ -41,6 +45,30 @@ class SistemaController extends Controller
         ->withInput();
       }
 
+      //validar perforaciones numéricas
+      if(!is_numeric($perforaciones)){
+        return Redirect::back()->with('perforaciones', 'Ingrese una cantidad de perforaciones válida')
+        ->withInput();
+      }
+
+      //validar boquetes numéricos
+      if(!is_numeric($boquetes)){
+        return Redirect::back()->with('boquetes', 'Ingrese una cantidad de boquetes válida')
+        ->withInput();
+      }
+
+      //validar bpb numéricos
+      if(!is_numeric($bpb)){
+        return Redirect::back()->with('bpb', 'Ingrese una cantidad de BPB válida')
+        ->withInput();
+      }
+
+      //validar chaflán numéricos
+      if(!is_numeric($chaflan)){
+        return Redirect::back()->with('chaflan', 'Ingrese una cantidad de chaflán válida')
+        ->withInput();
+      }
+
       try{
         //creación del sistema
         $newSistema = new Sistema();
@@ -49,6 +77,10 @@ class SistemaController extends Controller
         $newSistema->stmDescripcion = $descripcion;
         $newSistema->stmPrecioCompra = $precioCompra;
         $newSistema->stmPrecioVenta = $precioVenta;
+        $newSistema->stmCantPerforaciones = $perforaciones;
+        $newSistema->stmCantBoquetes = $boquetes;
+        $newSistema->stmCantBPB = $bpb;
+        $newSistema->stmCantChaflan = $chaflan;
         $newSistema->stmActivo = 1;
         $newSistema->save();
 
@@ -81,9 +113,13 @@ class SistemaController extends Controller
       $tipo = Input::get('tipo');
       $precioCompra = Input::get('precioCompra');
       $precioVenta = Input::get('precioVenta');
+      $perforaciones = Input::get('perforaciones');
+      $boquetes = Input::get('boquetes');
+      $bpb = Input::get('bpb');
+      $chaflan = Input::get('chaflan');
 
       //validar que se ingresen tods los datos
-      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == ""){
+      if($codigo == "" || $descripcion == "" || $precioCompra == "" || $precioVenta == "" || $perforaciones == "" || $boquetes == "" || $bpb == "" || $chaflan == ""){
         return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
         ->withInput();
       }
@@ -100,6 +136,30 @@ class SistemaController extends Controller
         ->withInput();
       }
 
+      //validar perforaciones numéricas
+      if(!is_numeric($perforaciones)){
+        return Redirect::back()->with('perforaciones', 'Ingrese una cantidad de perforaciones válida')
+        ->withInput();
+      }
+
+      //validar boquetes numéricos
+      if(!is_numeric($boquetes)){
+        return Redirect::back()->with('boquetes', 'Ingrese una cantidad de boquetes válida')
+        ->withInput();
+      }
+
+      //validar bpb numéricos
+      if(!is_numeric($bpb)){
+        return Redirect::back()->with('bpb', 'Ingrese una cantidad de BPB válida')
+        ->withInput();
+      }
+
+      //validar chaflán numéricos
+      if(!is_numeric($chaflan)){
+        return Redirect::back()->with('chaflan', 'Ingrese una cantidad de chaflán válida')
+        ->withInput();
+      }
+
       try{
         //guardar sistema
         $sistema = Sistema::where('stmID','=',$id)->first();
@@ -108,6 +168,10 @@ class SistemaController extends Controller
         $sistema->stmDescripcion = $descripcion;
         $sistema->stmPrecioCompra = $precioCompra;
         $sistema->stmPrecioVenta = $precioVenta;
+        $sistema->stmCantPerforaciones = $perforaciones;
+        $sistema->stmCantBoquetes = $boquetes;
+        $sistema->stmCantBPB = $bpb;
+        $sistema->stmCantChaflan = $chaflan;
         $sistema->save();
 
         //redirigir a la página de administración
