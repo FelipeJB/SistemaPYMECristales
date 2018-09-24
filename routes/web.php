@@ -529,7 +529,7 @@ Route::get('/ConfirmarMedidas', function () {
       $registros = \App\MedidaVidrio::where("mvdOrdID", "=", $numOrden)->count();
       $total = \App\OrdenDetalle::where("orddOrdenID", "=", $numOrden)->count();
       $detalles = [];
-      if((count($medidas) + $registros) == $total){
+      if((count($medidas) + ($registros)/2) == $total){
           foreach($medidas as $m){
             $detalle = DB::table('orden_detalles')
                   ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')

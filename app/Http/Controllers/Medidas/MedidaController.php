@@ -327,11 +327,11 @@ class MedidaController extends Controller
         $medidas = Request::session()->get('medidas');
         $registros = MedidaVidrio::where("mvdOrdID", "=", $numOrden)->count();
         $total = OrdenDetalle::where("orddOrdenID", "=", $numOrden)->count();
-        if((count($medidas) + $registros) == $total){
+        if((count($medidas) + ($registros/2)) == $total){
             //calcular Medidas
             $this->calcularMedidas($medidas);
 
-            //guardar Medidas y actualizar estado de orden y de detalles
+            //Generar Planos
 
             //borrar datos de sesión
             Request::session()->put('orden', null);
@@ -354,7 +354,400 @@ class MedidaController extends Controller
   private function calcularMedidas($medidas)
   {
     foreach ($medidas as $m){
+      if ($m->esPositiva){
+        $detalle = OrdenDetalle::where("orddID", "=", $m->idDetalle)->first();
+        $sistema = Sistema::where("stmID", "=", $detalle->orddSistemaID)->first();
+        $anchoFDAr = 0;
+        $anchoFDAb = 0;
+        $desc = false;
+        $anchoFFAr = 0;
+        $anchoFFAb = 0;
+        $altoFD = 0;
+        $altoFF = 0;
+        $anchoI = max($m->ancho2, $m->ancho1);
 
+        // En el siguiente switch se encuentran las fórmulas para cada sistema en particular. Al agregar un nuevo sistema se debe registrar su cálculo como un caso.
+        switch ($sistema->stmDescripcion) {
+
+          case 'BATIENTE NORMAL TRASLAPADA':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr) + 30;
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr) + 30;
+              $anchoFFAb = ($anchoI - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE NORMAL CHAFLAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE NORMAL IMAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            $anchoFFAr = $anchoFFAr - 25;
+            $anchoFFAb = $anchoFFAb - 25;
+            break;
+
+          case 'BATIENTE REDONDA TRASLAPADA':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr) + 30;
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr) + 30;
+              $anchoFFAb = ($anchoI - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE REDONDA CHAFLAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE REDONDA IMAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            $anchoFFAr = $anchoFFAr - 25;
+            $anchoFFAb = $anchoFFAb - 25;
+            break;
+
+          case 'BATIENTE ESQUINAS TRASLAPADA':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr) + 30;
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 8;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr) + 30;
+              $anchoFFAb = ($anchoI - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 8;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE ESQUINAS CHAFLAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 8;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 8;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE ESQUINAS IMAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 8;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 8;
+              $altoFF = $m->alto;
+            }
+            $anchoFFAr = $anchoFFAr - 25;
+            $anchoFFAb = $anchoFFAb - 25;
+            break;
+
+          case 'BATIENTE ARAÑA TRASLAPADA':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr) + 30;
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr) + 30;
+              $anchoFFAb = ($anchoI - $anchoFDAb) + 30;
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE ARAÑA CHAFLAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            break;
+
+          case 'BATIENTE ARAÑA IMAN':
+            $anchoFDAr = $m->anchoPuerta;
+            $anchoFDAb = $m->anchoPuerta;
+            if(abs($m->ancho2 - $m->ancho1) >= 5 ){
+              $anchoFFAr = ($m->ancho2 - $anchoFDAr);
+              $anchoFFAb = ($m->ancho1 - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI - $anchoFDAr);
+              $anchoFFAb = ($anchoI - $anchoFDAb);
+              $altoFD = $m->alto - 5;
+              $altoFF = $m->alto;
+            }
+            $anchoFFAr = $anchoFFAr - 25;
+            $anchoFFAb = $anchoFFAb - 25;
+            break;
+
+          case 'DIALAN':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 50;
+              $altoFD = $m->alto - 60;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 50;
+              $altoFD = $m->alto - 60;
+            }
+            break;
+
+          case 'K1':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 50;
+              $altoFD = $m->alto - 50;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 50;
+              $altoFD = $m->alto - 50;
+            }
+            break;
+
+          case 'K2':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 50;
+              $altoFD = $m->alto - 50;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 50;
+              $altoFD = $m->alto - 50;
+            }
+            break;
+
+          case 'K3':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto - 55;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto - 55;
+            }
+            break;
+
+          case 'K4':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto - 6;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto - 6;
+            }
+            break;
+
+          case 'K7':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto - 55;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto - 55;
+            }
+            break;
+
+          case 'TOGO':
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto - 20;
+              $altoFD = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr + 40;
+              $anchoFDAb = $anchoFFAb + 40;
+              $altoFF = $m->alto -20;
+              $altoFD = $m->alto;
+            }
+            break;
+
+          default:
+            if(abs($m->ancho2 - $m->ancho1) >= 20 ){
+              $anchoFFAr = ($m->ancho2 / 2);
+              $anchoFFAb = ($m->ancho1 / 2);
+              $anchoFDAr = $anchoFFAr;
+              $anchoFDAb = $anchoFFAb;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto;
+              $desc = true;
+            }else{
+              $anchoFFAr = ($anchoI / 2);
+              $anchoFFAb = ($anchoI / 2);
+              $anchoFDAr = $anchoFFAr;
+              $anchoFDAb = $anchoFFAb;
+              $altoFF = $m->alto;
+              $altoFD = $m->alto;
+            }
+            break;
+        }
+
+        $medidaNueva1 = new MedidaVidrio();
+        $medidaNueva2 = new MedidaVidrio();
+
+        //guardar Medidas
+
+        //Actualizar datos de orden y de detalles
+
+        //Actualizar precios y medidas de ser necesario
+        
+      }else{
+
+        //Actualizar razón negativa de orden detalle
+
+      }
     }
   }
 

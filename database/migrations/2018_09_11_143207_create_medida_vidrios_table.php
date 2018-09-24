@@ -21,6 +21,7 @@ class CreateMedidaVidriosTable extends Migration
             $table->integer('mvdAnchoArriba');
             $table->integer('mvdAnchoAbajo');
             $table->string('mvdTipo');
+            $table->string('mvdLado');
             $table->timestamps();
         });
     }
