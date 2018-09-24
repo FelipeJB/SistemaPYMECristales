@@ -20,6 +20,10 @@ class CreateSistemasTable extends Migration
           $table->string('stmDescripcion');
           $table->integer('stmPrecioVenta');
           $table->integer('stmPrecioCompra');
+          $table->integer('stmCantPerforaciones');
+          $table->integer('stmCantBoquetes');
+          $table->integer('stmCantBPB');
+          $table->integer('stmCantChaflan');
           $table->integer('stmActivo');
           $table->timestamps();
         });

@@ -9,6 +9,6 @@ class Sistema extends Model
   protected $primaryKey  = 'stmID';
 
   protected $fillable = [
-      'stmID', 'stmTipo', 'stmCodigoWO', 'stmDescripcion', 'stmPrecioVenta', 'stmPrecioCompra', 'stmActivo'
+      'stmID', 'stmTipo', 'stmCodigoWO', 'stmDescripcion', 'stmPrecioVenta', 'stmPrecioCompra', 'stmActivo', 'stmCantPerforaciones', 'stmCantBoquetes', 'stmCantBPB', 'stmCantChaflan'
   ];
 }

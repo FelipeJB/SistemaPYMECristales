@@ -18,11 +18,8 @@ class CreateMedidaVidriosTable extends Migration
             $table->integer('mvdOrddID');
             $table->integer('mvdOrdID');
             $table->integer('mvdAlto');
-            $table->integer('mvdAncho');
-            $table->integer('mvdCantPerforaciones');
-            $table->integer('mvdCantBoquetes');
-            $table->integer('mvdCantBPB');
-            $table->integer('mvdCantChaflan');
+            $table->integer('mvdAnchoArriba');
+            $table->integer('mvdAnchoAbajo');
             $table->string('mvdTipo');
             $table->timestamps();
         });

@@ -38,6 +38,7 @@ class CreateOrdenDetallesTable extends Migration
             $table->string('orddDescripcionAdicional')->nullable();
             $table->string('orddLadoPuerta')->nullable();
             $table->string('orddObservacionesVidrio')->nullable();
+            $table->integer('orddDescuadre')->nullable();
             $table->timestamps();
         });
     }
