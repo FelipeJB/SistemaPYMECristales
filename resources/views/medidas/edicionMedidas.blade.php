@@ -75,40 +75,7 @@
 
 
                 </div>
-                @if($detalle->orddRelacion != 0)
-                <div class="form-group row">
-                  <label for="ancho1" class="col-md-2 col-form-label text-md-right">Ancho 1 Izquierda *</label>
 
-                  <div class="col-md-4 input-group">
-                      <input id="ancho1" type="text" class="form-control{{ Session::has('ancho1') ? ' is-invalid' : '' }}" name="ancho1" value="{{$medida->ancho1}}">
-                      <div class="input-group-append">
-                        <span class="input-group-text">mm</span>
-                      </div>
-
-                      @if (Session::has('ancho1'))
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ Session::get('ancho1') }}</strong>
-                          </span>
-                      @endif
-                  </div>
-
-                  <label for="ancho2" class="col-md-2 col-form-label text-md-right">Ancho 2 Derecha *</label>
-
-                  <div class="col-md-4 input-group">
-                      <input id="ancho2" type="text" class="form-control{{ Session::has('ancho2') ? ' is-invalid' : '' }}" name="ancho2" value="{{$medida->ancho2}}">
-                      <div class="input-group-append">
-                        <span class="input-group-text">mm</span>
-                      </div>
-
-                      @if (Session::has('ancho2'))
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ Session::get('ancho2') }}</strong>
-                          </span>
-                      @endif
-                  </div>
-
-                </div>
-                @else
                 <div class="form-group row">
                   <label for="ancho1" class="col-md-2 col-form-label text-md-right">Ancho abajo *</label>
 
@@ -141,8 +108,6 @@
                   </div>
 
                 </div>
-                @endif
-
 
 
                 <div class="form-group row">

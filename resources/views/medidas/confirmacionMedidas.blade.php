@@ -40,14 +40,14 @@
 
                         @if($medidas[$i]->esPositiva)
                           <h6 style="line-height:25px">
-                            Puerta a la {{$medidas[$i]->ladoPuerta}}, {{$medidas[$i]->alto}} mm de alto,
+                            Puerta a la <b>{{$medidas[$i]->ladoPuerta}}</b>, <b>{{$medidas[$i]->alto}}mm</b> de alto,
                             @if($medidas[$i]->esCompuesto)
-                              {{$medidas[$i]->ancho1}} mm de ancho 1 izquierda, {{$medidas[$i]->ancho2}} mm de ancho 2 derecha
+                              <b>{{$medidas[$i]->ancho1}}mm</b> de ancho
                             @else
-                              {{$medidas[$i]->ancho1}} mm de ancho abajo, {{$medidas[$i]->ancho2}} mm de ancho arriba
+                              <b>{{$medidas[$i]->ancho1}}mm</b> de ancho abajo, <b>{{$medidas[$i]->ancho2}}mm</b> de ancho arriba
                             @endif
                             @if ($medidas[$i]->esBatiente)
-                              , {{$medidas[$i]->ancho2}} mm de ancho de la puerta
+                              , <b>{{$medidas[$i]->ancho2}}mm</b> de ancho de la puerta
                             @endif .
                             @if ($medidas[$i]->observaciones !=null)
                             <br> Observaciones: {{$medidas[$i]->observaciones}}.

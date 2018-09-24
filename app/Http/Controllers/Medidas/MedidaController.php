@@ -97,6 +97,10 @@ class MedidaController extends Controller
                 return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
                 ->withInput();
               }
+              else if($anchoPuerta <=0){
+                return Redirect::back()->with('error', 'Todas las medidas deben ser positivas')
+                ->withInput();
+              }
             }
 
             //validar que las medidas sean numéricas
@@ -111,6 +115,19 @@ class MedidaController extends Controller
             if(!is_numeric($alto)){
               return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
               ->withInput();
+            }
+
+            //validar que medidas sean mayores a 0
+            if((is_numeric($ancho1) && $ancho1 <= 0) || (is_numeric($ancho2) && $ancho2 <= 0) || (is_numeric($alto) && $alto <= 0)){
+              return Redirect::back()->with('error', 'Todas las medidas deben ser positivas')
+              ->withInput();
+            }
+
+            if($detalle->orddRelacion != 0){
+              if ($ancho1 != $ancho2){
+                return Redirect::back()->with('error', 'Para sistemas compuestos los anchos deben ser iguales')
+                ->withInput();
+              }
             }
 
             //Ingresar datos en datosmedida
@@ -213,6 +230,10 @@ class MedidaController extends Controller
                 return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
                 ->withInput();
               }
+              else if($anchoPuerta <=0){
+                return Redirect::back()->with('error', 'Todas las medidas deben ser positivas')
+                ->withInput();
+              }
             }
 
             //validar que las medidas sean numéricas
@@ -227,6 +248,19 @@ class MedidaController extends Controller
             if(!is_numeric($alto)){
               return Redirect::back()->with('error', 'Las medidas deben ser numéricas')
               ->withInput();
+            }
+
+            //validar que medidas sean mayores a 0
+            if((is_numeric($ancho1) && $ancho1 <= 0) || (is_numeric($ancho2) && $ancho2 <= 0) || (is_numeric($alto) && $alto <= 0)){
+              return Redirect::back()->with('error', 'Todas las medidas deben ser positivas')
+              ->withInput();
+            }
+
+            if($detalle->orddRelacion != 0){
+              if ($ancho1 != $ancho2){
+                return Redirect::back()->with('error', 'Para sistemas compuestos los anchos deben ser iguales')
+                ->withInput();
+              }
             }
 
             //Ingresar datos en datosmedida
@@ -320,7 +354,7 @@ class MedidaController extends Controller
   private function calcularMedidas($medidas)
   {
     foreach ($medidas as $m){
-      
+
     }
   }
 
