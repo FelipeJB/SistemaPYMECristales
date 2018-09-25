@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Medidas;
 use Auth;
 use App\User;
 use App\Sistema;
+use App\Color;
+use App\PrecioVidrio;
 use App\Orden;
 use App\OrdenDetalle;
 use App\MedidaVidrio;
@@ -332,8 +334,13 @@ class MedidaController extends Controller
             $this->calcularMedidas($medidas);
 
             //Actualizar precios y medidas de ser necesario y si ya se tomaron todas las medidas
-
-            //Generar Planos
+            $medidasTomadas = MedidaVidrio::where("mvdOrdID", "=", $numOrden)->count();
+            if(($medidasTomadas/2) == $total){
+              $orden = Orden::where("ordID", "=", $numOrden)->first();
+              $orden->ordEstadoInstalacionID = 3;
+              $orden->save();
+              $this->recalcularPrecios($orden);
+            }
 
             //borrar datos de sesión
             Request::session()->put('orden', null);
@@ -783,6 +790,47 @@ class MedidaController extends Controller
         $detalle->save();
       }
     }
+  }
+
+  private function recalcularPrecios($orden)
+  {
+    $detalles = OrdenDetalle::where("orddID", "=", $orden->ordID)->get();
+    foreach ($detalles as $d) {
+      //Cálculo del precio de venta con las nuevas medidas
+      $medidas = MedidaVidrio::where("mvdOrddID", "=", $d->orddID)->get();
+      $alto = max($medidas[0]->mvdAlto, $medidas[1]->mvdAlto);
+      $ancho = max(($medidas[0]->mvdAnchoArriba + $medidas[1]->mvdAnchoArriba), ($medidas[0]->mvdAnchoAbajo + $medidas[1]->mvdAnchoAbajo));
+      $stm = Sistema::where('stmID','=',$d->orddSistemaID)->first();
+      $clr =  Color::where('clrID','=',$d->orddColorID)->first();
+      $precio = PrecioVidrio::where('pvdMilimID','=',$d->orddMilimID)->where('pvdSistemaID','=',$d->orddSistemaID)->first();
+      $precioVidrio = ($ancho*$alto*$precio->pvdPrecioVenta*(100-$d->orddDescuento))/100000000;
+      $d->orddTotal = $this->roundUpToAny(($precioVidrio + $stm->stmPrecioVenta + $clr->clrPrecioVenta + $d->orddValorAdicional + ($d->orddCantToalleros*50000)),50);
+
+      //Cálculo del precio de compra con las nuevas medidas
+      $precioVidrioCompra = ($ancho*$alto*$precio->pvdPrecioCompra)/1000000;
+      $d->orddTotalCompra = $this->roundUpToAny(($precioVidrioCompra + $stm->stmPrecioCompra + $clr->clrPrecioCompra + $d->orddValorAdicional + ($d->orddCantToalleros*50000)),50);
+      $d->save();
+    }
+
+    // Se calcula el precio total de compra y de venta para la orden
+    $total = $totalCompra = 0;
+    foreach($detalles as $d){
+      $total = $total + $d->orddTotal;
+      $totalCompra = $totalCompra + $d->orddTotalCompra;
+    }
+
+    // se establece el nuevo precio de compra, y el nuevo de venta si este es 50000 pesos más caro o barato que el inicial
+    $orden->ordTotalCompra = $totalCompra;
+    if(abs($total - $orden->ordTotal) >= 50000){
+      $orden->ordTotal = $total;
+      $orden->ordSaldo = $orden->ordTotal - $orden->ordAbono;
+    }
+    $orden->save();
+  }
+
+  public function generarPlanos()
+  {
+
   }
 
   public function cancel()

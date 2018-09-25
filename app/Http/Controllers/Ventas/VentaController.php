@@ -59,7 +59,7 @@ class VentaController extends Controller
     $detalles = Request::session()->get('detalles');
     foreach($detalles as $d){
       $total = $total + $d->orddTotal;
-      $totalCompra = $totalCompra + $d->orddTotal;
+      $totalCompra = $totalCompra + $d->orddTotalCompra;
     }
 
     //validar abono numérico
@@ -188,7 +188,7 @@ class VentaController extends Controller
     $newDetalle->orddTotal = $this->roundUpToAny(($precioVidrio + $stm->stmPrecioVenta + $clr->clrPrecioVenta + $adicional + ($toalleros*50000)),50);
 
     //Cálculo del precio total de compra
-    $precioVidrioCompra = ($ancho*$alto*$precio->precioCompra)/1000000;
+    $precioVidrioCompra = ($ancho*$alto*$precio->pvdPrecioCompra)/1000000;
     $newDetalle->orddTotalCompra = $this->roundUpToAny(($precioVidrioCompra + $stm->stmPrecioCompra + $clr->clrPrecioCompra + $adicional + ($toalleros*50000)),50);
 
     //guardar orden detalle en sesión

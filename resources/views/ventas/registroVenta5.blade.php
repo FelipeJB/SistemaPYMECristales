@@ -16,7 +16,7 @@
           <div class="row mb-0">
               <div class="col-lg-2 offset-lg-4">
                 <br>
-                <a href="/GenerarInformeVenta/{{$id}}" class='btn btn-primary btn-block'>Generar Informe</a>
+                <a href="/GenerarInformeVenta/{{$id}}" class='btn btn-primary btn-block'>Generar Documento</a>
               </div>
               <div class="col-lg-2">
                 <br>
