@@ -328,8 +328,10 @@ class MedidaController extends Controller
         $registros = MedidaVidrio::where("mvdOrdID", "=", $numOrden)->count();
         $total = OrdenDetalle::where("orddOrdenID", "=", $numOrden)->count();
         if((count($medidas) + ($registros/2)) == $total){
-            //calcular Medidas
+            //calcular y guardar Medidas
             $this->calcularMedidas($medidas);
+
+            //Actualizar precios y medidas de ser necesario y si ya se tomaron todas las medidas
 
             //Generar Planos
 
@@ -734,19 +736,51 @@ class MedidaController extends Controller
             break;
         }
 
-        $medidaNueva1 = new MedidaVidrio();
-        $medidaNueva2 = new MedidaVidrio();
-
         //guardar Medidas
+        $medidaNueva1 = new MedidaVidrio();
+        $medidaNueva1->mvdOrddID = $m->idDetalle;
+        $medidaNueva1->mvdOrdID = $detalle->ordID;
+        $medidaNueva1->mvdTipo = "Fijo";
 
-        //Actualizar datos de orden y de detalles
+        $medidaNueva2 = new MedidaVidrio();
+        $medidaNueva2->mvdOrddID = $m->idDetalle;
+        $medidaNueva2->mvdOrdID = $detalle->ordID;
+        $medidaNueva2->mvdTipo = "Puerta";
 
-        //Actualizar precios y medidas de ser necesario
-        
+        if($m->ladoPuerta == "Derecha"){
+          $medidaNueva1->mvdLado = "Izquierda";
+          $medidaNueva1->mvdAlto = $altoFF;
+          $medidaNueva1->mvdAnchoArriba = $anchoFFAr;
+          $medidaNueva1->mvdAnchoAbajo = $anchoFFAb;
+        }else{
+          $medidaNueva1->mvdLado = "Derecha";
+          $medidaNueva1->mvdAlto = $altoFD;
+          $medidaNueva1->mvdAnchoArriba = $anchoFDAr;
+          $medidaNueva1->mvdAnchoAbajo = $anchoFDAb;
+        }
+
+        $medidaNueva1->save();
+        $medidaNueva2->save();
+
+        //Actualizar datos de detalle y orden
+        $orden = Orden::where("ordID", "=", $detalle->ordID)->first();
+        $orden->ordEstadoInstalacionID = 2;
+        $orden->save();
+        $detalle->orddFechaMedidas = date("Y-m-d");
+        $detalle->orddEstadoMedidasID = 2;
+        $detalle->orddAuxiliarID = Auth::user()->id;
+        $detalle->orddLadoPuerta = $m->ladoPuerta;
+        $detalle->orddObservacionesVidrio = $m->observaciones;
+        $detalle->orddDescuadre = $desc;
+        $detalle->save();
+
       }else{
+        $detalle = OrdenDetalle::where("orddID", "=", $m->idDetalle)->first();
 
         //Actualizar razón negativa de orden detalle
-
+        $detalle->orddFechaMedidas = date("Y-m-d");
+        $detalle->orddRazonNegativa = $m->razonNegativa;
+        $detalle->save();
       }
     }
   }
