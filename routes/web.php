@@ -573,9 +573,9 @@ Route::post('/EditarMedida', 'Medidas\MedidaController@edit')->middleware('auth'
 Route::get('/CancelarMedidas', 'Medidas\MedidaController@cancel')->middleware('auth');
 Route::get('/CrearMedidas', 'Medidas\MedidaController@confirm')->middleware('auth');
 Route::get('/FinalizarMedidas/{id}', function ($id) {
-  if(Auth::user()->usrRolID==2){
+  if(Auth::user()->usrRolID==3){
     $venta= \App\Orden::where('ordID','=',$id)->get();
-    if(count($venta)>0 && $venta[0]->orddEstadoInstalacionID >=2){
+    if(count($venta)>0 && $venta[0]->ordEstadoInstalacionID >=2){
         return view('medidas/finalizarMedidas', compact('id'));
     }else{
         return Redirect::to('/');

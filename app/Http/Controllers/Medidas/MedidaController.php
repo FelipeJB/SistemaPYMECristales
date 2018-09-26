@@ -338,7 +338,6 @@ class MedidaController extends Controller
             if(($medidasTomadas/2) == $total){
               $orden = Orden::where("ordID", "=", $numOrden)->first();
               $orden->ordEstadoInstalacionID = 3;
-              $orden->save();
               $this->recalcularPrecios($orden);
             }
 
@@ -745,13 +744,13 @@ class MedidaController extends Controller
 
         //guardar Medidas
         $medidaNueva1 = new MedidaVidrio();
-        $medidaNueva1->mvdOrddID = $m->idDetalle;
-        $medidaNueva1->mvdOrdID = $detalle->ordID;
+        $medidaNueva1->mvdOrddID = $detalle->orddID;
+        $medidaNueva1->mvdOrdID = $detalle->orddOrdenID;
         $medidaNueva1->mvdTipo = "Fijo";
 
         $medidaNueva2 = new MedidaVidrio();
-        $medidaNueva2->mvdOrddID = $m->idDetalle;
-        $medidaNueva2->mvdOrdID = $detalle->ordID;
+        $medidaNueva2->mvdOrddID = $detalle->orddID;
+        $medidaNueva2->mvdOrdID = $detalle->orddOrdenID;
         $medidaNueva2->mvdTipo = "Puerta";
 
         if($m->ladoPuerta == "Derecha"){
@@ -759,18 +758,26 @@ class MedidaController extends Controller
           $medidaNueva1->mvdAlto = $altoFF;
           $medidaNueva1->mvdAnchoArriba = $anchoFFAr;
           $medidaNueva1->mvdAnchoAbajo = $anchoFFAb;
+          $medidaNueva2->mvdLado = "Derecha";
+          $medidaNueva2->mvdAlto = $altoFD;
+          $medidaNueva2->mvdAnchoArriba = $anchoFDAr;
+          $medidaNueva2->mvdAnchoAbajo = $anchoFDAb;
         }else{
           $medidaNueva1->mvdLado = "Derecha";
-          $medidaNueva1->mvdAlto = $altoFD;
-          $medidaNueva1->mvdAnchoArriba = $anchoFDAr;
-          $medidaNueva1->mvdAnchoAbajo = $anchoFDAb;
+          $medidaNueva1->mvdAlto = $altoFF;
+          $medidaNueva1->mvdAnchoArriba = $anchoFFAr;
+          $medidaNueva1->mvdAnchoAbajo = $anchoFFAb;
+          $medidaNueva2->mvdLado = "Izquierda";
+          $medidaNueva2->mvdAlto = $altoFD;
+          $medidaNueva2->mvdAnchoArriba = $anchoFDAr;
+          $medidaNueva2->mvdAnchoAbajo = $anchoFDAb;
         }
 
         $medidaNueva1->save();
         $medidaNueva2->save();
 
         //Actualizar datos de detalle y orden
-        $orden = Orden::where("ordID", "=", $detalle->ordID)->first();
+        $orden = Orden::where("ordID", "=", $detalle->orddOrdenID)->first();
         $orden->ordEstadoInstalacionID = 2;
         $orden->save();
         $detalle->orddFechaMedidas = date("Y-m-d");
@@ -794,7 +801,7 @@ class MedidaController extends Controller
 
   private function recalcularPrecios($orden)
   {
-    $detalles = OrdenDetalle::where("orddID", "=", $orden->ordID)->get();
+    $detalles = OrdenDetalle::where("orddOrdenID", "=", $orden->ordID)->get();
     foreach ($detalles as $d) {
       //Cálculo del precio de venta con las nuevas medidas
       $medidas = MedidaVidrio::where("mvdOrddID", "=", $d->orddID)->get();
@@ -809,6 +816,8 @@ class MedidaController extends Controller
       //Cálculo del precio de compra con las nuevas medidas
       $precioVidrioCompra = ($ancho*$alto*$precio->pvdPrecioCompra)/1000000;
       $d->orddTotalCompra = $this->roundUpToAny(($precioVidrioCompra + $stm->stmPrecioCompra + $clr->clrPrecioCompra + $d->orddValorAdicional + ($d->orddCantToalleros*50000)),50);
+      $d->orddAlto = $alto;
+      $d->orddAncho = $ancho;
       $d->save();
     }
 
@@ -840,6 +849,10 @@ class MedidaController extends Controller
       Request::session()->put('medidas', null);
     }
     return Redirect::to('/');
+  }
+
+  private function roundUpToAny($n,$x=5) {
+    return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x;
   }
 
 }

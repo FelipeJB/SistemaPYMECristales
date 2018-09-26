@@ -27,7 +27,7 @@ class CreateOrdenDetallesTable extends Migration
             $table->integer('orddColorID');
             $table->integer('orddDisenoID');
             $table->integer('orddEstadoMedidasID')->nullable();
-            $table->integer('orddRazonNegativa')->nullable();
+            $table->string('orddRazonNegativa')->nullable();
             $table->dateTime('orddFechaMedidas')->nullable();
             $table->integer('orddAuxiliarID')->nullable();
             $table->string('orddObservaciones')->nullable();
