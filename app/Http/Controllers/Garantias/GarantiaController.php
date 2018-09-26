@@ -40,6 +40,40 @@ class GarantiaController extends Controller
 
   }
 
+  public function validateOrderNumberInforme()
+  {
+      /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+      $numero = Input::get('numero');
+
+      //validar que se ingresen tods los datos
+      if($numero == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
+
+      //validar número numérico
+      if(!is_numeric($numero)){
+        return Redirect::back()->with('numero', 'Ingrese un número de orden válido')
+        ->withInput();
+      }
+
+      //validar orden registrada con garantía y redirigir al siguiente formulario guardando el número de orden en la sesión
+      $orden = Orden::where("ordID", "=", $numero)->first();
+      if ($orden == null){
+        return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
+        ->withInput();
+      }else{
+        $garantia = Garantia::where("grnOrdenID", "=", $numero)->first();
+        if ($garantia == null){
+          return Redirect::back()->with('numero', 'No se encontró garantía para la orden especificada')
+          ->withInput();
+        }else{
+          return Redirect::to('/ConsultarGarantia/'.$numero);
+        }
+      }
+
+  }
+
   public function register()
   {
     /*Se guardan los datos de la orden dentro de variables desde el formulario*/
@@ -60,7 +94,7 @@ class GarantiaController extends Controller
       $newGarantia->grnObservaciones = $observaciones;
       $newGarantia->save();
 
-      $this->generateWarrantyOrder();
+      $this->generateWarrantyOrder($ordID);
 
       return Redirect::to('/')->with('success', 'La garantía ha sido registrada exitosamente')->withInput();
 
@@ -70,10 +104,18 @@ class GarantiaController extends Controller
 
   }
 
-  private function generateWarrantyOrder()
+  public function getWarrantyDocument($id)
   {
-    //Aquí se genera el informe de garantía
+    $this->generateWarrantyOrder($id);
+    return Redirect::to('/')->with('success', 'Documento generado exitosamente')->withInput();
   }
 
+  private function generateWarrantyOrder($id)
+  {
+    //Obtener la garantía especificada
+    $garantia = Garantia::where("grnID", "=", $id)->first();
+
+    //código para generar el documento a partir de la garantía guardada en $garantia
+  }
 
 }

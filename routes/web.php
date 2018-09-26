@@ -473,6 +473,15 @@ Route::get('/RegistrarGarantiaForm/{idOrd}', function ($idOrd) {
   }
 })->middleware('auth');
 Route::post('/RegistrarGarantiaForm', 'Garantias\GarantiaController@register')->middleware('auth');
+Route::get('/ConsultarGarantia', function () {
+  if(Auth::user()->usrRolID==2){
+    return view('garantias/generarInforme');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/ConsultarGarantia', 'Garantias\GarantiaController@validateOrderNumberInforme')->middleware('auth');
+Route::get('/ConsultarGarantia/{id}', 'Garantias\GarantiaController@getWarrantyDocument')->middleware('auth');
 
 //Rutas de Registro de Medidas
 Route::get('/RegistrarMedidas', function () {

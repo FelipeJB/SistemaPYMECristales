@@ -75,6 +75,7 @@
                   <h3>Garantías</h3>
                   <ul>
                     <li><a href="/RegistrarGarantia">Registrar Garantía</a></li>
+                    <li><a href="/ConsultarGarantia">Consultar documento de Garantía</a></li>
                   </ul>
                 </div>
               </div>

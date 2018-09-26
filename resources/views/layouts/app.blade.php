@@ -126,6 +126,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownGarantias">
                                   <a class="dropdown-item" href="/RegistrarGarantia">Registrar Garantía</a>
+                                  <a class="dropdown-item" href="/ConsultarGarantia">Consultar documento de Garantía</a>
                                 </div>
                             </li>
                             @endif
