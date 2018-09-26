@@ -593,3 +593,12 @@ Route::get('/FinalizarMedidas/{id}', function ($id) {
     return Redirect::to('/');
   }
 })->middleware('auth');
+Route::get('/GenerarPlanosMedidas', function () {
+  if(Auth::user()->usrRolID==3){
+    return view('medidas/generarPlanos');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/GenerarPlanosMedidas', 'Medidas\MedidaController@validateOrderNumberPlanos')->middleware('auth');
+Route::get('/GenerarPlanosMedidas/{id}', 'Medidas\MedidaController@generarPlanos')->middleware('auth');

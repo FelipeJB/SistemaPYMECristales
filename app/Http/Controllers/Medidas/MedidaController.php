@@ -62,6 +62,39 @@ class MedidaController extends Controller
 
   }
 
+  public function validateOrderNumberPlanos()
+  {
+      /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+      $numero = Input::get('numero');
+
+      //validar que se ingresen tods los datos
+      if($numero == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
+
+      //validar número numérico
+      if(!is_numeric($numero)){
+        return Redirect::back()->with('numero', 'Ingrese un número de orden válido')
+        ->withInput();
+      }
+
+      //validar orden registrada con medidas y redirigir al siguiente formulario guardando el número de orden en la sesión
+      $orden = Orden::where("ordID", "=", $numero)->first();
+      if ($orden == null){
+        return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
+        ->withInput();
+      }else{
+        if ($orden->ordEstadoInstalacionID == 1){
+          return Redirect::back()->with('numero', 'No se han tomado medidas para la orden especificada')
+          ->withInput();
+        }else{
+          return Redirect::to('/GenerarPlanosMedidas/'.$numero);
+        }
+      }
+
+  }
+
   public function register()
   {
     /*Se guardan los datos dentro de variables desde el formulario*/
@@ -837,9 +870,17 @@ class MedidaController extends Controller
     $orden->save();
   }
 
-  public function generarPlanos()
+  public function generarPlanos($id)
   {
+    //Obtener datos para el documento
+    $orden = \App\Orden::where('ordID','=',$id)->first();
+    $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
 
+    //Generar planos
+
+    //aquí va el código para generar el documento de toma de medidas
+
+    return Redirect::to('/')->with('success', 'Planos generados existosamente');
   }
 
   public function cancel()

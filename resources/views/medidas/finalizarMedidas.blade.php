@@ -16,7 +16,7 @@
           <div class="row mb-0">
               <div class="col-lg-2 offset-lg-4">
                 <br>
-                <a href="/GenerarPlanos/{{$id}}" class='btn btn-primary btn-block'>Generar Planos</a>
+                <a href="/GenerarPlanosMedidas/{{$id}}" class='btn btn-primary btn-block'>Generar Planos</a>
               </div>
               <div class="col-lg-2">
                 <br>

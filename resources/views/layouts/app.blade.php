@@ -138,6 +138,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMedidas">
                                     <a class="dropdown-item" href="/RegistrarMedidas">Tomar Medidas</a>
+                                    <a class="dropdown-item" href="/GenerarPlanosMedidas">Generar planos de Medidas</a>
                                 </div>
                             </li>
                             @endif

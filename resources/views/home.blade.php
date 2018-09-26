@@ -86,6 +86,7 @@
                   <h3>Medidas</h3>
                   <ul>
                     <li><a href="/RegistrarMedidas">Tomar Medidas</a></li>
+                    <li><a href="/GenerarPlanosMedidas">Generar planos de Medidas</a></li>
                   </ul>
                 </div>
               </div>
