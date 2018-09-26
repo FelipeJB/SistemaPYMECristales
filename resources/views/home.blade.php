@@ -69,6 +69,7 @@
                   <h3>Ventas</h3>
                   <ul>
                     <li><a href="/RegistrarVenta">Registrar Venta</a></li>
+                    <li><a href="/Ventas">Ver Ventas</a></li>
                     <li><a href="/ConsultarVenta">Consultar estado de Venta</a></li>
                     <li><a href="/GenerarInformeVenta">Generar informe de Venta</a></li>
                   </ul>
@@ -87,6 +88,11 @@
                   <ul>
                     <li><a href="/RegistrarMedidas">Tomar Medidas</a></li>
                     <li><a href="/GenerarPlanosMedidas">Generar planos de Medidas</a></li>
+                  </ul>
+                  <h3>Ventas</h3>
+                  <ul>
+                    <li><a href="/Ventas">Ver Ventas</a></li>
+                    <li><a href="/GenerarInformeVenta">Generar informe de Venta</a></li>
                   </ul>
                 </div>
               </div>

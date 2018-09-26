@@ -115,6 +115,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownVentas">
                                     <a class="dropdown-item" href="/RegistrarVenta">Registrar Venta</a>
+                                    <a class="dropdown-item" href="/Ventas">Ver Ventas</a>
                                     <a class="dropdown-item" href="/ConsultarVenta">Consultar estado de Venta</a>
                                     <a class="dropdown-item" href="/GenerarInformeVenta">Generar informe de Venta</a>
                                 </div>
@@ -139,6 +140,16 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMedidas">
                                     <a class="dropdown-item" href="/RegistrarMedidas">Tomar Medidas</a>
                                     <a class="dropdown-item" href="/GenerarPlanosMedidas">Generar planos de Medidas</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownVentas" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Ventas <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownVentas">
+                                    <a class="dropdown-item" href="/Ventas">Ver Ventas</a>
+                                    <a class="dropdown-item" href="/GenerarInformeVenta">Generar informe de Venta</a>
                                 </div>
                             </li>
                             @endif

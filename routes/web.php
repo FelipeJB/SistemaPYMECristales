@@ -446,7 +446,7 @@ Route::get('/ConsultarVenta/{id}', function ($id) {
   }
 })->middleware('auth');
 Route::get('/GenerarInformeVenta', function () {
-  if(Auth::user()->usrRolID==2){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
     return view('ventas/generarInforme');
   }else{
     return Redirect::to('/');
@@ -454,6 +454,34 @@ Route::get('/GenerarInformeVenta', function () {
 })->middleware('auth');
 Route::post('/GenerarInformeVenta', 'Ventas\VentaController@validateOrderNumberInforme')->middleware('auth');
 Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
+Route::get('/Ventas', function () {
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+    $ordenes= DB::table('ordens')
+      ->join('clientes', 'ordens.ordClienteID', '=', 'clientes.cltID')
+      ->orderBy('ordens.ordID', 'DESC')->get();
+    return view('ventas/verVentas', compact('ordenes'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::get('/Ventas/{id}', function ($id) {
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+    $orden= \App\Orden::where('ordID','=',$id)->first();
+    $detalles = DB::table('orden_detalles')
+      ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
+      ->join('sistemas', 'orden_detalles.orddSistemaID', '=', 'sistemas.stmID')
+      ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
+      ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
+    ->where("orden_detalles.orddOrdenID", "=", $id)->get();
+    if($orden !=null){
+      return view('ventas/detalleVenta', compact('orden', 'detalles'));
+    }else{
+      return Redirect::to('/');
+    }
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
 
 //Rutas de Registro de Garantías
 Route::get('/RegistrarGarantia', function () {
