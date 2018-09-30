@@ -453,7 +453,17 @@ Route::get('/GenerarInformeVenta', function () {
   }
 })->middleware('auth');
 Route::post('/GenerarInformeVenta', 'Ventas\VentaController@validateOrderNumberInforme')->middleware('auth');
-Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
+// Route::post('/GenerarInformeVentaPdf/{id}', function () {
+//   if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+//     $ordenes= DB::table('ordens')
+//       ->join('clientes', 'ordens.ordClienteID', '=', 'clientes.cltID')
+//       ->orderBy('ordens.ordID', 'DESC')->get();
+//     return view('ventas/generarInformePdf', compact('ordenes', 'id'));
+//   }else{
+//     return Redirect::to('/');
+//   }
+// })->middleware('auth');
+Route::get('/GenerarInformeVentaPdf/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
 Route::get('/Ventas', function () {
   if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
     $ordenes= DB::table('ordens')
@@ -630,3 +640,6 @@ Route::get('/GenerarPlanosMedidas', function () {
 })->middleware('auth');
 Route::post('/GenerarPlanosMedidas', 'Medidas\MedidaController@validateOrderNumberPlanos')->middleware('auth');
 Route::get('/GenerarPlanosMedidas/{id}', 'Medidas\MedidaController@generarPlanos')->middleware('auth');
+
+//Ruta de descarga de informe de venta
+//Route::get('pdf', 'VentaController@createOrderDocument');

@@ -13,6 +13,7 @@ use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use PDF;
 
 class VentaController extends Controller
 {
@@ -238,12 +239,15 @@ class VentaController extends Controller
     $orden = \App\Orden::where('ordID','=',$id)->first();
     $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
     $cliente = \App\Cliente::where('cltID','=',$orden->ordClienteID)->first();
+    $ordenes = \App\Orden::all();
 
     //Generar informe de venta
+    $pdf = PDF::loadView('ventas/generarInformePdf', ['orden' => $orden, 'detalles' => $detalles]);
+    return $pdf->download('prueba.pdf');
 
     //aquí va el código para generar el documento de la venta
 
-    return Redirect::to('/')->with('success', 'Documento generado existosamente');
+    //return Redirect::to('/')->with('success', 'Documento generado existosamente');
   }
 
   public function validateOrderNumberConsulta()
@@ -297,7 +301,7 @@ class VentaController extends Controller
         return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
         ->withInput();
       }else{
-        return Redirect::to('/GenerarInformeVenta/'.$numero);
+        return Redirect::to('/GenerarInformeVentaPdf/'.$numero);
       }
 
   }
