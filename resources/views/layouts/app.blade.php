@@ -103,8 +103,15 @@
                                     <a class="dropdown-item" href="/CrearInstalador">Crear Instalador</a>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/MigrarDatos">Migrar Datos</a>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownDatos" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Datos <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownDatos">
+                                    <a class="dropdown-item" href="/MigrarDatos">Migrar Datos</a>
+                                    <a class="dropdown-item" href="/EmitirInformes">Emitir Informes</a>
+                                </div>
                             </li>
                             @endif
                             @if(Auth::user()->usrRolID == 2)
@@ -140,6 +147,27 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMedidas">
                                     <a class="dropdown-item" href="/RegistrarMedidas">Tomar Medidas</a>
                                     <a class="dropdown-item" href="/GenerarPlanosMedidas">Generar planos de Medidas</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownVentas" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Ventas <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownVentas">
+                                    <a class="dropdown-item" href="/Ventas">Ver Ventas</a>
+                                    <a class="dropdown-item" href="/GenerarInformeVenta">Generar informe de Venta</a>
+                                </div>
+                            </li>
+                            @endif
+                            @if(Auth::user()->usrRolID == 4)
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdownInstalacion" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Instalación <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownInstalacion">
+                                    <a class="dropdown-item" href="/ProgramarInstalacion">Programar Instalación</a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

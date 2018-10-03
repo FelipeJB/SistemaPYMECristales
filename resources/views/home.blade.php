@@ -58,6 +58,7 @@
                   <h3>Datos</h3>
                   <ul>
                     <li><a href="/MigrarDatos">Migrar Datos</a></li>
+                    <li><a href="/EmitirInformes">Emitir Informes</a></li>
                   </ul>
                 </div>
               </div>
@@ -88,6 +89,21 @@
                   <ul>
                     <li><a href="/RegistrarMedidas">Tomar Medidas</a></li>
                     <li><a href="/GenerarPlanosMedidas">Generar planos de Medidas</a></li>
+                  </ul>
+                  <h3>Ventas</h3>
+                  <ul>
+                    <li><a href="/Ventas">Ver Ventas</a></li>
+                    <li><a href="/GenerarInformeVenta">Generar informe de Venta</a></li>
+                  </ul>
+                </div>
+              </div>
+            @endif
+            @if(Auth::user()->usrRolID == 4)
+              <div class="row">
+                <div class="col-md-4">
+                  <h3>Instalación</h3>
+                  <ul>
+                    <li><a href="/ProgramarInstalacion">Programar Instalación</a></li>
                   </ul>
                   <h3>Ventas</h3>
                   <ul>

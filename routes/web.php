@@ -446,7 +446,7 @@ Route::get('/ConsultarVenta/{id}', function ($id) {
   }
 })->middleware('auth');
 Route::get('/GenerarInformeVenta', function () {
-  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     return view('ventas/generarInforme');
   }else{
     return Redirect::to('/');
@@ -455,7 +455,7 @@ Route::get('/GenerarInformeVenta', function () {
 Route::post('/GenerarInformeVenta', 'Ventas\VentaController@validateOrderNumberInforme')->middleware('auth');
 Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
 Route::get('/Ventas', function () {
-  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     $ordenes= DB::table('ordens')
       ->join('clientes', 'ordens.ordClienteID', '=', 'clientes.cltID')
       ->orderBy('ordens.ordID', 'DESC')->get();
@@ -465,7 +465,7 @@ Route::get('/Ventas', function () {
   }
 })->middleware('auth');
 Route::get('/Ventas/{id}', function ($id) {
-  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     $orden= \App\Orden::where('ordID','=',$id)->first();
     $detalles = DB::table('orden_detalles')
       ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
