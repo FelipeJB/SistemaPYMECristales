@@ -643,7 +643,8 @@ Route::post('/ProgramarInstalacion', 'Ventas\VentaController@validateInstalation
 Route::get('/ProgramarInstalacionForm/{idOrd}', function ($idOrd) {
   if(Auth::user()->usrRolID == 4){
     $orden = \App\Orden::where("ordID", "=", $idOrd)->first();
-    return view('instalaciones/programacionInstalacion', compact('orden'));
+    $instaladores= \App\Instalador::all();
+    return view('instalaciones/programacionInstalacion', compact('orden', 'instaladores'));
   }else{
     return Redirect::to('/');
   }

@@ -28,10 +28,51 @@
               </div>
           @endif
 
+          @if($orden->ordEstadoInstalacionID == 2)
+              <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4 class="alert-heading">Precaución!</h4>
+                <strong><i class="fa fa-check"></i></strong> Esta orden aún no tiene todas sus medidas tomadas, ¿Seguro que desea programar la instalación?
+              </div>
+          @endif
+
+          @if($orden->ordEstadoInstalacionID == 4)
+              <div class="alert alert-dismissible alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <h4 class="alert-heading">Precaución!</h4>
+                <strong><i class="fa fa-check"></i></strong> Esta orden ya tiene una instalación programada, ¿Seguro que desea reprogramarla?
+              </div>
+          @endif
+
           <form method="POST" action="/ProgramarInstalacionForm">
               @csrf
               <input id="ordID" type="hidden" name="ordID" value="{{$orden->ordID}}" required>
 
+              <div class="form-group row">
+
+                  <label for="fecha" class="col-md-2 col-form-label text-md-right">Fecha y Hora *</label>
+
+                  <div class="col-md-4">
+                      <input id="fecha" type="datetime-local" class="form-control{{ Session::has('fecha') ? ' is-invalid' : '' }}" name="fecha" value="{{ old('fecha') }}" required>
+
+                      @if (Session::has('fecha'))
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ Session::get('fecha') }}</strong>
+                          </span>
+                      @endif
+                  </div>
+
+                  <label for="instalador" class="col-md-2 col-form-label text-md-right">Instalador *</label>
+
+                  <div class="col-md-4">
+                    <select class="form-control" id="instalador" name="instalador">
+                      @foreach($instaladores as $i)
+                        <option value="{{$i->insID}}">{{$i->insNombre}} {{$i->insApellido}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+              </div>
 
 
               <div class="form-group row mb-0">
