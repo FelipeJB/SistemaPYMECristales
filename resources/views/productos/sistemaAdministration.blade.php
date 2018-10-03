@@ -50,8 +50,8 @@
                     <td>{{$s->stmCodigoWO}}</td>
                     <td>{{$s->stmDescripcion}}</td>
                     <td>{{$s->stmTipo}}</td>
-                    <td>{{$s->stmPrecioCompra}}</td>
-                    <td>{{$s->stmPrecioVenta}}</td>
+                    <td>${{number_format($s->stmPrecioCompra)}}</td>
+                    <td>${{number_format($s->stmPrecioVenta)}}</td>
                     <td align="center">
                       <a href="/EditarSistema/{{$s->stmID}}" class='btn btn-info'>Editar</a>
                       @if($s->stmActivo==1)

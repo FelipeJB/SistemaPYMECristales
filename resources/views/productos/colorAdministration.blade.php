@@ -48,8 +48,8 @@
                   @if($c->clrActivo==1)<tr class="table-success">@else<tr class="table-danger">@endif
                     <td>{{$c->clrCodigo}}</td>
                     <td>{{$c->clrDescripcion}}</td>
-                    <td>{{$c->clrPrecioCompra}}</td>
-                    <td>{{$c->clrPrecioVenta}}</td>
+                    <td>${{number_format($c->clrPrecioCompra)}}</td>
+                    <td>${{number_format($c->clrPrecioVenta)}}</td>
                     <td align="center">
                       <a href="/EditarColor/{{$c->clrID}}" class='btn btn-info'>Editar</a>
                       @if($c->clrActivo==1)
