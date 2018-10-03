@@ -302,6 +302,39 @@ class VentaController extends Controller
 
   }
 
+  public function validateInstalationOrderNumber()
+  {
+      /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+      $numero = Input::get('numero');
+
+      //validar que se ingresen tods los datos
+      if($numero == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
+
+      //validar número numérico
+      if(!is_numeric($numero)){
+        return Redirect::back()->with('numero', 'Ingrese un número de orden válido')
+        ->withInput();
+      }
+
+      //validar orden registrada con medidas y redirigir al siguiente formulario
+      $orden = Orden::where("ordID", "=", $numero)->first();
+      if ($orden == null){
+        return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
+        ->withInput();
+      }else{
+        if ($orden->ordEstadoInstalacionID == 1){
+          return Redirect::back()->with('numero', 'No se han tomado medidas para la orden especificada')
+          ->withInput();
+        }else{
+          return Redirect::to('/ProgramarInstalacionForm/'.$numero);
+        }
+      }
+
+  }
+
   private function roundUpToAny($n,$x=5) {
     return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x;
   }

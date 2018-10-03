@@ -630,3 +630,22 @@ Route::get('/GenerarPlanosMedidas', function () {
 })->middleware('auth');
 Route::post('/GenerarPlanosMedidas', 'Medidas\MedidaController@validateOrderNumberPlanos')->middleware('auth');
 Route::get('/GenerarPlanosMedidas/{id}', 'Medidas\MedidaController@generarPlanos')->middleware('auth');
+
+//Rutas de programación de la instalación
+Route::get('/ProgramarInstalacion', function () {
+  if(Auth::user()->usrRolID == 4){
+    return view('instalaciones/validacionInstalacion');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/ProgramarInstalacion', 'Ventas\VentaController@validateInstalationOrderNumber')->middleware('auth');
+Route::get('/ProgramarInstalacionForm/{idOrd}', function ($idOrd) {
+  if(Auth::user()->usrRolID == 4){
+    $orden = \App\Orden::where("ordID", "=", $idOrd)->first();
+    return view('instalaciones/programacionInstalacion', compact('orden'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/ProgramarInstalacionForm', 'Ventas\VentaController@registerInstalation')->middleware('auth');

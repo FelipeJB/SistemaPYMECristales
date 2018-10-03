@@ -79,7 +79,7 @@ class MedidaController extends Controller
         ->withInput();
       }
 
-      //validar orden registrada con medidas y redirigir al siguiente formulario guardando el número de orden en la sesión
+      //validar orden registrada con medidas y redirigir a la página de generación de planos
       $orden = Orden::where("ordID", "=", $numero)->first();
       if ($orden == null){
         return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
