@@ -9,6 +9,9 @@ use App\OrdenDetalle;
 use App\Sistema;
 use App\Color;
 use App\PrecioVidrio;
+use App\PuntoVenta;
+use App\User;
+use app\FormaPago;
 use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -239,13 +242,22 @@ class VentaController extends Controller
     $orden = \App\Orden::where('ordID','=',$id)->first();
     $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
     $cliente = \App\Cliente::where('cltID','=',$orden->ordClienteID)->first();
-    $ordenes = \App\Orden::all();
+    $puntoVenta = \App\PuntoVenta::where('pvID','=',$orden->ordPuntoVentaID)->first();
+    $vendedor = \App\User::where('id','=',$orden->ordVendedorID)->first();
+    $formaPago = \App\FormaPago::where('fpID','=',$orden->ordFormaPagoID)->first();
+
+    $sistemas = array();
+    $milimetrajes = array();
+    $i = 0;
+
+    foreach ($detalles as $detalle) {
+      $sistemas[$i] = \App\Sistema::where('stmID','=',$detalle->orddSistemaID)->first();
+      $milimetrajes[$i] = \App\Milimetraje::where('mlmID','=',$detalle->orddMilimID)->first();
+    }
 
     //Generar informe de venta
-    $pdf = PDF::loadView('ventas/generarInformePdf', ['orden' => $orden, 'detalles' => $detalles]);
+    $pdf = PDF::loadView('ventas/generarInformePdf', ['orden' => $orden, 'detalles' => $detalles, 'cliente' => $cliente, 'puntoVenta' => $puntoVenta, 'vendedor' => $vendedor, 'formaPago' => $formaPago, 'sistemas' => $sistemas, 'milimetrajes' => $milimetrajes]);
     return $pdf->download('prueba.pdf');
-
-    //aquí va el código para generar el documento de la venta
 
     //return Redirect::to('/')->with('success', 'Documento generado existosamente');
   }
