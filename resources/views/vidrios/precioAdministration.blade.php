@@ -48,8 +48,8 @@
                 <tr>
                     <td>{{$p->stmDescripcion}}</td>
                     <td>{{$p->mlmNumero}}</td>
-                    <td>{{$p->pvdPrecioCompra}}</td>
-                    <td>{{$p->pvdPrecioVenta}}</td>
+                    <td>${{number_format($p->pvdPrecioCompra)}}</td>
+                    <td>${{number_format($p->pvdPrecioVenta)}}</td>
                     <td align="center">
                       <a href="/EditarPrecio/{{$p->pvdID}}" class='btn btn-info'>Editar</a>
                     </td>

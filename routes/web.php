@@ -446,7 +446,7 @@ Route::get('/ConsultarVenta/{id}', function ($id) {
   }
 })->middleware('auth');
 Route::get('/GenerarInformeVenta', function () {
-  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     return view('ventas/generarInforme');
   }else{
     return Redirect::to('/');
@@ -465,7 +465,7 @@ Route::post('/GenerarInformeVenta', 'Ventas\VentaController@validateOrderNumberI
 // })->middleware('auth');
 Route::get('/GenerarInformeVentaPdf/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
 Route::get('/Ventas', function () {
-  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     $ordenes= DB::table('ordens')
       ->join('clientes', 'ordens.ordClienteID', '=', 'clientes.cltID')
       ->orderBy('ordens.ordID', 'DESC')->get();
@@ -475,7 +475,7 @@ Route::get('/Ventas', function () {
   }
 })->middleware('auth');
 Route::get('/Ventas/{id}', function ($id) {
-  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     $orden= \App\Orden::where('ordID','=',$id)->first();
     $detalles = DB::table('orden_detalles')
       ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
@@ -641,5 +641,23 @@ Route::get('/GenerarPlanosMedidas', function () {
 Route::post('/GenerarPlanosMedidas', 'Medidas\MedidaController@validateOrderNumberPlanos')->middleware('auth');
 Route::get('/GenerarPlanosMedidas/{id}', 'Medidas\MedidaController@generarPlanos')->middleware('auth');
 
-//Ruta de descarga de informe de venta
-//Route::get('pdf', 'VentaController@createOrderDocument');
+
+//Rutas de programación de la instalación
+Route::get('/ProgramarInstalacion', function () {
+  if(Auth::user()->usrRolID == 4){
+    return view('instalaciones/validacionInstalacion');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/ProgramarInstalacion', 'Ventas\VentaController@validateInstalationOrderNumber')->middleware('auth');
+Route::get('/ProgramarInstalacionForm/{idOrd}', function ($idOrd) {
+  if(Auth::user()->usrRolID == 4){
+    $orden = \App\Orden::where("ordID", "=", $idOrd)->first();
+    $instaladores= \App\Instalador::all();
+    return view('instalaciones/programacionInstalacion', compact('orden', 'instaladores'));
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/ProgramarInstalacionForm', 'Ventas\VentaController@registerInstalation')->middleware('auth');

@@ -318,6 +318,73 @@ class VentaController extends Controller
 
   }
 
+  public function validateInstalationOrderNumber()
+  {
+      /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+      $numero = Input::get('numero');
+
+      //validar que se ingresen tods los datos
+      if($numero == ""){
+        return Redirect::back()->with('error', 'Se deben ingresar todos los datos')
+        ->withInput();
+      }
+
+      //validar número numérico
+      if(!is_numeric($numero)){
+        return Redirect::back()->with('numero', 'Ingrese un número de orden válido')
+        ->withInput();
+      }
+
+      //validar orden registrada con medidas y redirigir al siguiente formulario
+      $orden = Orden::where("ordID", "=", $numero)->first();
+      if ($orden == null){
+        return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
+        ->withInput();
+      }else{
+        if ($orden->ordEstadoInstalacionID == 1){
+          return Redirect::back()->with('numero', 'No se han tomado medidas para la orden especificada')
+          ->withInput();
+        }else{
+          return Redirect::to('/ProgramarInstalacionForm/'.$numero);
+        }
+      }
+
+  }
+
+  public function registerInstalation()
+  {
+    /*Se guardan los datos de la instalación dentro de variables desde el formulario*/
+    $fecha = Input::get('fecha');
+    $instalador = Input::get('instalador');
+    $ordID = Input::get('ordID');
+    $orden = Orden::where("ordID", "=", $ordID)->first();
+
+    //validar que se ingresen todos los datos
+    if($fecha == ""){
+      return Redirect::back()->with('fecha', 'Se debe ingresar una fecha')
+      ->withInput();
+    }
+
+    if($fecha < $orden->ordFecha){
+      return Redirect::back()->with('fecha', 'La fecha ingresada no es válida')
+      ->withInput();
+    }
+
+    try{
+      //Actualización de los datos de la orden
+      $orden->ordFechaInstalacion = $fecha;
+      $orden->ordEstadoInstalacionID = 4;
+      $orden->ordInstaladorID = $instalador;
+      $orden->save();
+
+      return Redirect::to('/')->with('success', 'La instalación se ha programado exitosamente para la fecha '.substr($fecha,0, -6))->withInput();
+
+    }catch(\Exception $exception){
+      return Redirect::back()->with('error', 'La instalación no pudo ser programada')->withInput();
+    }
+
+  }
+
   private function roundUpToAny($n,$x=5) {
     return (ceil($n)%$x === 0) ? ceil($n) : round(($n+$x/2)/$x)*$x;
   }

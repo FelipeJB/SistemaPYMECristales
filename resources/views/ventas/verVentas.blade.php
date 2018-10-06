@@ -37,7 +37,7 @@
                     <td>{{$o->cltCedula}}</td>
                     <td>{{$o->cltNombre ." ". $o->cltApellido}}</td>
                     <td>{{$o->ordFecha}}</td>
-                    <td>{{$o->ordTotal}}</td>
+                    <td>${{number_format($o->ordTotal)}}</td>
                     <td align="center">
                       <a href="/Ventas/{{$o->ordID}}" class='btn btn-info'>Ver</a>
                     </td>
