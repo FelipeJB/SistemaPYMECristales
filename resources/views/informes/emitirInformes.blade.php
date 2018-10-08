@@ -40,13 +40,13 @@
 
                       <div class="btn-group btn-group-toggle" data-toggle="buttons">
                       <label class="btn btn-primary" style="width:120px">
-                        <input type="radio" name="options" id="ventas" autocomplete="off" checked=""> Ventas
+                        <input type="radio" name="tipo" id="ventas" value="ventas" autocomplete="off"> Ventas
                       </label>
                       <label class="btn btn-primary active" style="width:120px">
-                        <input type="radio" name="options" id="medidas" autocomplete="off"> Medidas
+                        <input type="radio" name="tipo" id="medidas" value="medidas" autocomplete="off"  checked=""> Medidas
                       </label>
                       <label class="btn btn-primary" style="width:120px">
-                        <input type="radio" name="options" id="instalaciones" autocomplete="off"> Instalaciones
+                        <input type="radio" name="tipo" id="instalaciones" value="instalaciones" autocomplete="off"> Instalaciones
                       </label>
                       </div>
                     </center>

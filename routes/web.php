@@ -670,4 +670,6 @@ Route::get('/EmitirInformes', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
-Route::post('/EmitirInformes', 'Informes\InformesController@create')->middleware('auth');
+Route::post('/EmitirInformes', 'Informes\InformeController@create')->middleware('auth');
+
+//Rutas de migración de datos

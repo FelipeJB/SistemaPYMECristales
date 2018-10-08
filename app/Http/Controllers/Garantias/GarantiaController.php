@@ -14,7 +14,7 @@ class GarantiaController extends Controller
 
   public function validateOrderNumber()
   {
-      /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+      /*Se guardan los datos de la garantia dentro de variables desde el formulario*/
       $numero = Input::get('numero');
 
       //validar que se ingresen tods los datos
