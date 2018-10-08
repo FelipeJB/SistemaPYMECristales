@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Informes;
 
 use App\User;
 use App\Orden;
-use App\OrdenDetalle;
+use App\Garantia;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -42,12 +42,12 @@ class InformeController extends Controller
         ->withInput();
       }
       break;
-    case 'medidas':
-      $detalles = OrdenDetalle::whereMonth('orddFechaMedidas', '=', $mes)->whereYear('orddFechaMedidas', '=', $anio)->get();
-      if (count($detalles)>0){
-        $this->generateInformMedidas($detalles, $mes, $anio);
+    case 'garantias':
+      $garantias = Garantia::whereMonth('grnFecha', '=', $mes)->whereYear('grnFecha', '=', $anio)->get();
+      if (count($garantias)>0){
+        $this->generateInformGarantias($garantias, $mes, $anio);
       }else{
-        return Redirect::back()->with('error', 'No se encontraron medidas tomadas para el año y mes especificados')
+        return Redirect::back()->with('error', 'No se encontraron garantías registradas para el año y mes especificados')
         ->withInput();
       }
       break;
@@ -71,9 +71,9 @@ class InformeController extends Controller
     //Aquí se genera el informe de ventas para el año y mes especificado. En la variable ordenes se encuentran las órdenes de dichas fechas.
   }
 
-  private function generateInformMedidas($detalles, $mes, $anio)
+  private function generateInformGarantias($garantias, $mes, $anio)
   {
-    //Aquí se genera el informe de medidas para el año y mes especificado. En la variable detalles se encuentran las OrdenDetalle medidas en dichas fechas
+    //Aquí se genera el informe de garantias para el año y mes especificado. En la variable garantias se encuentran las garantias registradas en dichas fechas
   }
 
   private function generateInformInstalaciones($ordenes, $mes, $anio)

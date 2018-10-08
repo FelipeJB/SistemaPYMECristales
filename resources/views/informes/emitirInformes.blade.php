@@ -43,7 +43,7 @@
                         <input type="radio" name="tipo" id="ventas" value="ventas" autocomplete="off"> Ventas
                       </label>
                       <label class="btn btn-primary active" style="width:120px">
-                        <input type="radio" name="tipo" id="medidas" value="medidas" autocomplete="off"  checked=""> Medidas
+                        <input type="radio" name="tipo" id="garantias" value="garantias" autocomplete="off"  checked=""> Garantías
                       </label>
                       <label class="btn btn-primary" style="width:120px">
                         <input type="radio" name="tipo" id="instalaciones" value="instalaciones" autocomplete="off"> Instalaciones
