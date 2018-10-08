@@ -661,3 +661,13 @@ Route::get('/ProgramarInstalacionForm/{idOrd}', function ($idOrd) {
   }
 })->middleware('auth');
 Route::post('/ProgramarInstalacionForm', 'Ventas\VentaController@registerInstalation')->middleware('auth');
+
+//Rutas de emisión de informes
+Route::get('/EmitirInformes', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('informes/emitirInformes');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EmitirInformes', 'Informes\InformesController@create')->middleware('auth');
