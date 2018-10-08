@@ -425,7 +425,7 @@ Route::get('/FinalizarVenta/{id}', function ($id) {
   }
 })->middleware('auth');
 Route::get('/ConsultarVenta', function () {
-  if(Auth::user()->usrRolID==2){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==4){
     return view('ventas/consultaVenta');
   }else{
     return Redirect::to('/');
@@ -433,7 +433,7 @@ Route::get('/ConsultarVenta', function () {
 })->middleware('auth');
 Route::post('/ConsultarVenta', 'Ventas\VentaController@validateOrderNumberConsulta')->middleware('auth');
 Route::get('/ConsultarVenta/{id}', function ($id) {
-  if(Auth::user()->usrRolID==2){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==4){
     $venta = \App\Orden::where('ordID','=',$id)->get();
     if(count($venta)>0){
         $estado = \App\Estado::where('stdID','=',$venta[0]->ordEstadoInstalacionID)->first();

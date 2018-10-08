@@ -177,6 +177,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownVentas">
                                     <a class="dropdown-item" href="/Ventas">Ver Ventas</a>
+                                    <a class="dropdown-item" href="/ConsultarVenta">Consultar estado de Venta</a>
                                     <a class="dropdown-item" href="/GenerarInformeVenta">Generar informe de Venta</a>
                                 </div>
                             </li>
