@@ -71,7 +71,7 @@
           <tr>
             <th align="center" width="15%">{{$orden->ordFecha}}</th>
             <th align="center" width="30%">{{$puntoVenta->pvNombre}} ({{$puntoVenta->pvDireccion}}, {{$vendedor->usrCiudad}}) Cel: {{$vendedor->usrCelular}}</th>
-            <th align="center" width="40%">{{$vendedor->usrNombre}}</th>
+            <th align="center" width="40%">{{$vendedor->usrNombre}} {{$vendedor->usrApellido}}</th>
             <th align="center" width="15%">{{$orden->ordNumeroPedido}}</th>
           </tr>
         </table>
@@ -93,7 +93,7 @@
               <b>Forma de pago:</b>
             </td>
             <td align="left" width="80%">
-              <b>{{$cliente->cltNombre}}</b><br>
+              <b>{{$cliente->cltNombre}} {{$cliente->cltApellido}}</b><br>
               <b>{{$cliente->cltTipoDocumento}} {{$cliente->cltCedula}}</b><br>
               <b>{{$cliente->cltDireccion}} {{$cliente->cltCiudad}}</b><br>
               <b>{{$cliente->cltCelular1}}</b><br>
