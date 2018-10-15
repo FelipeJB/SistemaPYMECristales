@@ -425,7 +425,7 @@ Route::get('/FinalizarVenta/{id}', function ($id) {
   }
 })->middleware('auth');
 Route::get('/ConsultarVenta', function () {
-  if(Auth::user()->usrRolID==2){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==4){
     return view('ventas/consultaVenta');
   }else{
     return Redirect::to('/');
@@ -433,7 +433,7 @@ Route::get('/ConsultarVenta', function () {
 })->middleware('auth');
 Route::post('/ConsultarVenta', 'Ventas\VentaController@validateOrderNumberConsulta')->middleware('auth');
 Route::get('/ConsultarVenta/{id}', function ($id) {
-  if(Auth::user()->usrRolID==2){
+  if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==4){
     $venta = \App\Orden::where('ordID','=',$id)->get();
     if(count($venta)>0){
         $estado = \App\Estado::where('stdID','=',$venta[0]->ordEstadoInstalacionID)->first();
@@ -453,17 +453,7 @@ Route::get('/GenerarInformeVenta', function () {
   }
 })->middleware('auth');
 Route::post('/GenerarInformeVenta', 'Ventas\VentaController@validateOrderNumberInforme')->middleware('auth');
-// Route::post('/GenerarInformeVentaPdf/{id}', function () {
-//   if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3){
-//     $ordenes= DB::table('ordens')
-//       ->join('clientes', 'ordens.ordClienteID', '=', 'clientes.cltID')
-//       ->orderBy('ordens.ordID', 'DESC')->get();
-//     return view('ventas/generarInformePdf', compact('ordenes', 'id'));
-//   }else{
-//     return Redirect::to('/');
-//   }
-// })->middleware('auth');
-Route::get('/GenerarInformeVentaPdf/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
+Route::get('/GenerarInformeVenta/{id}', 'Ventas\VentaController@createOrderDocument')->middleware('auth');
 Route::get('/Ventas', function () {
   if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     $ordenes= DB::table('ordens')
@@ -661,3 +651,15 @@ Route::get('/ProgramarInstalacionForm/{idOrd}', function ($idOrd) {
   }
 })->middleware('auth');
 Route::post('/ProgramarInstalacionForm', 'Ventas\VentaController@registerInstalation')->middleware('auth');
+
+//Rutas de emisión de informes
+Route::get('/EmitirInformes', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('informes/emitirInformes');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/EmitirInformes', 'Informes\InformeController@create')->middleware('auth');
+
+//Rutas de migración de datos

@@ -248,18 +248,36 @@ class VentaController extends Controller
 
     $sistemas = array();
     $milimetrajes = array();
+    $colores = array();
+    $disenos = array();
+    $observaciones = '';
     $i = 0;
 
     foreach ($detalles as $detalle) {
       $sistemas[$i] = \App\Sistema::where('stmID','=',$detalle->orddSistemaID)->first();
       $milimetrajes[$i] = \App\Milimetraje::where('mlmID','=',$detalle->orddMilimID)->first();
+      $colores[$i] = \App\Color::where('clrID','=',$detalle->orddColorID)->first();
+      $disenos[$i] = \App\Diseno::where('dsnID','=',$detalle->orddDisenoID)->first();
+      $observaciones .= ' Item '.$detalle->orddItem.': '.$detalle->orddObservaciones;
+      $i++;
     }
 
     //Generar informe de venta
-    $pdf = PDF::loadView('ventas/generarInformePdf', ['orden' => $orden, 'detalles' => $detalles, 'cliente' => $cliente, 'puntoVenta' => $puntoVenta, 'vendedor' => $vendedor, 'formaPago' => $formaPago, 'sistemas' => $sistemas, 'milimetrajes' => $milimetrajes]);
-    return $pdf->download('prueba.pdf');
+    $pdf = PDF::loadView('ventas/generarInformePdf', [
+      'orden' => $orden,
+      'detalles' => $detalles,
+      'cliente' => $cliente,
+      'puntoVenta' => $puntoVenta,
+      'vendedor' => $vendedor,
+      'formaPago' => $formaPago,
+      'sistemas' => $sistemas,
+      'milimetrajes' => $milimetrajes,
+      'colores' => $colores,
+      'disenos' => $disenos,
+      'observaciones' => $observaciones
+    ]);
+    return $pdf->download('Orden de Pedido N'.$id.'.pdf');
 
-    //return Redirect::to('/')->with('success', 'Documento generado existosamente');
   }
 
   public function validateOrderNumberConsulta()
@@ -313,7 +331,7 @@ class VentaController extends Controller
         return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
         ->withInput();
       }else{
-        return Redirect::to('/GenerarInformeVentaPdf/'.$numero);
+        return Redirect::to('/GenerarInformeVenta/'.$numero);
       }
 
   }

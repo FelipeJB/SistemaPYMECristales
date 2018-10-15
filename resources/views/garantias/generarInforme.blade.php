@@ -51,7 +51,7 @@
                   <div class="col-md-2 offset-md-10">
                     <br>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Continuar
+                        Exportar PDF
                     </button>
                   </div>
               </div>

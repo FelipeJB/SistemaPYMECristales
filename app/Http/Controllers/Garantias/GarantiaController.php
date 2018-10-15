@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Garantias;
 use App\User;
 use App\Orden;
 use App\Garantia;
+use App\Cliente;
+use App\Instalador;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use PDF;
 
 class GarantiaController extends Controller
 {
 
   public function validateOrderNumber()
   {
-      /*Se guardan los datos de la orden dentro de variables desde el formulario*/
+      /*Se guardan los datos de la garantia dentro de variables desde el formulario*/
       $numero = Input::get('numero');
 
       //validar que se ingresen tods los datos
@@ -106,16 +109,33 @@ class GarantiaController extends Controller
 
   public function getWarrantyDocument($id)
   {
-    $this->generateWarrantyOrder($id);
-    return Redirect::to('/')->with('success', 'Documento generado exitosamente')->withInput();
+    //$this->generateWarrantyOrder($id);
+    //return Redirect::to('/')->with('success', 'Documento generado exitosamente')->withInput();
+
+    //Obtener la garantía especificada
+    $garantia = Garantia::where("grnID", "=", $id)->first();
+
+    //Obtener datos para el documento
+    $orden = \App\Orden::where('ordID','=',$id)->first();
+    $cliente = \App\Cliente::where('cltID','=',$orden->ordClienteID)->first();
+    $instalador = \App\Instalador::where('insID','=',$orden->ordInstaladorID)->first();
+    $vendedor = \App\User::where('id','=',$orden->ordVendedorID)->first();
+
+    //Generar informe de garantia
+    $pdf = PDF::loadView('garantias/generarGarantiaPdf', [
+      'garantia' => $garantia,
+      'orden' => $orden,
+      'cliente' => $cliente,
+      'instalador' => $instalador,
+      'vendedor' => $vendedor
+    ]);
+    return $pdf->download('Garantia de Orden N'.$id.'.pdf');
   }
 
   private function generateWarrantyOrder($id)
   {
-    //Obtener la garantía especificada
-    $garantia = Garantia::where("grnID", "=", $id)->first();
 
-    //código para generar el documento a partir de la garantía guardada en $garantia
+
   }
 
 }
