@@ -15,6 +15,7 @@ use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use PDF;
 
 class MedidaController extends Controller
 {
@@ -876,11 +877,21 @@ class MedidaController extends Controller
     $orden = \App\Orden::where('ordID','=',$id)->first();
     $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
 
+    foreach ($detalles as $detalle) {
+      $this->generarPlanosPDF($orden, $detalle);
+    }
+
+
+    //return Redirect::to('/')->with('success', 'Planos generados existosamente');
+  }
+
+  public function generarPlanosPDF($orden, $detalle){
     //Generar planos
-
-    //aquí va el código para generar el documento de toma de medidas
-
-    return Redirect::to('/')->with('success', 'Planos generados existosamente');
+    $pdf = PDF::loadView('medidas/generarPlanosPdf', [
+      'orden' => $orden,
+      'detalle' => $detalle
+    ]);
+    return $pdf->download('Garantia de Orden N'.$id.'.pdf');
   }
 
   public function cancel()
