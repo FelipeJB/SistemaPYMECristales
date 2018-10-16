@@ -33,18 +33,16 @@
 
               <div class="form-group row">
 
-
-                        <label for="mes" class="col-md-3 col-form-label text-md-right">Tipo *</label>
+                        <label for="tipo" class="col-md-3 col-form-label text-md-right">Tipo *</label>
 
                         <div class="col-md-6">
-                          <select class="form-control" id="mes" name="mes">
+                          <select class="form-control" id="tipo" name="tipo">
                             <option value="0">Migrar todos los datos no migrados</option>
+                            @foreach($migraciones as $m)
+                              <option value="{{$m->mgcID}}">Migración {{$m->mgcID}} realizada en {{$m->mgcFecha}}</option>
+                            @endforeach
                           </select>
                         </div>
-
-
-
-
 
               </div>
 
