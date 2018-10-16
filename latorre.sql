@@ -1,7 +1,7 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+﻿SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "-05:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -185,10 +185,6 @@ CREATE TABLE `garantias` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `garantias` (`grnID`, `grnFecha`, `grnOrdenID`, `grnObservaciones`, `created_at`, `updated_at`) VALUES
-(1, '2018-09-26', 1, 'No hay observaciones', '2018-09-26 06:58:13', '2018-09-26 06:58:13'),
-(2, '2018-10-08', 1, 'Se rompió el vidrio', '2018-10-09 02:33:18', '2018-10-09 02:33:18');
-
 CREATE TABLE `instaladors` (
   `insID` int(10) UNSIGNED NOT NULL,
   `insNombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -213,6 +209,13 @@ CREATE TABLE `medida_vidrios` (
   `mvdAnchoAbajo` int(11) NOT NULL,
   `mvdTipo` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mvdLado` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `migracions` (
+  `mgcID` int(10) UNSIGNED NOT NULL,
+  `mgcFecha` datetime NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -242,7 +245,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (59, '2018_09_05_001803_create_forma_pagos_table', 6),
 (60, '2018_09_05_015753_create_estados_table', 6),
 (66, '2018_09_05_024125_create_orden_detalles_table', 7),
-(67, '2018_09_11_143207_create_medida_vidrios_table', 7);
+(67, '2018_09_11_143207_create_medida_vidrios_table', 7),
+(68, '2018_10_16_191304_create_migracions_table', 8);
 
 CREATE TABLE `milimetrajes` (
   `mlmID` int(10) UNSIGNED NOT NULL,
@@ -474,7 +478,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `users` (`id`, `usrNombre`, `usrUsuario`, `password`, `usrRolID`, `usrCedula`, `usrApellido`, `usrTipoDocumento`, `usrActivo`, `usrCiudad`, `usrFechaCreacion`, `usrCelular`, `usrDireccion`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Usuario', 'admin', '$2y$10$VwmgsbJPlHvvF18NiCleQecFfHlKMscNTI5xFeTHuRg5w1Sq02DTa', 1, 0, 'Administrador', 'CC', 1, 'Bogota', '2018-08-20', '3150000000', 'Calle 0#0-0.', 'xDN4MIDHTxY70a927Xk7xIVOIudWD597C52TwYiNvixsExpBYJLSQbADiI5E', NULL, '2018-09-01 07:45:22');
+(1, 'Usuario', 'admin', '$2y$10$VwmgsbJPlHvvF18NiCleQecFfHlKMscNTI5xFeTHuRg5w1Sq02DTa', 1, 0, 'Administrador', 'CC', 1, 'Bogota', '2018-08-20', '3150000000', 'Calle 0#0-0.', 'WenswewJpgGHNoytyjWuRkZsVKqhLcLJ6UZUahCHHZAQMVGgrWB8EOln3UIp', NULL, '2018-09-01 07:45:22');
 
 
 ALTER TABLE `clientes`
@@ -503,6 +507,9 @@ ALTER TABLE `instaladors`
 
 ALTER TABLE `medida_vidrios`
   ADD PRIMARY KEY (`mvdID`);
+
+ALTER TABLE `migracions`
+  ADD PRIMARY KEY (`mgcID`);
 
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
@@ -558,7 +565,7 @@ ALTER TABLE `forma_pagos`
   MODIFY `fpID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 ALTER TABLE `garantias`
-  MODIFY `grnID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `grnID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `instaladors`
   MODIFY `insID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
@@ -566,8 +573,11 @@ ALTER TABLE `instaladors`
 ALTER TABLE `medida_vidrios`
   MODIFY `mvdID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `migracions`
+  MODIFY `mgcID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 ALTER TABLE `milimetrajes`
   MODIFY `mlmID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
@@ -594,7 +604,7 @@ ALTER TABLE `sistema_detalles`
   MODIFY `stmdID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

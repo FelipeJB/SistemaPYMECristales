@@ -663,3 +663,11 @@ Route::get('/EmitirInformes', function () {
 Route::post('/EmitirInformes', 'Informes\InformeController@create')->middleware('auth');
 
 //Rutas de migración de datos
+Route::get('/MigrarDatos', function () {
+  if(Auth::user()->usrRolID==1){
+    return view('datos/migrarDatos');
+  }else{
+    return Redirect::to('/');
+  }
+})->middleware('auth');
+Route::post('/MigrarDatos', 'Migraciones\MigracionesController@create')->middleware('auth');
