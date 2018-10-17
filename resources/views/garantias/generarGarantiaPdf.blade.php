@@ -56,7 +56,7 @@
         <tr>
           <th width="100%">
             <br><br>
-            <b>Fecha de solicitud: {{$garantia->created_at}}</b><br><br>
+            <b>Fecha de solicitud: {{$garantia->grnFecha}}</b><br><br>
             <b>Cliente: {{$cliente->cltNombre}} {{$cliente->cltApellido}}</b><br><br>
             <b>Número de Factura: {{$orden->ordNumeroPedido}}</b><br><br>
             <b>Teléfonos: {{$cliente->cltCelular1}}</b><br><br>

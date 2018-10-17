@@ -78,6 +78,7 @@ class ClienteController extends Controller
       $newCliente->cltTarifaICA = $ica;
       $newCliente->cltMigrado = 0;
       $newCliente->cltUsuarioCreador = Auth::user()->id;
+      date_default_timezone_set('America/Bogota');
       $newCliente->cltFechaCreacion = date("Y-m-d");
 
       //guardado del cliente en sesión y redirección al siguiente formulario

@@ -38,7 +38,12 @@ class GarantiaController extends Controller
         return Redirect::back()->with('numero', 'No se encontró el número de orden en los registros')
         ->withInput();
       }else{
-        return Redirect::to('/RegistrarGarantiaForm/'.$numero);
+        if ($orden->ordEstadoInstalacionID < 4){
+          return Redirect::back()->with('numero', 'Esta orden hasta el momento no se encuentra instalada')
+          ->withInput();
+        }else{
+          return Redirect::to('/RegistrarGarantiaForm/'.$numero);
+        }
       }
 
   }
@@ -91,6 +96,7 @@ class GarantiaController extends Controller
 
     try{
       //creación del cliente
+      date_default_timezone_set('America/Bogota');
       $newGarantia = new Garantia();
       $newGarantia->grnFecha = date("Y-m-d");
       $newGarantia->grnOrdenID = $ordID;
@@ -113,7 +119,7 @@ class GarantiaController extends Controller
     //return Redirect::to('/')->with('success', 'Documento generado exitosamente')->withInput();
 
     //Obtener la garantía especificada
-    $garantia = Garantia::where("grnID", "=", $id)->first();
+    $garantia = Garantia::where("grnOrdenID", "=", $id)->first();
 
     //Obtener datos para el documento
     $orden = \App\Orden::where('ordID','=',$id)->first();
@@ -134,8 +140,7 @@ class GarantiaController extends Controller
 
   private function generateWarrantyOrder($id)
   {
-
-
+    $this->getWarrantyDocument($id);
   }
 
 }

@@ -814,6 +814,7 @@ class MedidaController extends Controller
         $orden = Orden::where("ordID", "=", $detalle->orddOrdenID)->first();
         $orden->ordEstadoInstalacionID = 2;
         $orden->save();
+        date_default_timezone_set('America/Bogota');
         $detalle->orddFechaMedidas = date("Y-m-d");
         $detalle->orddEstadoMedidasID = 2;
         $detalle->orddAuxiliarID = Auth::user()->id;

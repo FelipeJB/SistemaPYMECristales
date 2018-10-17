@@ -91,6 +91,7 @@ class VentaController extends Controller
     $newOrden->ordVendedorID = Auth::user()->id;
     $newOrden->ordFormaPagoID = $formaPago;
     $newOrden->ordEstadoInstalacionID = 1;
+    date_default_timezone_set('America/Bogota');
     $newOrden->ordFecha = date("Y-m-d");
     $newOrden->ordMigrado = 0;
     $newOrden->save();

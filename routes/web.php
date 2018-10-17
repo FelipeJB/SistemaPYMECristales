@@ -665,7 +665,7 @@ Route::post('/EmitirInformes', 'Informes\InformeController@create')->middleware(
 //Rutas de migración de datos
 Route::get('/MigrarDatos', function () {
   if(Auth::user()->usrRolID==1){
-    $migraciones = \App\Migracion::all();
+    $migraciones = \App\Migracion::orderBy('mgcID', 'DESC')->get();
     return view('datos/migrarDatos', compact('migraciones'));
   }else{
     return Redirect::to('/');
