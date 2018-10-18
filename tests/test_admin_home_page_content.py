@@ -12,7 +12,7 @@ def poAdminHomePage():
     driver.quit()
 
 #Test case ID: TC-1
-class TestAdminPageContent(object):
+class TestAdminHomePageContent(object):
 
     def test_presence_of_administrar_usuarios(self, poAdminHomePage):        
         assert poAdminHomePage.administrar_usuarios_exists() == True
