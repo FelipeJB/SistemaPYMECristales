@@ -122,7 +122,7 @@
             <th align="center" width="45%">{{$sistemas[$d->orddItem-1]->stmDescripcion}} {{$milimetrajes[$d->orddItem-1]->mlmNumero}} mm {{$colores[$d->orddItem-1]->clrDescripcion}} Diseño: {{$disenos[$d->orddItem-1]->dsnDescripcion}} Toalleros: {{$d->orddCantToalleros}}</th>
             <th align="center" width="8%">{{$d->orddAlto}}</th>
             <th align="center" width="8%">{{$d->orddAncho}}</th>
-            <th align="center" width="8%">{{$d->orddDescuento}}%</th>
+            <th align="center" width="8%">@if($d->orddDescuento != null) {{$d->orddDescuento}}% @else 0% @endif</th>
             <th align="center" width="15%">$ <?php echo number_format($d->orddTotal,0,",",".");?></th>
           </tr>
           @endforeach
@@ -133,7 +133,7 @@
         <div class="column">
         <table border="1" align="center" width="100%">
           <tr>
-            <th align="right" valign="top" width="70%" rowspan="3">Observaciones:{{$observaciones}}</th>
+            <th align="left" valign="top" width="70%" rowspan="3">Observaciones: @foreach($observaciones as $o)<br>{{$o}}@endforeach</th>
             <th align="right" width="18%">Total (COP $):</th>
             <th align="right" width="12%">$ <?php echo number_format($orden->ordTotal,0,",",".");?></th>
           </tr>

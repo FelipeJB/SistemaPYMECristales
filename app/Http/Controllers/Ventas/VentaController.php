@@ -251,7 +251,7 @@ class VentaController extends Controller
     $milimetrajes = array();
     $colores = array();
     $disenos = array();
-    $observaciones = '';
+    $observaciones = array();
     $i = 0;
 
     foreach ($detalles as $detalle) {
@@ -259,7 +259,9 @@ class VentaController extends Controller
       $milimetrajes[$i] = \App\Milimetraje::where('mlmID','=',$detalle->orddMilimID)->first();
       $colores[$i] = \App\Color::where('clrID','=',$detalle->orddColorID)->first();
       $disenos[$i] = \App\Diseno::where('dsnID','=',$detalle->orddDisenoID)->first();
-      $observaciones .= ' Item '.$detalle->orddItem.': '.$detalle->orddObservaciones;
+      if($detalle->orddObservaciones != null){
+        $observaciones[$i] = ' Item '.$detalle->orddItem.': '.$detalle->orddObservaciones;
+      }      
       $i++;
     }
 
