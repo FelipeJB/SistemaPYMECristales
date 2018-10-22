@@ -11,7 +11,8 @@ use App\Color;
 use App\PrecioVidrio;
 use App\PuntoVenta;
 use App\User;
-use app\FormaPago;
+use App\FormaPago;
+use App\Garantia;
 use Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -261,7 +262,7 @@ class VentaController extends Controller
       $disenos[$i] = \App\Diseno::where('dsnID','=',$detalle->orddDisenoID)->first();
       if($detalle->orddObservaciones != null){
         $observaciones[$i] = ' Item '.$detalle->orddItem.': '.$detalle->orddObservaciones;
-      }      
+      }
       $i++;
     }
 
@@ -366,7 +367,13 @@ class VentaController extends Controller
           return Redirect::back()->with('numero', 'No se han tomado medidas para la orden especificada')
           ->withInput();
         }else{
-          return Redirect::to('/ProgramarInstalacionForm/'.$numero);
+          $garantia = Garantia::where("grnOrdenID","=",$orden->ordID)->first();
+          if ($garantia != null){
+            return Redirect::back()->with('numero', 'Esta orden contiene garantía, por lo cual ya se encuentra instalada')
+            ->withInput();
+          }else{
+            return Redirect::to('/ProgramarInstalacionForm/'.$numero);
+          }
         }
       }
 
@@ -379,31 +386,66 @@ class VentaController extends Controller
     $instalador = Input::get('instalador');
     $ordID = Input::get('ordID');
     $orden = Orden::where("ordID", "=", $ordID)->first();
+    $motivo = Input::get('motivo');
 
-    //validar que se ingresen todos los datos
-    if($fecha == ""){
-      return Redirect::back()->with('fecha', 'Se debe ingresar una fecha')
-      ->withInput();
-    }
+    switch (Request::input('action')) {
+    case 'registrarProgramacion':
+      //caso en que se registra la programación
 
-    if($fecha < $orden->ordFecha){
-      return Redirect::back()->with('fecha', 'La fecha ingresada no es válida')
-      ->withInput();
-    }
+      //validar que se ingresen todos los datos
+      if($fecha == ""){
+        return Redirect::back()->with('error', 'Se debe ingresar una fecha')
+        ->withInput();
+      }
 
-    try{
-      //Actualización de los datos de la orden
-      $orden->ordFechaInstalacion = $fecha;
-      $orden->ordEstadoInstalacionID = 4;
-      $orden->ordInstaladorID = $instalador;
+      if($fecha < $orden->ordFecha){
+        return Redirect::back()->with('error', 'La fecha ingresada no es válida')
+        ->withInput();
+      }
+
+      try{
+        //Actualización de los datos de la orden
+        $orden->ordFechaInstalacion = $fecha;
+        $orden->ordEstadoInstalacionID = 4;
+        $orden->ordInstaladorID = $instalador;
+        $orden->ordRazonNegativa = null;
+        $orden->save();
+
+        return Redirect::to('/')->with('success', 'La instalación se ha programado exitosamente para la fecha '.substr($fecha,0, -6))->withInput();
+
+      }catch(\Exception $exception){
+        return Redirect::back()->with('error', 'La instalación no pudo ser programada')->withInput();
+      }
+
+      break;
+    case 'noRegistrarProgramacion':
+      //Caso en el cual no se pudo registrar la programación
+
+      //validar que se ingresen tods los datos
+      if($motivo == ""){
+        return Redirect::back()->with('error', 'Si la instalación no pudo ser programada se debe ingresar un motivo')
+        ->withInput();
+      }
+
+      //Verificar estado de Medidas
+      $orden->ordEstadoInstalacionID = 3;
+      $detalles = OrdenDetalle::where("orddOrdenID","=",$orden->ordID)->get();
+      foreach($detalles as $d){
+        if($d->orddEstadoMedidasID == 1){
+          $orden->ordEstadoInstalacionID = 2;
+        }
+      }
+
+      //Modificar orden
+      date_default_timezone_set('America/Bogota');
+      $orden->ordFechaInstalacion = date("Y-m-d");
+      $orden->ordInstaladorID = null;
+      $orden->ordRazonNegativa = $motivo;
       $orden->save();
 
-      return Redirect::to('/')->with('success', 'La instalación se ha programado exitosamente para la fecha '.substr($fecha,0, -6))->withInput();
-
-    }catch(\Exception $exception){
-      return Redirect::back()->with('error', 'La instalación no pudo ser programada')->withInput();
+      return Redirect::to('/')->with('success', 'Se guardó el motivo de la no programación de la instalación')->withInput();
+      break;
     }
-
   }
 
   private function roundUpToAny($n,$x=5) {

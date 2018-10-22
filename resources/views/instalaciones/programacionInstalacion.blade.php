@@ -44,45 +44,87 @@
               </div>
           @endif
 
+          <div class="row">
+            <div class="col-md-6">
+              <h5 style="text-align:center">¿Se pudo programar la instalación?</h5>
+            </div>
+            <div class="col-md-6">
+              <center>
+              <button type="button" class="btn btn-success" onclick="programarInstalacion()" style="width: 90px; margin-bottom:20px; margin-right: 5px;">Si</button>
+              <button type="button" class="btn btn-danger" onclick="noProgramarInstalacion()" style="width: 90px; margin-bottom:20px">No</button>
+            </center>
+            </div>
+          </div>
+
           <form method="POST" action="/ProgramarInstalacionForm">
               @csrf
               <input id="ordID" type="hidden" name="ordID" value="{{$orden->ordID}}" required>
 
-              <div class="form-group row">
+              <fieldset class="formProgramacionPositiva" style="margin-top: 20px; display:none">
 
-                  <label for="fecha" class="col-md-2 col-form-label text-md-right">Fecha y Hora *</label>
+                <div class="form-group row">
 
-                  <div class="col-md-4">
-                      <input id="fecha" type="datetime-local" class="form-control{{ Session::has('fecha') ? ' is-invalid' : '' }}" name="fecha" value="{{ old('fecha') }}" required>
+                    <label for="fecha" class="col-md-2 col-form-label text-md-right">Fecha y Hora *</label>
 
-                      @if (Session::has('fecha'))
+                    <div class="col-md-4">
+                        <input id="fecha" type="datetime-local" class="form-control{{ Session::has('fecha') ? ' is-invalid' : '' }}" name="fecha" value="{{ old('fecha') }}">
+
+                        @if (Session::has('fecha'))
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ Session::get('fecha') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                    <label for="instalador" class="col-md-2 col-form-label text-md-right">Instalador *</label>
+
+                    <div class="col-md-4">
+                      <select class="form-control" id="instalador" name="instalador">
+                        @foreach($instaladores as $i)
+                          <option value="{{$i->insID}}">{{$i->insNombre}} {{$i->insApellido}}</option>
+                        @endforeach
+                      </select>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row mb-0">
+                    <div class="col-md-2 offset-md-10">
+                      <br>
+                      <button type="submit" name="action" value="registrarProgramacion" class="btn btn-primary btn-block">
+                          Registrar
+                      </button>
+                    </div>
+                </div>
+
+              </fieldset>
+
+              <fieldset  class="formProgramacionNegativa" style="margin-top: 20px; display:none">
+                <div class="form-group row">
+
+                  <label for="motivo" class="col-md-2 col-form-label text-md-right">Motivo *</label>
+
+                  <div class="col-md-10">
+                      <input id="motivo" type="text" class="form-control{{ Session::has('motivo') ? ' is-invalid' : '' }}" name="motivo" value="{{ old('motivo') }}">
+
+                      @if (Session::has('motivo'))
                           <span class="invalid-feedback" role="alert">
-                              <strong>{{ Session::get('fecha') }}</strong>
+                              <strong>{{ Session::get('motivo') }}</strong>
                           </span>
                       @endif
                   </div>
 
-                  <label for="instalador" class="col-md-2 col-form-label text-md-right">Instalador *</label>
-
-                  <div class="col-md-4">
-                    <select class="form-control" id="instalador" name="instalador">
-                      @foreach($instaladores as $i)
-                        <option value="{{$i->insID}}">{{$i->insNombre}} {{$i->insApellido}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-
-              </div>
-
-
-              <div class="form-group row mb-0">
-                  <div class="col-md-2 offset-md-10">
-                    <br>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Registrar
-                    </button>
-                  </div>
-              </div>
+                </div>
+                <div class="form-group row mb-0">
+                    <div class="col-md-2 offset-md-10">
+                      <br>
+                      <button type="submit" name="action" value="noRegistrarProgramacion" class="btn btn-primary btn-block">
+                          Continuar
+                      </button>
+                    </div>
+                </div>
+              </fieldset>
 
           </form>
 
