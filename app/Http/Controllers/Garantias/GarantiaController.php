@@ -42,7 +42,13 @@ class GarantiaController extends Controller
           return Redirect::back()->with('numero', 'Esta orden hasta el momento no se encuentra instalada')
           ->withInput();
         }else{
-          return Redirect::to('/RegistrarGarantiaForm/'.$numero);
+          $garantia = Garantia::where("grnOrdenID","=",$orden->ordID)->first();
+          if ($garantia != null){
+            return Redirect::back()->with('numero', 'Ya se ha registrado una garantía para esta orden')
+            ->withInput();
+          }else{
+            return Redirect::to('/RegistrarGarantiaForm/'.$numero);
+          }
         }
       }
 
