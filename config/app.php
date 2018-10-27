@@ -159,8 +159,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Barrydvh\DomPDF\ServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 

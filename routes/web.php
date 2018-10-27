@@ -474,8 +474,8 @@ Route::get('/Ventas/{id}', function ($id) {
       ->join('sistemas', 'orden_detalles.orddSistemaID', '=', 'sistemas.stmID')
       ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
       ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
-      ->join('users', 'orden_detalles.orddAuxiliarID', '=', 'users.id')
-    ->where("orden_detalles.orddOrdenID", "=", $id)->get();
+      ->leftJoin('users', 'orden_detalles.orddAuxiliarID', '=', 'users.id')
+    ->where("orden_detalles.orddOrdenID", "=", $id)->orderBy('orden_detalles.orddItem', 'ASC')->get();
     if($orden !=null){
       return view('ventas/detalleVenta', compact('orden', 'detalles', 'estado', 'instalador'));
     }else{
