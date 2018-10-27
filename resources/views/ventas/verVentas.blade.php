@@ -44,10 +44,24 @@
                 </tr>
               @endforeach
             </tbody>
+            <tfoot>
+            <tr>
+              <th># Orden</th>
+              <th>Cédula Cliente</th>
+              <th>Nombre Cliente</th>
+              <th>Fecha</th>
+              <th>Precio</th>
+              <td></td>
+            </tr>
+            </tfoot>
           </table>
           <hr>
           <script>
-          $('#listaInstaladores').DataTable({
+          $('#listaInstaladores tfoot th').each( function () {
+              var title = $(this).text();
+              $(this).html( '<input type="text" class="form-control" placeholder="Buscar '+title+'" />' );
+          } );
+          var table = $('#listaInstaladores').DataTable({
             ordering:true,
             paging: true,
             lengthMenu: [[8, 15, 30], [8, 15, 30]],
@@ -69,11 +83,22 @@
                    last:       "Último"
                },
                aria: {
-                   sortAscending:  ": activer pour trier la colonne par ordre croissant",
-                   sortDescending: ": activer pour trier la colonne par ordre décroissant"
+                   sortAscending:  ": activar para ordenar la columna en orden cresciente",
+                   sortDescending: ": activar para ordenar la columna en orden decresciente"
                }
            }
           });
+          table.columns().every( function () {
+              var that = this;
+
+              $( 'input', this.footer() ).on( 'keyup change', function () {
+                  if ( that.search() !== this.value ) {
+                      that
+                          .search( this.value )
+                          .draw();
+                  }
+              } );
+          } );
           </script>
 
         </div>
