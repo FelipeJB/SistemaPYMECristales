@@ -19,6 +19,7 @@
           @if($orden->ordObservaciones != null && $orden->ordObservaciones != " ")
           <h4>Observaciones: {{$orden->ordObservaciones}}</h4>
           @endif
+          <h4>Estado: {{$estado->stdDescripcion}}</h4>
           <br>
           <h3>Productos:</h3><br>
 
@@ -35,11 +36,19 @@
                 @endif
                 .</h6>
               <h6>Precio: <b>${{number_format($d->orddTotal)}}</b></h6>
+              @if($d->orddEstadoMedidasID == 2)
+              <h6>Medidas tomadas por: <b>{{$d->usrNombre." ".$d->usrApellido}}</b></h6>
+              @endif
               <hr>
 
             </div>
           </div>
           @endforeach
+
+          @if($orden->ordEstadoInstalacionID == 4)
+          <br><h4>Instalación programada para el día: <b>{{date("d-m-Y",strToTime($orden->ordFechaInstalacion))}}</b></h4>
+          <h4>Instalador: <b>{{$instalador->insNombre." ".$instalador->insApellido}}</b></h4>
+          @endif
 
          <br><a href="/Ventas" class='btn btn-primary' style="float:right;">Atrás</a>
 	       <br><br><hr>

@@ -467,14 +467,17 @@ Route::get('/Ventas', function () {
 Route::get('/Ventas/{id}', function ($id) {
   if(Auth::user()->usrRolID==2 || Auth::user()->usrRolID==3 || Auth::user()->usrRolID==4){
     $orden= \App\Orden::where('ordID','=',$id)->first();
+    $estado = \App\Estado::where('stdID','=',$orden->ordEstadoInstalacionID)->first();
+    $instalador = \App\Instalador::where('insID','=',$orden->ordInstaladorID)->first();
     $detalles = DB::table('orden_detalles')
       ->join('colors', 'orden_detalles.orddColorID', '=', 'colors.clrID')
       ->join('sistemas', 'orden_detalles.orddSistemaID', '=', 'sistemas.stmID')
       ->join('disenos', 'orden_detalles.orddDisenoID', '=', 'disenos.dsnID')
       ->join('milimetrajes', 'orden_detalles.orddMilimID', '=', 'milimetrajes.mlmID')
+      ->join('users', 'orden_detalles.orddAuxiliarID', '=', 'users.id')
     ->where("orden_detalles.orddOrdenID", "=", $id)->get();
     if($orden !=null){
-      return view('ventas/detalleVenta', compact('orden', 'detalles'));
+      return view('ventas/detalleVenta', compact('orden', 'detalles', 'estado', 'instalador'));
     }else{
       return Redirect::to('/');
     }
