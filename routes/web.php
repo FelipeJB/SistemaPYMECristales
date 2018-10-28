@@ -674,4 +674,4 @@ Route::get('/MigrarDatos', function () {
     return Redirect::to('/');
   }
 })->middleware('auth');
-Route::post('/MigrarDatos', 'Migraciones\MigracionController@create')->middleware('auth');
+Route::post('/MigrarDatos', 'Migraciones\MigracionController@generateMigrationTerceros')->middleware('auth');
