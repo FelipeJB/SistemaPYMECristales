@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Migraciones;
 
 use App\Migracion;
 use App\Orden;
+use App\OrdenDetalle;
 use App\Cliente;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -21,6 +22,8 @@ class MigracionController extends Controller
     //Traer clientes y órdenes
     $clientes= Cliente::where("cltMigrado", "=", $tipo)->get();
     $ordenes= Orden::where("ordMigrado", "=", $tipo)->get();
+
+
 
     //validar que haya cosas que migrar si el tipo es 0
     if($tipo == 0){
@@ -55,19 +58,97 @@ class MigracionController extends Controller
     ->withInput();
   }
 
-  public function generateMigrationTerceros($clientes, $ordenes)
+  public function generateMigrationTerceros()
   {
     $clientes= Cliente::where("cltMigrado", "=", 0)->get();
     //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
-    $customer_array[] = array('Nombre', 'Apellido', 'Email');
+    $customer_array[] = array('TipoDeIdentificacion', 'Terceros_Identificacion', 'Ciudad', 'CódigoTercero',
+                              'Primer_Nombre', 'Segundo_Nombre', 'Primer_Apellido', 'Segundo_Apellido',
+                              'Terceros_Propiedades', 'Nota', 'Activo', 'Terceros - ClasificaciónUno_Clasificación',
+                              'Terceros - ClasificaciónDos_Clasificación', 'Terceros - ClasificaciónTres_Clasificación',
+                              'FechaDeCreación', 'Plazo', 'Descripcion', 'TarifaIca', 'Cargo', 'Terceros_1_Identificacion',
+                              'ListPrecios', 'Personalizado1', 'Personalizado2', 'Personalizado3', 'Personalizado4', 'Personalizado5',
+                              'Personalizado6', 'Personalizado7', 'Personalizado8', 'Personalizado9', 'Personalizado10',
+                              'Personalizado11', 'Personalizado12', 'Personalizado13', 'Personalizado14', 'Personalizado15',
+                              'ZonaUno', 'ZonaDos', 'Clasificacion_Dian');
     foreach ($clientes as $cliente) {
-      $customer_array[] = array('Nombre' => $cliente->cltNombre,
-                                'Apellido' => $cliente->cltApellido,
-                                'Email' => $cliente->cltEmail);
+      //separates name
+      $nameArray = array();
+      $nameArray = explode(" ", $cliente->cltNombre);
+      $primerNombre = $nameArray[0];
+      $segundoNombre = '';
+      if(sizeof($nameArray) == 1){
+        $segundoNombre = '';
+      }
+      if(sizeof($nameArray) == 2){
+        $segundoNombre = $nameArray[1];
+      }
+      if(sizeof($nameArray) >= 3){
+        $i = 1;
+        for($i = 1; $i < sizeof($nameArray); $i++){
+          $segundoNombre .= $nameArray[$i] . ' ';
+        }
+      }
+      //separates last name
+      $lastNameArray = array();
+      $lastNameArray = explode(" ", $cliente->cltApellido);
+      $primerApellido = $lastNameArray[0];
+      $segundoNombre = '';
+      if(sizeof($lastNameArray) == 1){
+        $segundoApellido = '';
+      }
+      if(sizeof($lastNameArray) == 2){
+        $segundoApellido = $lastNameArray[1];
+      }
+      if(sizeof($lastNameArray) >= 3){
+        $i = 1;
+        for($i = 1; $i < sizeof($lastNameArray); $i++){
+          $segundoApellido .= $lastNameArray[$i] . ' ';
+        }
+      }
+      $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltTipoDocumento, //tipo documento
+                                'Terceros_Identificacion' => $cliente->cltCedula, //número cédula
+                                'Ciudad' => $cliente->cltCiudad,
+                                'CódigoTercero' => '', //ni idea
+                                'Primer_Nombre' => $primerNombre,
+                                'Segundo_Nombre' => $segundoNombre,
+                                'Primer_Apellido' => $primerApellido,
+                                'Segundo_Apellido' => $segundoApellido,
+                                'Terceros_Propiedades' => 'Cliente;',
+                                'Nota' => '',
+                                'Activo' => '-1',
+                                'Terceros - ClasificaciónUno_Clasificación' => '',
+                                'Terceros - ClasificaciónDos_Clasificación' => '',
+                                'Terceros - ClasificaciónTres_Clasificación' => '',
+                                'FechaDeCreación' => $cliente->cltEmail, //fecha creación cliente
+                                'Plazo' => '0',
+                                'Descripcion' => $cliente->cltEmail, //personal natural o jurídica
+                                'TarifaIca' => $cliente->cltEmail, //ni idea '0'
+                                'Cargo' => '',
+                                'Terceros_1_Identificacion' => $cliente->cltEmail, //céudla vendedor
+                                'ListPrecios' => 'Precio 1', //pendiente preguntar
+                                'Personalizado1' => '',
+                                'Personalizado2' => '',
+                                'Personalizado3' => '',
+                                'Personalizado4' => '',
+                                'Personalizado5' => '',
+                                'Personalizado6' => '',
+                                'Personalizado7' => '',
+                                'Personalizado8' => '',
+                                'Personalizado9' => '',
+                                'Personalizado10' => '',
+                                'Personalizado11' => '',
+                                'Personalizado12' => '',
+                                'Personalizado13' => '',
+                                'Personalizado14' => '',
+                                'Personalizado15' => '',
+                                'ZonaUno' => '',
+                                'ZonaDos' => '',
+                                'Clasificacion_Dian' => 'Normal');
     }
-    Excel::create('Customer data', function($excel) use ($customer_array){
-      $excel->setTitle('Customer data');
-      $excel->sheet('Customer data', function($sheet) use ($customer_array){
+    Excel::create('TERCEROS', function($excel) use ($customer_array){
+      $excel->setTitle('TERCEROS');
+      $excel->sheet('TERCEROS', function($sheet) use ($customer_array){
         $sheet->fromArray($customer_array, null, 'A1', false, false);
       });
     })->download('xlsx');
@@ -76,6 +157,101 @@ class MigracionController extends Controller
   private function generateMigrationTercerosDirecciones($clientes, $ordenes)
   {
     //Aquí se genera el excel de terceros direcciones con los clientes y órdenes especificados.
+    $clientes= Cliente::where("cltMigrado", "=", 0)->get();
+    //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
+    $customer_array[] = array('TipoDeIdentificacion', 'Terceros_Identificacion', 'Ciudad', 'CódigoTercero',
+                              'Primer_Nombre', 'Segundo_Nombre', 'Primer_Apellido', 'Segundo_Apellido',
+                              'Terceros_Propiedades', 'Nota', 'Activo', 'Terceros - ClasificaciónUno_Clasificación',
+                              'Terceros - ClasificaciónDos_Clasificación', 'Terceros - ClasificaciónTres_Clasificación',
+                              'FechaDeCreación', 'Plazo', 'Descripcion', 'TarifaIca', 'Cargo', 'Terceros_1_Identificacion',
+                              'ListPrecios', 'Personalizado1', 'Personalizado2', 'Personalizado3', 'Personalizado4', 'Personalizado5',
+                              'Personalizado6', 'Personalizado7', 'Personalizado8', 'Personalizado9', 'Personalizado10',
+                              'Personalizado11', 'Personalizado12', 'Personalizado13', 'Personalizado14', 'Personalizado15',
+                              'ZonaUno', 'ZonaDos', 'Clasificacion_Dian');
+    foreach ($clientes as $cliente) {
+      //separates name
+      $nameArray = array();
+      $nameArray = explode(" ", $cliente->cltNombre);
+      $primerNombre = $nameArray[0];
+      $segundoNombre = '';
+      if(sizeof($nameArray) == 1){
+        $segundoNombre = '';
+      }
+      if(sizeof($nameArray) == 2){
+        $segundoNombre = $nameArray[1];
+      }
+      if(sizeof($nameArray) >= 3){
+        $i = 1;
+        for($i = 1; $i < sizeof($nameArray); $i++){
+          $segundoNombre .= $nameArray[$i] . ' ';
+        }
+      }
+      //separates last name
+      $lastNameArray = array();
+      $lastNameArray = explode(" ", $cliente->cltApellido);
+      $primerApellido = $lastNameArray[0];
+      $segundoNombre = '';
+      if(sizeof($lastNameArray) == 1){
+        $segundoApellido = '';
+      }
+      if(sizeof($lastNameArray) == 2){
+        $segundoApellido = $lastNameArray[1];
+      }
+      if(sizeof($lastNameArray) >= 3){
+        $i = 1;
+        for($i = 1; $i < sizeof($lastNameArray); $i++){
+          $segundoApellido .= $lastNameArray[$i] . ' ';
+        }
+      }
+      $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltNombre, //tipo documento
+                                'Terceros_Identificacion' => $cliente->cltApellido, //número cédula
+                                'Ciudad' => $cliente->cltEmail,
+                                'CódigoTercero' => '', //ni idea
+                                'Primer_Nombre' => $primerNombre,
+                                'Segundo_Nombre' => $segundoNombre,
+                                'Primer_Apellido' => $primerApellido,
+                                'Segundo_Apellido' => $segundoApellido,
+                                'Terceros_Propiedades' => 'Cliente;',
+                                'Nota' => '',
+                                'Activo' => '-1',
+                                'Terceros - ClasificaciónUno_Clasificación' => '',
+                                'Terceros - ClasificaciónDos_Clasificación' => '',
+                                'Terceros - ClasificaciónTres_Clasificación' => '',
+                                'FechaDeCreación' => $cliente->cltEmail, //fecha creación cliente
+                                'Plazo' => '0',
+                                'Descripcion' => $cliente->cltEmail, //personal natural o jurídica
+                                'TarifaIca' => $cliente->cltEmail, //ni idea '0'
+                                'Cargo' => '',
+                                'Terceros_1_Identificacion' => $cliente->cltEmail, //céudla vendedor
+                                'ListPrecios' => 'Precio 1', //pendiente preguntar
+                                'Personalizado1' => '',
+                                'Personalizado2' => '',
+                                'Personalizado3' => '',
+                                'Personalizado4' => '',
+                                'Personalizado5' => '',
+                                'Personalizado6' => '',
+                                'Personalizado7' => '',
+                                'Personalizado8' => '',
+                                'Personalizado9' => '',
+                                'Personalizado10' => '',
+                                'Personalizado11' => '',
+                                'Personalizado12' => '',
+                                'Personalizado13' => '',
+                                'Personalizado14' => '',
+                                'Personalizado15' => '',
+                                'ZonaUno' => '',
+                                'ZonaDos' => '',
+                                'Dirección' => '',
+                                'Teléfonos' => '',
+                                'Ciudad_Direccion' => '',
+                                'Dir_Principal' => '-1');
+    }
+    Excel::create('TERCEROS DIRECCIONES', function($excel) use ($customer_array){
+      $excel->setTitle('TERCEROS DIRECCIONES');
+      $excel->sheet('TERCEROS DIRECCIONES', function($sheet) use ($customer_array){
+        $sheet->fromArray($customer_array, null, 'A1', false, false);
+      });
+    })->download('xlsx');
   }
 
   private function generateMigrationPedidos($clientes, $ordenes)
