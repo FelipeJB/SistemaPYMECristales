@@ -6,6 +6,7 @@ use App\Migracion;
 use App\Orden;
 use App\OrdenDetalle;
 use App\Cliente;
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -106,10 +107,16 @@ class MigracionController extends Controller
           $segundoApellido .= $lastNameArray[$i] . ' ';
         }
       }
+      if($cliente->cltTipoDocumento == 'NIT'){
+        $descripcion = 'Persona Juridica Regimen Simplificado';
+      }else{
+        $descripcion = 'Persona Natural Regimen Simplificado';
+      }
+      $vendedor = User::where("id", "=", $cliente->cltUsuarioCreador)->get();
       $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltTipoDocumento, //tipo documento
                                 'Terceros_Identificacion' => $cliente->cltCedula, //número cédula
                                 'Ciudad' => $cliente->cltCiudad,
-                                'CódigoTercero' => '', //ni idea
+                                'CódigoTercero' => '',
                                 'Primer_Nombre' => $primerNombre,
                                 'Segundo_Nombre' => $segundoNombre,
                                 'Primer_Apellido' => $primerApellido,
@@ -120,12 +127,12 @@ class MigracionController extends Controller
                                 'Terceros - ClasificaciónUno_Clasificación' => '',
                                 'Terceros - ClasificaciónDos_Clasificación' => '',
                                 'Terceros - ClasificaciónTres_Clasificación' => '',
-                                'FechaDeCreación' => $cliente->cltEmail, //fecha creación cliente
+                                'FechaDeCreación' => $cliente->cltFechaCreacion, //fecha creación cliente
                                 'Plazo' => '0',
-                                'Descripcion' => $cliente->cltEmail, //personal natural o jurídica
-                                'TarifaIca' => $cliente->cltEmail, //ni idea '0'
+                                'Descripcion' => $descripcion, //personal natural o jurídica
+                                'TarifaIca' => $cliente->cltTarifaICA, //ni idea '0'
                                 'Cargo' => '',
-                                'Terceros_1_Identificacion' => $cliente->cltEmail, //céudla vendedor
+                                'Terceros_1_Identificacion' => $vendedor->id, //céudla vendedor
                                 'ListPrecios' => 'Precio 1', //pendiente preguntar
                                 'Personalizado1' => '',
                                 'Personalizado2' => '',
@@ -203,10 +210,16 @@ class MigracionController extends Controller
           $segundoApellido .= $lastNameArray[$i] . ' ';
         }
       }
-      $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltNombre, //tipo documento
-                                'Terceros_Identificacion' => $cliente->cltApellido, //número cédula
-                                'Ciudad' => $cliente->cltEmail,
-                                'CódigoTercero' => '', //ni idea
+      if($cliente->cltTipoDocumento == 'NIT'){
+        $descripcion = 'Persona Juridica Regimen Simplificado';
+      }else{
+        $descripcion = 'Persona Natural Regimen Simplificado';
+      }
+      $vendedor = User::where("id", "=", $cliente->cltUsuarioCreador)->get();
+      $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltTipoDocumento, //tipo documento
+                                'Terceros_Identificacion' => $cliente->cltCedula, //número cédula
+                                'Ciudad' => $cliente->cltCiudad,
+                                'CódigoTercero' => '',
                                 'Primer_Nombre' => $primerNombre,
                                 'Segundo_Nombre' => $segundoNombre,
                                 'Primer_Apellido' => $primerApellido,
@@ -217,12 +230,12 @@ class MigracionController extends Controller
                                 'Terceros - ClasificaciónUno_Clasificación' => '',
                                 'Terceros - ClasificaciónDos_Clasificación' => '',
                                 'Terceros - ClasificaciónTres_Clasificación' => '',
-                                'FechaDeCreación' => $cliente->cltEmail, //fecha creación cliente
+                                'FechaDeCreación' => $cliente->cltFechaCreacion, //fecha creación cliente
                                 'Plazo' => '0',
-                                'Descripcion' => $cliente->cltEmail, //personal natural o jurídica
-                                'TarifaIca' => $cliente->cltEmail, //ni idea '0'
+                                'Descripcion' => $descripcion, //personal natural o jurídica
+                                'TarifaIca' => $cliente->cltTarifaICA, //ni idea '0'
                                 'Cargo' => '',
-                                'Terceros_1_Identificacion' => $cliente->cltEmail, //céudla vendedor
+                                'Terceros_1_Identificacion' => $vendedor->id, //céudla vendedor
                                 'ListPrecios' => 'Precio 1', //pendiente preguntar
                                 'Personalizado1' => '',
                                 'Personalizado2' => '',
@@ -241,9 +254,9 @@ class MigracionController extends Controller
                                 'Personalizado15' => '',
                                 'ZonaUno' => '',
                                 'ZonaDos' => '',
-                                'Dirección' => '',
-                                'Teléfonos' => '',
-                                'Ciudad_Direccion' => '',
+                                'Dirección' => $cliente->cltDireccion,
+                                'Teléfonos' => $cliente->cltCelular1,
+                                'Ciudad_Direccion' => $cliente->cltCiudad,
                                 'Dir_Principal' => '-1');
     }
     Excel::create('TERCEROS DIRECCIONES', function($excel) use ($customer_array){
@@ -254,9 +267,77 @@ class MigracionController extends Controller
     })->download('xlsx');
   }
 
-  private function generateMigrationPedidos($clientes, $ordenes)
+  private function generateMigrationPedidos()
   {
     //Aquí se genera el excel de pedidos con los clientes y órdenes especificados.
+    $ordenes= Orden::where("ordMigrado", "=", $tipo)->get();
+    //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
+    $customer_array[] = array('Empresa', 'IdCuentaContableDocumento', 'prefijo', 'DocumentoNúmero',
+                              'Fecha', 'Terceros_Identificacion', 'NúmDocumentoExterno', 'Terceros_1_Identificacion',
+                              'CuentasContables - Asientos_Nota', 'Verificado', 'FormaDePago', 'Clasificación',
+                              'Person 1 ancho', 'Person 2 alto', 'Person 3 Cantidad', 'Person 4 perforaciones',
+                              'Person 5 Boquetes', 'Person 6 BPB', 'Person 7 Chaflan', 'Person 8 F-entrega', 'Person 9 Diseño',
+                              'Personalizado10', 'Personalizado11', 'Personalizado12', 'Personalizado13', 'Personalizado14',
+                              'Personalizado15', 'CódigoInventario', 'Nombre', 'Cantidad', 'UnidadDeMedida',
+                              'MontoMonetarioUnitario', 'Expr1032', 'CCA_M_Inventarios_Nota', 'Vencimiento',
+                              'Dcto', 'CostoPromedio', 'Depreciacion', 'Terceros_2_Identificacion',
+                              'FactorConversiónMovimientoABodega', 'FactorConversiónMovimientoAInventario', 'Anulado');
+    foreach ($ordenes as $orden) {
+      $cliente = Cliente::where("cltID", "=", $orden->ordClienteID)->get();
+      $detalles = OrdenDetalle::where("orddOrdenID", "=", $orden->ordID)->get();
+      $vendedor = User::where("id", "=", $orden->ordVendedorID)->get();
+
+      foreach ($detalles as $detalle) {
+        $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
+                                  'IdCuentaContableDocumento' => 'COT',
+                                  'prefijo' => '',
+                                  'DocumentoNúmero' => '',
+                                  'Fecha' => $orden->ordFecha,
+                                  'Terceros_Identificacion' => $cliente->cltID,
+                                  'NúmDocumentoExterno' => '',
+                                  'Terceros_1_Identificacion' => $vendedor->id,
+                                  'CuentasContables - Asientos_Nota' => 'COTIZACIÓN',
+                                  'Verificado' => '0',
+                                  'FormaDePago' => 'Credito',
+                                  'Clasificación' => '',
+                                  'Person 1 ancho' => '',
+                                  'Person 2 alto' => '',
+                                  'Person 3 Cantidad' => '1',
+                                  'Person 4 perforaciones' => '',
+                                  'Person 5 Boquetes' => '',
+                                  'Person 6 BPB' => '',
+                                  'Person 7 Chaflan' => '',
+                                  'Person 8 F-entrega' => '',
+                                  'Person 9 Diseño' => '',
+                                  'Personalizado10' => '',
+                                  'Personalizado11' => '',
+                                  'Personalizado12' => '',
+                                  'Personalizado13' => '',
+                                  'Personalizado14' => '',
+                                  'Personalizado15' => '',
+                                  'CódigoInventario',
+                                  'Nombre' => 'Principal',
+                                  'Cantidad',
+                                  'UnidadDeMedida',
+                                  'MontoMonetarioUnitario',
+                                  'Expr1032' => '0.19',
+                                  'CCA_M_Inventarios_Nota',
+                                  'Vencimiento',
+                                  'Dcto',
+                                  'CostoPromedio' => '0',
+                                  'Depreciacion' => '',
+                                  'Terceros_2_Identificacion' => '',
+                                  'FactorConversiónMovimientoABodega' => '1',
+                                  'FactorConversiónMovimientoAInventario' => '1',
+                                  'Anulado' => '0');
+      }
+    }
+    Excel::create('PEDIDOS', function($excel) use ($customer_array){
+      $excel->setTitle('PEDIDOS');
+      $excel->sheet('PEDIDOS', function($sheet) use ($customer_array){
+        $sheet->fromArray($customer_array, null, 'A1', false, false);
+      });
+    })->download('xlsx');
   }
 
 }
