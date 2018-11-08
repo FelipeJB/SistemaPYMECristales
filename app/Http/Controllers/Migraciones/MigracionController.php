@@ -7,6 +7,8 @@ use App\Orden;
 use App\OrdenDetalle;
 use App\Cliente;
 use App\User;
+use App\Sistema;
+use App\SistemaDetalle;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -282,12 +284,15 @@ class MigracionController extends Controller
                               'MontoMonetarioUnitario', 'Expr1032', 'CCA_M_Inventarios_Nota', 'Vencimiento',
                               'Dcto', 'CostoPromedio', 'Depreciacion', 'Terceros_2_Identificacion',
                               'FactorConversiónMovimientoABodega', 'FactorConversiónMovimientoAInventario', 'Anulado');
+
     foreach ($ordenes as $orden) {
       $cliente = Cliente::where("cltID", "=", $orden->ordClienteID)->get();
       $detalles = OrdenDetalle::where("orddOrdenID", "=", $orden->ordID)->get();
       $vendedor = User::where("id", "=", $orden->ordVendedorID)->get();
 
       foreach ($detalles as $detalle) {
+        //primera línea de sistema (orddSistemaID)
+        $sistema = Sistema::where("stmID", "=", $detalle->orddSistemaID)->get();
         $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
                                   'IdCuentaContableDocumento' => 'COT',
                                   'prefijo' => '',
@@ -330,6 +335,101 @@ class MigracionController extends Controller
                                   'FactorConversiónMovimientoABodega' => '1',
                                   'FactorConversiónMovimientoAInventario' => '1',
                                   'Anulado' => '0');
+        //línea por cada vidrio (orddCantVidrio)
+        $vidrios = MedidaVidrio::where("mvdOrddID", "=", $detalle->orddID)->get();
+        foreach ($vidrios as $vidrio) {
+          $codigoWoVidrio = CodigoWoVidrio::where("cdgMilimID", "=", $detalle->orddMilimID)
+                                          ->where("cdgColorID", "=", $detalle->orddColorID)->get();
+          $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
+                                    'IdCuentaContableDocumento' => 'COT',
+                                    'prefijo' => '',
+                                    'DocumentoNúmero' => '',
+                                    'Fecha' => $orden->ordFecha,
+                                    'Terceros_Identificacion' => $cliente->cltID,
+                                    'NúmDocumentoExterno' => '',
+                                    'Terceros_1_Identificacion' => $vendedor->id,
+                                    'CuentasContables - Asientos_Nota' => 'COTIZACIÓN',
+                                    'Verificado' => '0',
+                                    'FormaDePago' => 'Credito',
+                                    'Clasificación' => '',
+                                    'Person 1 ancho' => '',
+                                    'Person 2 alto' => '',
+                                    'Person 3 Cantidad' => '1',
+                                    'Person 4 perforaciones' => '',
+                                    'Person 5 Boquetes' => '',
+                                    'Person 6 BPB' => '',
+                                    'Person 7 Chaflan' => '',
+                                    'Person 8 F-entrega' => '',
+                                    'Person 9 Diseño' => '',
+                                    'Personalizado10' => '',
+                                    'Personalizado11' => '',
+                                    'Personalizado12' => '',
+                                    'Personalizado13' => '',
+                                    'Personalizado14' => '',
+                                    'Personalizado15' => '',
+                                    'CódigoInventario',
+                                    'Nombre' => 'Principal',
+                                    'Cantidad',
+                                    'UnidadDeMedida',
+                                    'MontoMonetarioUnitario',
+                                    'Expr1032' => '0.19',
+                                    'CCA_M_Inventarios_Nota',
+                                    'Vencimiento',
+                                    'Dcto',
+                                    'CostoPromedio' => '0',
+                                    'Depreciacion' => '',
+                                    'Terceros_2_Identificacion' => '',
+                                    'FactorConversiónMovimientoABodega' => '1',
+                                    'FactorConversiónMovimientoAInventario' => '1',
+                                    'Anulado' => '0');
+        }
+
+        //una línea por detalle del sistema (stmdSistemaID)
+        $sistemaDetalles = SistemaDetalle::where("stmdSistemaID", "=", $sistema->stmID)->get();
+        foreach ($sistemaDetalles as $sistemaDetalle) {
+          $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
+                                    'IdCuentaContableDocumento' => 'COT',
+                                    'prefijo' => '',
+                                    'DocumentoNúmero' => '',
+                                    'Fecha' => $orden->ordFecha,
+                                    'Terceros_Identificacion' => $cliente->cltID,
+                                    'NúmDocumentoExterno' => '',
+                                    'Terceros_1_Identificacion' => $vendedor->id,
+                                    'CuentasContables - Asientos_Nota' => 'COTIZACIÓN',
+                                    'Verificado' => '0',
+                                    'FormaDePago' => 'Credito',
+                                    'Clasificación' => '',
+                                    'Person 1 ancho' => '',
+                                    'Person 2 alto' => '',
+                                    'Person 3 Cantidad' => '1',
+                                    'Person 4 perforaciones' => '',
+                                    'Person 5 Boquetes' => '',
+                                    'Person 6 BPB' => '',
+                                    'Person 7 Chaflan' => '',
+                                    'Person 8 F-entrega' => '',
+                                    'Person 9 Diseño' => '',
+                                    'Personalizado10' => '',
+                                    'Personalizado11' => '',
+                                    'Personalizado12' => '',
+                                    'Personalizado13' => '',
+                                    'Personalizado14' => '',
+                                    'Personalizado15' => '',
+                                    'CódigoInventario',
+                                    'Nombre' => 'Principal',
+                                    'Cantidad',
+                                    'UnidadDeMedida',
+                                    'MontoMonetarioUnitario',
+                                    'Expr1032' => '0.19',
+                                    'CCA_M_Inventarios_Nota',
+                                    'Vencimiento',
+                                    'Dcto',
+                                    'CostoPromedio' => '0',
+                                    'Depreciacion' => '',
+                                    'Terceros_2_Identificacion' => '',
+                                    'FactorConversiónMovimientoABodega' => '1',
+                                    'FactorConversiónMovimientoAInventario' => '1',
+                                    'Anulado' => '0');
+        }
       }
     }
     Excel::create('PEDIDOS', function($excel) use ($customer_array){
