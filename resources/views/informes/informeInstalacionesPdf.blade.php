@@ -44,7 +44,7 @@
           <td align="center" width="50%">
             <b>Cristales Templados La Torre S.A.S</b><br>
             <b>Nit 900593026-1</b><br><br>
-            <b>Informe de Ventas {{$mes}}-{{$anio}}</b><br>
+            <b>Informe de Instalaciones {{$mes}}-{{$anio}}</b><br>
           </td>
         </tr>
       </table>
@@ -53,51 +53,97 @@
 
   <div class="row">
     <div class="column">
-      @for($i = 0; $i < count($puntoOrdenes); $i++)
-      <table border="1" align="center" width="100%">
+      @for($i = 0; $i < count($instaladorOrdenes); $i++)
+      <table border="0" align="center" width="100%">
         <tr>
-          <th width="100%" align="left" colspan="4">
-            Punto de Venta: {{$puntoOrdenes[$i]['puntoVenta']}}
-          </th>
-
-        </tr>
-        <tr>
-          <th width="25%" align="center">
-            Número de Orden
-          </th>
-          <th width="25%" align="center">
-            Total Venta
-          </th>
-          <th width="25%" align="center">
-            Total Compra
-          </th>
-          <th width="25%" align="center">
-            Total Utilidades
-          </th>
-        </tr>
-        @for($j = 0; $j < count($puntoOrdenes[$i]['ordenes']); $j++)
-        <tr>
-          <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
-          </td>
-          <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordTotal}}
-          </td>
-          <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordTotalCompra}}
-          </td>
-          <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordTotalUtilidades}}
-          </td>
-        </tr>
-        @endfor
-        <tr>
-          <th width="100%" align="left" colspan="4">
-            Total Ventas: {{$puntoOrdenes[$i]['totalPuntoVenta']}}
+          <th width="100%" align="left">
+            Instalador: {{$instaladorOrdenes[$i]['insNombre']}} {{$instaladorOrdenes[$i]['insApellido']}}
           </th>
         </tr>
       </table>
+      <table border="1" align="center" width="100%">
+        <tr>
+          <th width="100%" align="left" colspan="3">
+            Instalaciones programadas: {{$instaladorOrdenes[$i]['totalInstaladorSI']}}
+          </th>
+        </tr>
+        @if($instaladorOrdenes[$i]['totalInstaladorSI'] > 0)
+        <tr>
+          <th width="33%" align="center">
+            Número de Pedido
+          </th>
+          <th width="34%" align="center">
+            Fecha de Instalación
+          </th>
+          <th width="33%" align="center">
+            Total Orden
+          </th>
+        </tr>
+        @for($j = 0; $j < count($instaladorOrdenes[$i]['ordenes']); $j++)
+          @if($instaladorOrdenes[$i]['ordenes'][$j]->ordEstadoInstalacionID == 4)
+          <tr>
+            <td width="33%" align="center">
+              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
+            </td>
+            <td width="34%" align="center">
+              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordFechaInstalacion}}
+            </td>
+            <td width="33%" align="center">
+              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordTotal}}
+            </td>
+          </tr>
+          @endif
+        @endfor
+        @endif
+      </table>
+      <table border="1" align="center" width="100%">
+        <tr>
+          <th width="100%" align="left" colspan="3">
+            Instalaciones NO programadas: {{$instaladorOrdenes[$i]['totalInstaladorNO']}}
+          </th>
+        </tr>
+        @if($instaladorOrdenes[$i]['totalInstaladorNO'] > 0)
+        <tr>
+          <th width="33%" align="center">
+            Número de Pedido
+          </th>
+          <th width="34%" align="center">
+            Descripción falla de instalación
+          </th>
+          <th width="33%" align="center">
+            Total Orden
+          </th>
+        </tr>
+        @for($j = 0; $j < count($instaladorOrdenes[$i]['ordenes']); $j++)
+          @if($instaladorOrdenes[$i]['ordenes'][$j]->ordEstadoInstalacionID != 4)
+          <tr>
+            <td width="25%" align="center">
+              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
+            </td>
+            <td width="25%" align="center">
+              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordRazonNegativa}}
+            </td>
+            <td width="25%" align="center">
+              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordTotalCompra}}
+            </td>
+          </tr>
+          @endif
+        @endfor
+        @endif
+      </table>
       @endfor
+      <table border="0" align="center" width="100%">
+        <tr>
+          <th width="100%" align="left">
+            TOTAL INSTALACIONES PROGRAMADAS EN EL MES: {{$instaladorOrdenes[0]['totalMesSI']}}
+          </th>
+        </tr>
+        <tr>
+          <th width="100%" align="left">
+            TOTAL INSTALACIONES NO PROGRAMADAS EN EL MES: {{$instaladorOrdenes[0]['totalMesNO']}}
+          </th>
+        </tr>
+      </table>
     </div>
   </div>
 </body>
