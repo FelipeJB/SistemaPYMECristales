@@ -102,13 +102,13 @@
     <table border="0" width="100%">
       <tr>
         <th width="27%" align="center">
-          Medida 1 = {{$vidrioF->mvdAlto}} mm
+          Medida 1 =  mm
         </th>
         <th width="27%" align="center">
-          Medida 2 = {{$vidrioF->mvdAnchoArriba}} mm
+          Medida 2 =  mm
         </th>
         <th width="27%" align="center">
-          Medida 3 = {{$vidrioF->mvdAnchoAbajo}} mm
+          Medida 3 =  mm
         </th>
         <th width="19%" align="left">
           FIJO
@@ -123,6 +123,34 @@
         </th>
         <th width="27%" align="center">
           Medida 6 =  mm
+        </th>
+        <th width="19%" align="left">
+          PUERTA
+        </th>
+      </tr>
+      <tr>
+        <th width="27%" align="center">
+          Medida 7 =  mm
+        </th>
+        <th width="27%" align="center">
+          Medida 8 =  mm
+        </th>
+        <th width="27%" align="center">
+          Medida 9 =  mm
+        </th>
+        <th width="19%" align="left">
+          FIJO
+        </th>
+      </tr>
+      <tr>
+        <th width="27%" align="center">
+          Medida 10 =  mm
+        </th>
+        <th width="27%" align="center">
+          Medida 11 =  mm
+        </th>
+        <th width="27%" align="center">
+          Medida 12 =  mm
         </th>
         <th width="19%" align="left">
           PUERTA

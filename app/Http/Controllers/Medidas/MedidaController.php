@@ -10,6 +10,9 @@ use App\PrecioVidrio;
 use App\Orden;
 use App\OrdenDetalle;
 use App\MedidaVidrio;
+use App\Milimetraje;
+use App\Diseno;
+use App\Cliente;
 use App\DatosMedida;
 use Request;
 use App\Http\Controllers\Controller;
@@ -878,22 +881,574 @@ class MedidaController extends Controller
     $orden = \App\Orden::where('ordID','=',$id)->first();
     $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
     $auxiliar = \App\User::where('id', '=', $orden->ordInstaladorID)->first();
-
+    $relaciones = array('relacion');
+    $cliente = \App\Cliente::where('cltID', '=', $orden->ordClienteID)->first();
     foreach ($detalles as $detalle) {
-      $this->generarPlanosPDF($orden, $detalle, $id);
+      $imagen = '';
+      $generarPDF = true;
+      $sistema = \App\Sistema::where('stmID', '=', $detalle->orddSistemaID)->first();
+      $vidrios = \App\MedidaVidrio::where('mvdOrddID', '=', $detalle->orddID)->get();
+      $diseno = \App\Diseno::where('dsnID', '=', $detalle->orddDisenoID)->first();
+      $milimetraje = \App\Milimetraje::where('mlmID', '=', $detalle->orddMilimID)->first();
+      $color = \App\Color::where('clrID', '=', $detalle->orddColorID)->first();
+
+      //foreach($vidrios as $vidrio){
+        switch ($sistema->stmDescripcion) {
+          case 'BATIENTE NORMAL TRASLAPADA':
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+              }
+            }
+            break;
+          case 'BATIENTE NORMAL CHAFLAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_TOALLERO.jpg';
+            }
+          }
+          case 'BATIENTE NORMAL IMAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+            break;
+          case 'BATIENTE REDONDA TRASLAPADA':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE REDONDA CHAFLAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE REDONDA IMAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE ESQUINAS TRASLAPADA':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE ESQUINAS CHAFLAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE ESQUINAS IMAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE ARAÑA TRASLAPADA':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE ARAÑA CHAFLAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL CHAFLAN_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'BATIENTE ARAÑA IMAN':
+          if($detalle->orddLadoPuerta == 'Izquierda'){
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_IZQUIERDA_TOALLERO.jpg';
+            }
+          }else{
+            if($detalle->orddCantToalleros = 0){
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_NOTOALLERO.jpg';
+            }else{
+              $imagen = 'imagenes-medidas/BATIENTE NORMAL TRASLAPADA_DERECHA_TOALLERO.jpg';
+            }
+          }
+            break;
+          case 'DIALAN':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/DIALAN_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/DIALAN_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          case 'K1':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K1_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K1_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K1_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K1_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          case 'K2':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K2_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K2_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K2_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K2_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          case 'K3':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K3_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K3_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K3_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K3_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          case 'K4':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K4_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K4_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/K4_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/K4_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          case 'K7':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/DIALAN_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/DIALAN_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          case 'TOGO':
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/TOGO_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/TOGO_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/TOGO_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/TOGO_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+          default:
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+            if($detalle->orddLadoPuerta == 'Izquierda'){
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_TOALLERO.jpg';
+              }
+            }else{
+              if($detalle->orddCantToalleros = 0){
+                $imagen = 'imagenes-medidas/DIALAN_DERECHA_NOTOALLERO.jpg';
+              }else{
+                $imagen = 'imagenes-medidas/DIALAN_DERECHA_TOALLERO.jpg';
+              }
+            }
+          }else{
+            if(!in_array('relacion', $detalle->orddRelacion)){
+              if($detalle->orddLadoPuerta == 'Izquierda'){
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_TOALLERO IZQ.jpg';
+                }
+              }else{
+                if($detalle->orddCantToalleros = 0){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
+                }elseif($detalle->orddCantToalleros = 2){
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_2 TOALLEROS.jpg';
+                }else{
+                  $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_TOALLERO DER.jpg';
+                }
+              }
+              $relaciones[] = $detalle->orddRelacion;
+            }else{
+              $generarPDF = false;
+            }
+          }
+            break;
+        //}
+      }
+      if($generarPDF){
+        // if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+        //
+        // }else{
+        //
+        // }
+        $this->generarPlanosPDF($orden, $detalle, $id, $auxiliar,
+                                $sistema, $color, $milimetraje, $diseno,
+                                $cliente, $imagen, $vidrioF, $vidrioP);
+      }
     }
-
-
     //return Redirect::to('/')->with('success', 'Planos generados existosamente');
   }
 
-  public function generarPlanosPDF($orden, $detalle, $id, $auxiliar){
+  public function generarPlanosPDF($orden, $detalle, $id, $auxiliar,
+                                  $sistema, $color, $milimetraje, $diseno,
+                                  $cliente, $imagen, $vidrioF, $vidrioP){
     //Generar planos
     $pdf = PDF::loadView('medidas/generarPlanosPdf', [
       'orden' => $orden,
       'detalle' => $detalle,
       'id' => $id,
-      'auxiliar' => $auxiliar
+      'auxiliar' => $auxiliar,
+      'sistema' => $sistema,
+      'color' => $color,
+      'milimetraje' => $milimetraje,
+      'diseno' => $diseno,
+      'imagen' => $imagen,
+      'vidrioF' => $vidrioF,
+      'vidrioP' => $vidrioP
+    ]);
+    return $pdf->download('Garantia de Orden N'.$id.'.pdf');
+  }
+
+  public function generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
+                                  $sistema, $color, $milimetraje, $diseno,
+                                  $cliente, $imagen, $vidrioF1, $vidrioP1,
+                                  $vidrioF2, $vidrioP2){
+    //Generar planos
+    $pdf = PDF::loadView('medidas/generarPlanosPdfL', [
+      'orden' => $orden,
+      'detalle' => $detalle,
+      'id' => $id,
+      'auxiliar' => $auxiliar,
+      'sistema' => $sistema,
+      'color' => $color,
+      'milimetraje' => $milimetraje,
+      'diseno' => $diseno,
+      'imagen' => $imagen,
+      'vidrioF1' => $vidrioF1,
+      'vidrioP1' => $vidrioP1,
+      'vidrioF2' => $vidrioF2,
+      'vidrioP2' => $vidrioP2
     ]);
     return $pdf->download('Garantia de Orden N'.$id.'.pdf');
   }
