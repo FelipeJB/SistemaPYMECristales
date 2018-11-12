@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Informe de Ventas {{$mes}}-{{$anio}}</title>
+    <title>Informe de Instalaciones {{$mes}}-{{$anio}}</title>
     <style>
     body{
       margin-top: 1px;
@@ -98,17 +98,6 @@
         </tr>
       </table>
       @endfor
-    </div>
-  </div>
-  <div class="row">
-    <div class="column">
-      <table border="0" width="100%">
-        <tr>
-          <th width="100%">
-            TOTAL MES: {{$puntoOrdenes[0]['totalMes']}}
-          </th>
-        </tr>
-      </table>
     </div>
   </div>
 </body>

@@ -38,8 +38,9 @@ class InformeController extends Controller
     case 'ventas':
       $puntosVenta = PuntoVenta::where('pvActivo', '=', 1)->get();
       //var_dump($puntosVenta);
-      $puntoOrdenes[] = array('puntoVenta', 'ordenes', 'totalPuntoVenta');
+      $puntoOrdenes[] = array('puntoVenta', 'ordenes', 'totalPuntoVenta', 'totalMes');
       $i = 0;
+      $puntoOrdenes[0]['totalMes'] = 0;
       foreach($puntosVenta as $puntoVenta){
         $ordenes = Orden::whereMonth('ordFecha', '=', $mes)->whereYear('ordFecha', '=', $anio)->where('ordPuntoVentaID', '=', $puntoVenta->pvID)->get();
         //$ordenes = json_encode(json_decode($ordenes));
@@ -59,6 +60,7 @@ class InformeController extends Controller
             //var_dump('pasa');die('muere');
             $orden->ordTotalUtilidades = $orden->ordTotal - $orden->ordTotalCompra;
             $puntoOrdenes[$i]['totalPuntoVenta'] += $orden->ordTotal;
+            $puntoOrdenes[0]['totalMes'] += $orden->ordTotal;
             $k++;
           }
           $i++;
