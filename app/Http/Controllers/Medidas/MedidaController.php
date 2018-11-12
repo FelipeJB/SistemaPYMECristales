@@ -877,20 +877,23 @@ class MedidaController extends Controller
     //Obtener datos para el documento
     $orden = \App\Orden::where('ordID','=',$id)->first();
     $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
+    $auxiliar = \App\User::where('id', '=', $orden->ordInstaladorID)->first();
 
     foreach ($detalles as $detalle) {
-      $this->generarPlanosPDF($orden, $detalle);
+      $this->generarPlanosPDF($orden, $detalle, $id);
     }
 
 
     //return Redirect::to('/')->with('success', 'Planos generados existosamente');
   }
 
-  public function generarPlanosPDF($orden, $detalle){
+  public function generarPlanosPDF($orden, $detalle, $id, $auxiliar){
     //Generar planos
     $pdf = PDF::loadView('medidas/generarPlanosPdf', [
       'orden' => $orden,
-      'detalle' => $detalle
+      'detalle' => $detalle,
+      'id' => $id,
+      'auxiliar' => $auxiliar
     ]);
     return $pdf->download('Garantia de Orden N'.$id.'.pdf');
   }

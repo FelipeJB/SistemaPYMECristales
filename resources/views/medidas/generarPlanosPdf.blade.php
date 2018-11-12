@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Garantía de Orden N{{$orden->ordNumeroPedido}}</title>
+    <title>Toma de medidas de Orden Detalle N{{$detalle->orddID}}</title>
     <style>
     body{
       margin-top: 1px;
@@ -52,25 +52,30 @@
   </div>
   <div class="row">
     <div class="column">
-      <table border="0" align="left" width="100%">
-        <tr>
-          <th width="100%">
-            <br><br>
-            <b>Fecha de solicitud: {{$garantia->grnFecha}}</b><br><br>
-            <b>Cliente: {{$cliente->cltNombre}} {{$cliente->cltApellido}}</b><br><br>
-            <b>Número de Factura: {{$orden->ordNumeroPedido}}</b><br><br>
-            <b>Teléfonos: {{$cliente->cltCelular1}}</b><br><br>
-            <b>Dirección: {{$cliente->cltDireccion}}, {{$cliente->cltCiudad}}</b><br><br>
-            <b>Instalador/a: {{$instalador->insNombre}} {{$instalador->insApellido}}</b><br><br>
-            <b>Vendedor/a: {{$vendedor->usrNombre}} {{$vendedor->usrApellido}}</b><br><br>
-            <b>Observaciones: {{$garantia->grnObservaciones}}</b><br><br><br><br>
-            <b>Fecha de programación:</b><br><br><br>
-            <b>Recibí a satisfacción la garantía realizada</b><br><br><br><br>
-            <b>______________________</b>
-          </th>
-        </tr>
-      </table>
     </div>
+    <div class="column">
+    <table border="1" align="center" width="100%">
+      <tr>
+        <td align="right" width="20%">
+          <b>Auxiliar logístico:</b><br>
+          <b>Nombre del cliente:</b><br>
+          <b>Número de la OP:</b><br>
+          <b>Sistema:</b><br>
+          <b>Color:</b><br>
+          <b>Espesor:</b><br>
+          <b>Talla:</b><br>
+          <b>Precio total:</b>
+        </td>
+        <td align="left" width="80%">
+          <b>{{$cliente->cltNombre}} {{$cliente->cltApellido}}</b><br>
+          <b>{{$cliente->cltTipoDocumento}} {{$cliente->cltCedula}}</b><br>
+          <b>{{$cliente->cltDireccion}} {{$cliente->cltCiudad}}</b><br>
+          <b>{{$cliente->cltCelular1}}</b><br>
+          <b>{{$formaPago->fpDescripcion}}</b>
+        </td>
+      </tr>
+    </table>
   </div>
+</div>
 </body>
 </html>
