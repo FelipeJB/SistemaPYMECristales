@@ -28,8 +28,6 @@ class MigracionController extends Controller
     $clientes= Cliente::where("cltMigrado", "=", $tipo)->get();
     $ordenes= Orden::where("ordMigrado", "=", $tipo)->get();
 
-
-
     //validar que haya cosas que migrar si el tipo es 0
     if($tipo == 0){
       if (count($clientes) == 0 && count($ordenes)  == 0){
@@ -39,9 +37,9 @@ class MigracionController extends Controller
     }
 
     //generar documentos
-    $this->generateMigrationTerceros($clientes, $ordenes);
-    $this->generateMigrationTercerosDirecciones($clientes, $ordenes);
-    $this->generateMigrationPedidos($clientes, $ordenes);
+    $this->generateMigrationTerceros($clientes);
+    $this->generateMigrationTercerosDirecciones($clientes);
+    $this->generateMigrationPedidos($ordenes);
 
     //crear y asignar la migración a los objetos si es migración de tipo 0
     if($tipo == 0){
@@ -63,9 +61,9 @@ class MigracionController extends Controller
     ->withInput();
   }
 
-  public function generateMigrationTerceros()
+  public function generateMigrationTerceros($clientes)
   {
-    $clientes= Cliente::where("cltMigrado", "=", 0)->get();
+    // $clientes= Cliente::where("cltMigrado", "=", 0)->get();
     //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
     $customer_array[] = array('TipoDeIdentificacion', 'Terceros_Identificacion', 'Ciudad', 'CódigoTercero',
                               'Primer_Nombre', 'Segundo_Nombre', 'Primer_Apellido', 'Segundo_Apellido',
@@ -165,10 +163,10 @@ class MigracionController extends Controller
     })->download('xlsx');
   }
 
-  private function generateMigrationTercerosDirecciones($clientes, $ordenes)
+  private function generateMigrationTercerosDirecciones($clientes)
   {
     //Aquí se genera el excel de terceros direcciones con los clientes y órdenes especificados.
-    $clientes= Cliente::where("cltMigrado", "=", 0)->get();
+    // $clientes= Cliente::where("cltMigrado", "=", 0)->get();
     //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
     $customer_array[] = array('TipoDeIdentificacion', 'Terceros_Identificacion', 'Ciudad', 'CódigoTercero',
                               'Primer_Nombre', 'Segundo_Nombre', 'Primer_Apellido', 'Segundo_Apellido',
@@ -271,10 +269,10 @@ class MigracionController extends Controller
     })->download('xlsx');
   }
 
-  private function generateMigrationPedidos()
+  public function generateMigrationPedidos($ordenes)
   {
     //Aquí se genera el excel de pedidos con los clientes y órdenes especificados.
-    $ordenes= Orden::where("ordMigrado", "=", $tipo)->get();
+    // $ordenes= Orden::where("ordMigrado", "=", 0)->get();
     //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
     $customer_array[] = array('Empresa', 'IdCuentaContableDocumento', 'prefijo', 'DocumentoNúmero',
                               'Fecha', 'Terceros_Identificacion', 'NúmDocumentoExterno', 'Terceros_1_Identificacion',
@@ -288,14 +286,14 @@ class MigracionController extends Controller
                               'FactorConversiónMovimientoABodega', 'FactorConversiónMovimientoAInventario', 'Anulado');
 
     foreach ($ordenes as $orden) {
-      $cliente = Cliente::where("cltID", "=", $orden->ordClienteID)->get();
+      $cliente = Cliente::where("cltID", "=", $orden->ordClienteID)->first();
       $detalles = OrdenDetalle::where("orddOrdenID", "=", $orden->ordID)->get();
-      $vendedor = User::where("id", "=", $orden->ordVendedorID)->get();
+      $vendedor = User::where("id", "=", $orden->ordVendedorID)->first();
 
       foreach ($detalles as $detalle) {
         //primera línea de sistema (orddSistemaID)
-        $sistema = Sistema::where("stmID", "=", $detalle->orddSistemaID)->get();
-        $diseno = Diseno::where("dsnID", "=", $detalle->orddDisenoID)->get();
+        $sistema = Sistema::where("stmID", "=", $detalle->orddSistemaID)->first();
+        $diseno = Diseno::where("dsnID", "=", $detalle->orddDisenoID)->first();
         $totalSinIVA = $orden->ordTotal / 1.19;
         $daysToSum = 4;
         $fechaVencimiento = date ('Y-m-d', strtotime($orden->ordFecha.' + '.$daysToSum.' days'));
@@ -354,7 +352,7 @@ class MigracionController extends Controller
           $cantidad = $ancho * $vidrio->mvdAlto;
           $tipoSistema = $vidrio->mvdTipo . ' ' . $sistema->stmDescripcion;
           $codigoWoVidrio = CodigoWoVidrio::where("cdgMilimID", "=", $detalle->orddMilimID)
-                                          ->where("cdgColorID", "=", $detalle->orddColorID)->get();
+                                          ->where("cdgColorID", "=", $detalle->orddColorID)->first();
           $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
                                     'IdCuentaContableDocumento' => 'COT',
                                     'prefijo' => '',
