@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Migraciones;
 
+use App\Diseno;
 use App\Migracion;
 use App\MedidaVidrio;
 use App\Orden;
@@ -294,14 +295,19 @@ class MigracionController extends Controller
       foreach ($detalles as $detalle) {
         //primera línea de sistema (orddSistemaID)
         $sistema = Sistema::where("stmID", "=", $detalle->orddSistemaID)->get();
+        $diseno = Diseno::where("dsnID", "=", $detalle->orddDisenoID)->get();
+        $totalSinIVA = $orden->ordTotal / 1.19;
+        $daysToSum = 4;
+        $fechaVencimiento = date ('Y-m-d', strtotime($orden->ordFecha.' + '.$daysToSum.' days'));
+        //$fechaVencimiento = $fechaOrden->addDays(4);
         $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
                                   'IdCuentaContableDocumento' => 'COT',
                                   'prefijo' => '',
                                   'DocumentoNúmero' => '',
                                   'Fecha' => $orden->ordFecha,
-                                  'Terceros_Identificacion' => $cliente->cltID,
+                                  'Terceros_Identificacion' => $cliente->cltCedula,
                                   'NúmDocumentoExterno' => '',
-                                  'Terceros_1_Identificacion' => $vendedor->id,
+                                  'Terceros_1_Identificacion' => $vendedor->usrCedula,
                                   'CuentasContables - Asientos_Nota' => 'COTIZACIÓN',
                                   'Verificado' => '0',
                                   'FormaDePago' => 'Credito',
@@ -309,27 +315,27 @@ class MigracionController extends Controller
                                   'Person 1 ancho' => '',
                                   'Person 2 alto' => '',
                                   'Person 3 Cantidad' => '1',
-                                  'Person 4 perforaciones' => '',
-                                  'Person 5 Boquetes' => '',
-                                  'Person 6 BPB' => '',
-                                  'Person 7 Chaflan' => '',
-                                  'Person 8 F-entrega' => '',
-                                  'Person 9 Diseño' => '',
+                                  'Person 4 perforaciones' => $sistema->stmCantPerforaciones,
+                                  'Person 5 Boquetes' => $sistema->stmCantBoquetes,
+                                  'Person 6 BPB' => $sistema->stmCantBPB,
+                                  'Person 7 Chaflan' => $sistema->stmCantChaflan,
+                                  'Person 8 F-entrega' => $fechaVencimiento,
+                                  'Person 9 Diseño' => $diseno->dsnDescripcion,
                                   'Personalizado10' => '',
                                   'Personalizado11' => '',
                                   'Personalizado12' => '',
                                   'Personalizado13' => '',
                                   'Personalizado14' => '',
                                   'Personalizado15' => '',
-                                  'CódigoInventario',
+                                  'CódigoInventario' => $sistema->stmCodigoWO,
                                   'Nombre' => 'Principal',
-                                  'Cantidad',
-                                  'UnidadDeMedida',
-                                  'MontoMonetarioUnitario',
+                                  'Cantidad' => '1',
+                                  'UnidadDeMedida' => 'Und.',
+                                  'MontoMonetarioUnitario' => $totalSinIVA,
                                   'Expr1032' => '0.19',
-                                  'CCA_M_Inventarios_Nota',
-                                  'Vencimiento',
-                                  'Dcto',
+                                  'CCA_M_Inventarios_Nota' => '',
+                                  'Vencimiento' => $orden->ordFecha,
+                                  'Dcto' => $detalle->orddDescuento,
                                   'CostoPromedio' => '0',
                                   'Depreciacion' => '',
                                   'Terceros_2_Identificacion' => '',
@@ -339,6 +345,14 @@ class MigracionController extends Controller
         //línea por cada vidrio (orddCantVidrio)
         $vidrios = MedidaVidrio::where("mvdOrddID", "=", $detalle->orddID)->get();
         foreach ($vidrios as $vidrio) {
+          $ancho = 0;
+          if($vidrio->mvdAnchoAbajo != null && $vidrio->mvdAnchoAbajo != ''){
+            $ancho = $vidrio->mvdAnchoAbajo;
+          }elseif($vidrio->mvdAnchoArriba != null && $vidrio->mvdAnchoArriba != ''){
+            $ancho = $vidrio->mvdAnchoArriba;
+          }
+          $cantidad = $ancho * $vidrio->mvdAlto;
+          $tipoSistema = $vidrio->mvdTipo . ' ' . $sistema->stmDescripcion;
           $codigoWoVidrio = CodigoWoVidrio::where("cdgMilimID", "=", $detalle->orddMilimID)
                                           ->where("cdgColorID", "=", $detalle->orddColorID)->get();
           $customer_array[] = array('Empresa' => 'CRISTALES TEMPLADOS LA TORRE SAS',
@@ -346,15 +360,15 @@ class MigracionController extends Controller
                                     'prefijo' => '',
                                     'DocumentoNúmero' => '',
                                     'Fecha' => $orden->ordFecha,
-                                    'Terceros_Identificacion' => $cliente->cltID,
+                                    'Terceros_Identificacion' => $cliente->cltCedula,
                                     'NúmDocumentoExterno' => '',
-                                    'Terceros_1_Identificacion' => $vendedor->id,
+                                    'Terceros_1_Identificacion' => $vendedor->usrCedula,
                                     'CuentasContables - Asientos_Nota' => 'COTIZACIÓN',
                                     'Verificado' => '0',
                                     'FormaDePago' => 'Credito',
                                     'Clasificación' => '',
-                                    'Person 1 ancho' => '',
-                                    'Person 2 alto' => '',
+                                    'Person 1 ancho' => $ancho,
+                                    'Person 2 alto' => $vidrio->mvdAlto,
                                     'Person 3 Cantidad' => '1',
                                     'Person 4 perforaciones' => '',
                                     'Person 5 Boquetes' => '',
@@ -368,15 +382,15 @@ class MigracionController extends Controller
                                     'Personalizado13' => '',
                                     'Personalizado14' => '',
                                     'Personalizado15' => '',
-                                    'CódigoInventario',
+                                    'CódigoInventario' => $codigoWoVidrio->cdgWO,
                                     'Nombre' => 'Principal',
-                                    'Cantidad',
-                                    'UnidadDeMedida',
-                                    'MontoMonetarioUnitario',
+                                    'Cantidad' => $cantidad,
+                                    'UnidadDeMedida' => 'm²',
+                                    'MontoMonetarioUnitario' => '',
                                     'Expr1032' => '0.19',
-                                    'CCA_M_Inventarios_Nota',
-                                    'Vencimiento',
-                                    'Dcto',
+                                    'CCA_M_Inventarios_Nota' => $tipoSistema,
+                                    'Vencimiento' => $orden->ordFecha,
+                                    'Dcto' => '',
                                     'CostoPromedio' => '0',
                                     'Depreciacion' => '',
                                     'Terceros_2_Identificacion' => '',
@@ -393,16 +407,16 @@ class MigracionController extends Controller
                                     'prefijo' => '',
                                     'DocumentoNúmero' => '',
                                     'Fecha' => $orden->ordFecha,
-                                    'Terceros_Identificacion' => $cliente->cltID,
+                                    'Terceros_Identificacion' => $cliente->cltCedula,
                                     'NúmDocumentoExterno' => '',
-                                    'Terceros_1_Identificacion' => $vendedor->id,
+                                    'Terceros_1_Identificacion' => $vendedor->usrCedula,
                                     'CuentasContables - Asientos_Nota' => 'COTIZACIÓN',
                                     'Verificado' => '0',
                                     'FormaDePago' => 'Credito',
                                     'Clasificación' => '',
                                     'Person 1 ancho' => '',
                                     'Person 2 alto' => '',
-                                    'Person 3 Cantidad' => '1',
+                                    'Person 3 Cantidad' => $sistemaDetalle->stmdCantidad,
                                     'Person 4 perforaciones' => '',
                                     'Person 5 Boquetes' => '',
                                     'Person 6 BPB' => '',
@@ -415,15 +429,15 @@ class MigracionController extends Controller
                                     'Personalizado13' => '',
                                     'Personalizado14' => '',
                                     'Personalizado15' => '',
-                                    'CódigoInventario',
+                                    'CódigoInventario' => $sistemaDetalle->stmdCodigoWO,
                                     'Nombre' => 'Principal',
-                                    'Cantidad',
-                                    'UnidadDeMedida',
-                                    'MontoMonetarioUnitario',
+                                    'Cantidad' => $sistemaDetalle->stmdCantidad,
+                                    'UnidadDeMedida' => 'Und.',
+                                    'MontoMonetarioUnitario' => '',
                                     'Expr1032' => '0.19',
-                                    'CCA_M_Inventarios_Nota',
-                                    'Vencimiento',
-                                    'Dcto',
+                                    'CCA_M_Inventarios_Nota' => '',
+                                    'Vencimiento' => $orden->ordFecha,
+                                    'Dcto' => '',
                                     'CostoPromedio' => '0',
                                     'Depreciacion' => '',
                                     'Terceros_2_Identificacion' => '',
