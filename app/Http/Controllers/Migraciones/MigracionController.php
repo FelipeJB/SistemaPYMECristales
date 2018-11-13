@@ -53,9 +53,9 @@ class MigracionController extends Controller
     if($zip->open($filename, ZipArchive::CREATE)!==TRUE){
       dd('issues');
     }else{
-      $zip->addFile($file_path."/TERCEROS.xlsx");
-      $zip->addFile($file_path."/TERCEROS DIRECCIONES.xlsx");
-      $zip->addFile($file_path."/PEDIDOS.xlsx");
+      $zip->addFile($file_path."/TERCEROS.xlsx", "TERCEROS.xlsx");
+      $zip->addFile($file_path."/TERCEROS DIRECCIONES.xlsx", "TERCEROS DIRECCIONES.xlsx");
+      $zip->addFile($file_path."/PEDIDOS.xlsx", "PEDIDOS.xlsx");
       $zip->close();
     }
 
