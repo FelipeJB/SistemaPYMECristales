@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use PDF;
+use Response;
 
 class MedidaController extends Controller
 {
@@ -883,6 +884,18 @@ class MedidaController extends Controller
 
     $relaciones = array('relacion');
     $cliente = \App\Cliente::where('cltID', '=', $orden->ordClienteID)->first();
+    $file_path = storage_path("exports");
+    $files = scandir($file_path);
+    $zip = new ZipArchive();
+    $filename = storage_path("exports/")."planosMedidas".$orden->ordNumeroPedido.".zip";
+    if($zip->open($filename, ZipArchive::CREATE)!==TRUE){
+      dd('issues');
+    }else{
+      $zip->addFile($file_path."/TERCEROS.xlsx");
+      $zip->addFile($file_path."/TERCEROS DIRECCIONES.xlsx");
+      $zip->addFile($file_path."/PEDIDOS.xlsx");
+      $zip->close();
+    }
     foreach ($detalles as $detalle) {
       $imagen = '';
       $generarPDF = true;
@@ -1406,7 +1419,7 @@ class MedidaController extends Controller
               $vidrioP = $vidrio;
             }
           }
-          return $this->generarPlanosPDF($orden, $detalle, $id, $auxiliar,
+          $generarPlanos = $this->generarPlanosPDF($orden, $detalle, $id, $auxiliar,
                                   $sistema, $color, $milimetraje, $diseno,
                                   $cliente, $imagen, $vidrioF, $vidrioP);
         }else{
@@ -1429,7 +1442,7 @@ class MedidaController extends Controller
               }
             }
           }
-          $this->generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
+          $generarPlanosL = $this->generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
                                   $sistema, $color, $milimetraje, $diseno,
                                   $cliente, $imagen, $vidrioF1, $vidrioP1,
                                   $vidrioF2, $vidrioP2);
