@@ -267,7 +267,7 @@ class VentaController extends Controller
     }
 
     //Generar informe de venta
-    $pdf = PDF::download('ventas/generarInformePdf', [
+    $pdf = PDF::loadView('ventas/generarInformePdf', [
       'orden' => $orden,
       'detalles' => $detalles,
       'cliente' => $cliente,
@@ -280,7 +280,7 @@ class VentaController extends Controller
       'disenos' => $disenos,
       'observaciones' => $observaciones
     ]);
-    return $pdf->download('Orden de Pedido N'.$id.'.xlsx');
+    return $pdf->download('Orden de Pedido N'.$id.'.pdf');
 
   }
 
