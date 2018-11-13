@@ -39,7 +39,7 @@
       <table border="0" width="100%">
         <tr>
           <th width="100%" align="left">
-            <img src="im/Logo-reportes.png" width="250" align="left">
+            <img src="img/Logo-reportes.png" width="250" align="left">
           </th>
         </tr>
         <tr>
@@ -52,7 +52,7 @@
           <td width="50%">
           </td>
           <td width="50%" align="left">
-            <b>Código: FOR-CM-08 Versión: 2 Fecha: {{$orden->ordFecha}}</b>
+            <b>Código: FOR-CM-08 Versión: 2 Fecha: 01/04/2018</b>
           </td>
         </tr>
       </table>
@@ -91,7 +91,7 @@
     <table border="0" width="100%">
       <tr>
         <th width="100%" align="center">
-          <img src={{$imagen}} width="500" align="center">
+          <img src={{$imagen}} width="450" align="center">
         </th>
       </tr>
     </table>
@@ -102,13 +102,13 @@
     <table border="0" width="100%">
       <tr>
         <th width="27%" align="center">
-          Medida 1 =  mm
+          Medida 1 = {{$vidrioF1->mvdAlto}} mm
         </th>
         <th width="27%" align="center">
-          Medida 2 =  mm
+          Medida 2 = {{$vidrioF1->mvdAnchoArriba}} mm
         </th>
         <th width="27%" align="center">
-          Medida 3 =  mm
+          Medida 3 = {{$vidrioF1->mvdAnchoAbajo}} mm
         </th>
         <th width="19%" align="left">
           FIJO
@@ -116,13 +116,13 @@
       </tr>
       <tr>
         <th width="27%" align="center">
-          Medida 4 =  mm
+          Medida 4 = {{$vidrioP1->mvdAlto}} mm
         </th>
         <th width="27%" align="center">
-          Medida 5 =  mm
+          Medida 5 = {{$vidrioP1->mvdAnchoArriba}} mm
         </th>
         <th width="27%" align="center">
-          Medida 6 =  mm
+          Medida 6 = {{$vidrioP1->mvdAnchoAbajo}} mm
         </th>
         <th width="19%" align="left">
           PUERTA
@@ -130,13 +130,13 @@
       </tr>
       <tr>
         <th width="27%" align="center">
-          Medida 7 =  mm
+          Medida 7 = {{$vidrioF2->mvdAlto}} mm
         </th>
         <th width="27%" align="center">
-          Medida 8 =  mm
+          Medida 8 = {{$vidrioF2->mvdAnchoArriba}} mm
         </th>
         <th width="27%" align="center">
-          Medida 9 =  mm
+          Medida 9 = {{$vidrioF2->mvdAnchoAbajo}} mm
         </th>
         <th width="19%" align="left">
           FIJO
@@ -144,13 +144,13 @@
       </tr>
       <tr>
         <th width="27%" align="center">
-          Medida 10 =  mm
+          Medida 10 = {{$vidrioP2->mvdAlto}} mm
         </th>
         <th width="27%" align="center">
-          Medida 11 =  mm
+          Medida 11 = {{$vidrioP2->mvdAnchoArriba}} mm
         </th>
         <th width="27%" align="center">
-          Medida 12 =  mm
+          Medida 12 = {{$vidrioP2->mvdAnchoAbajo}} mm
         </th>
         <th width="19%" align="left">
           PUERTA

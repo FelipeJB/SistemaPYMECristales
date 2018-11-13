@@ -68,8 +68,38 @@ class InformeController extends Controller
       break;
     case 'garantias':
       $garantias = Garantia::whereMonth('grnFecha', '=', $mes)->whereYear('grnFecha', '=', $anio)->get();
-      if (count($garantias)>0){
-        $this->generateInformGarantias($garantias, $mes, $anio);
+      $instaladores = Instalador::where('insActivo', '=', 1)->get();
+      $instaladorGarantias[] = array('insNombre', 'insApellido', 'ordenes', 'totalMes', 'totalInstalador');
+      $i = 0;
+      $instaladorGarantias[0]['totalMes'] = 0;
+      foreach($instaladores as $instalador){
+        $garantias = DB::table('garantias')
+        ->innerJoin('ordens', 'ordens.ordID', '=', 'garantias.grnOrdenID')
+        ->whereMonth('grnFecha', '=', $mes)
+        ->whereYear('grnFecha', '=', $anio)
+        ->where('ordInstaladorID', '=', $instalador->insID)->get();
+        if(count(json_encode(json_decode($ordenes))) > 0){
+          $instaladorGarantias[$i]['totalInstalador'] = 0;
+          $k = 0;
+          foreach($ordenes as $orden){
+            $garantia = Garantia::whereMonth('grnFecha', '=', $mes)->whereYear('grnFecha', '=', $anio)->where('grnOrdenID', '=', $orden->ordID)->first();
+            if(is_array(json_encode(json_decode($garantia)))){
+              $instaladorGarantias[$i]['insNombre'] = $instalador->insNombre;
+              $instaladorGarantias[$i]['insApellido'] = $instalador->insApellido;
+              $instaladorGarantias[$i]['ordenes'] = array();
+              $orden->grnFecha = $garantia->grnFecha;
+              $orden->grnObservaciones = $garantia->grnObservaciones;
+              $instaladorGarantias[$i]['ordenes'][$k] = $orden;
+              $instaladorGarantias[$i]['totalInstalador'] += 1;
+              $instaladorGarantias[0]['totalMes'] += 1;
+              $k++;
+            }
+          }
+          $i++;
+        }
+      }
+      if (count($instaladorGarantias)>0){
+        return $this->generateInformGarantias($instaladorGarantias, $mes, $anio);
       }else{
         return Redirect::back()->with('error', 'No se encontraron garantías registradas para el año y mes especificados')
         ->withInput();
@@ -77,9 +107,6 @@ class InformeController extends Controller
       break;
     case 'instalaciones':
       $instaladores = Instalador::where('insActivo', '=', 1)->get();
-      //$ordenes = Orden::whereMonth('ordFechaInstalacion', '=', $mes)->whereYear('ordFechaInstalacion', '=', $anio)->get();
-
-      //$puntosVenta = PuntoVenta::where('pvActivo', '=', 1)->get();
       $instaladorOrdenes[] = array('insNombre', 'insApellido', 'ordenes', 'totalMesSI', 'totalMesNO', 'totalInstaladorSI', 'totalInstaladorNO');
       $i = 0;
       $instaladorOrdenes[0]['totalMesSI'] = 0;
@@ -131,10 +158,16 @@ class InformeController extends Controller
     return $pdf->download('Informe de Ventas '.$mes.'/'.$anio.'.pdf');
   }
 
-  private function generateInformGarantias($garantias, $mes, $anio)
+  public function generateInformGarantias($instaladorGarantias, $mes, $anio)
   {
     //Aquí se genera el informe de garantias para el año y mes especificado. En la variable garantias se encuentran las garantias registradas en dichas fechas
-  }
+    $pdf = PDF::loadView('informes/informeGarantiasPdf', [
+      'instaladorGarantias' => $instaladorGarantias,
+      'mes' => $mes,
+      'anio' => $anio
+    ]);
+    return $pdf->download('Informe de Instalaciones '.$mes.'/'.$anio.'.pdf');
+}
 
   public function generateInformInstalaciones($instaladorOrdenes, $mes, $anio)
   {

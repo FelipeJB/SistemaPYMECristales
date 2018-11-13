@@ -880,7 +880,7 @@ class MedidaController extends Controller
     //Obtener datos para el documento
     $orden = \App\Orden::where('ordID','=',$id)->first();
     $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
-    $auxiliar = \App\User::where('id', '=', $orden->ordInstaladorID)->first();
+
     $relaciones = array('relacion');
     $cliente = \App\Cliente::where('cltID', '=', $orden->ordClienteID)->first();
     foreach ($detalles as $detalle) {
@@ -891,7 +891,7 @@ class MedidaController extends Controller
       $diseno = \App\Diseno::where('dsnID', '=', $detalle->orddDisenoID)->first();
       $milimetraje = \App\Milimetraje::where('mlmID', '=', $detalle->orddMilimID)->first();
       $color = \App\Color::where('clrID', '=', $detalle->orddColorID)->first();
-
+      $auxiliar = \App\User::where('id', '=', $detalle->orddAuxiliarID)->first();
       //foreach($vidrios as $vidrio){
         switch ($sistema->stmDescripcion) {
           case 'BATIENTE NORMAL TRASLAPADA':
@@ -1397,14 +1397,43 @@ class MedidaController extends Controller
         //}
       }
       if($generarPDF){
-        // if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
-        //
-        // }else{
-        //
-        // }
-        $this->generarPlanosPDF($orden, $detalle, $id, $auxiliar,
-                                $sistema, $color, $milimetraje, $diseno,
-                                $cliente, $imagen, $vidrioF, $vidrioP);
+
+        if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          foreach($vidrios as $vidrio){
+            if($vidrio->mvdTipo == 'Fijo'){
+              $vidrioF = $vidrio;
+            }else{
+              $vidrioP = $vidrio;
+            }
+          }
+          return $this->generarPlanosPDF($orden, $detalle, $id, $auxiliar,
+                                  $sistema, $color, $milimetraje, $diseno,
+                                  $cliente, $imagen, $vidrioF, $vidrioP);
+        }else{
+          $f = 1;
+          $p = 1;
+          foreach($vidrios as $vidrio){
+            if($vidrio->mvdTipo == 'Fijo'){
+              if($f == 1){
+                $vidrioF1 = $vidrio;
+                $f++;
+              }else{
+                $vidrioF2 = $vidrio;
+              }
+            }else{
+              if($p == 1){
+                $vidrioP1 = $vidrio;
+                $p++;
+              }else{
+                $vidrioP2 = $vidrio;
+              }
+            }
+          }
+          $this->generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
+                                  $sistema, $color, $milimetraje, $diseno,
+                                  $cliente, $imagen, $vidrioF1, $vidrioP1,
+                                  $vidrioF2, $vidrioP2);
+        }
       }
     }
     //return Redirect::to('/')->with('success', 'Planos generados existosamente');
@@ -1423,11 +1452,12 @@ class MedidaController extends Controller
       'color' => $color,
       'milimetraje' => $milimetraje,
       'diseno' => $diseno,
+      'cliente' => $cliente,
       'imagen' => $imagen,
       'vidrioF' => $vidrioF,
       'vidrioP' => $vidrioP
     ]);
-    return $pdf->download('Garantia de Orden N'.$id.'.pdf');
+    return $pdf->download('Planos de medidas N'.$id.'.pdf');
   }
 
   public function generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
@@ -1444,13 +1474,14 @@ class MedidaController extends Controller
       'color' => $color,
       'milimetraje' => $milimetraje,
       'diseno' => $diseno,
+      'cliente' => $cliente,
       'imagen' => $imagen,
       'vidrioF1' => $vidrioF1,
       'vidrioP1' => $vidrioP1,
       'vidrioF2' => $vidrioF2,
       'vidrioP2' => $vidrioP2
     ]);
-    return $pdf->download('Garantia de Orden N'.$id.'.pdf');
+    return $pdf->download('Planos de medidas N'.$id.'.pdf');
   }
 
   public function cancel()

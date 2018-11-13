@@ -29,7 +29,6 @@
     p{
       line-height: 3px;
     }
-
     </style>
 
 </head>
@@ -39,7 +38,7 @@
       <table border="0" width="100%">
         <tr>
           <th width="100%" align="left">
-            <img src="im/Logo-reportes.png" width="250" align="left">
+            <img src="img/Logo-reportes.png" width="250" align="left">
           </th>
         </tr>
         <tr>
@@ -52,7 +51,7 @@
           <td width="50%">
           </td>
           <td width="50%" align="left">
-            <b>Código: FOR-CM-08 Versión: 2 Fecha: {{$orden->ordFecha}}</b>
+            <b>Código: FOR-CM-08 Versión: 2 Fecha: 01/04/2018</b>
           </td>
         </tr>
       </table>
@@ -80,7 +79,7 @@
           <b>{{$color->clrDescripcion}}</b><br>
           <b>{{$milimetraje->mlmNumero}} mm</b><br>
           <b>NA</b><br>
-          <b>{{detalle->orddTotal}}</b>
+          <b>{{$detalle->orddTotal}}</b>
         </td>
       </tr>
     </table>
@@ -91,7 +90,7 @@
     <table border="0" width="100%">
       <tr>
         <th width="100%" align="center">
-          <img src={{$imagen}} width="500" align="center">
+          <img src={{$imagen}} width="450" align="center">
         </th>
       </tr>
     </table>
@@ -116,13 +115,13 @@
       </tr>
       <tr>
         <th width="27%" align="center">
-          Medida 4 =  mm
+          Medida 4 = {{$vidrioP->mvdAlto}} mm
         </th>
         <th width="27%" align="center">
-          Medida 5 =  mm
+          Medida 5 = {{$vidrioP->mvdAnchoArriba}} mm
         </th>
         <th width="27%" align="center">
-          Medida 6 =  mm
+          Medida 6 = {{$vidrioP->mvdAnchoAbajo}} mm
         </th>
         <th width="19%" align="left">
           PUERTA

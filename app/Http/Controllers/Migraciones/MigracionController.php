@@ -15,6 +15,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Excel;
+use ZipArchive;
+use Response;
+use Illuminate\Support\Facades\Storage;
 
 class MigracionController extends Controller
 {
@@ -37,9 +40,23 @@ class MigracionController extends Controller
     }
 
     //generar documentos
-    $this->generateMigrationTerceros($clientes);
-    $this->generateMigrationTercerosDirecciones($clientes);
-    $this->generateMigrationPedidos($ordenes);
+    $terceros = $this->generateMigrationTerceros($clientes);
+    $tercerosDirecciones = $this->generateMigrationTercerosDirecciones($clientes);
+    $pedidos = $this->generateMigrationPedidos($ordenes);
+
+    $file_path = storage_path("exports"); //the folder which i want to zip
+    $files = scandir($file_path);
+
+    $zip = new ZipArchive();
+    $filename = storage_path("exports/")."migraciones.zip"; //path to save the folder and the file name
+    if($zip->open($filename, ZipArchive::CREATE)!==TRUE){
+      dd('issues');
+    }else{
+      $zip->addFile($file_path."/TERCEROS.xlsx");
+      $zip->addFile($file_path."/TERCEROS DIRECCIONES.xlsx");
+      $zip->addFile($file_path."/PEDIDOS.xlsx");
+      $zip->close();
+    }
 
     //crear y asignar la migración a los objetos si es migración de tipo 0
     if($tipo == 0){
@@ -56,14 +73,13 @@ class MigracionController extends Controller
         $c->save();
       }
     }
-
-    return Redirect::back()->with('success', 'Archivos de migración exportados exitosamente')
-    ->withInput();
+    return Response::download($filename, 'migraciones.zip');
+    // return Redirect::back()->with('success', 'Archivos de migración exportados exitosamente')
+    // ->withInput();
   }
 
   public function generateMigrationTerceros($clientes)
   {
-    // $clientes= Cliente::where("cltMigrado", "=", 0)->get();
     //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
     $customer_array[] = array('TipoDeIdentificacion', 'Terceros_Identificacion', 'Ciudad', 'CódigoTercero',
                               'Primer_Nombre', 'Segundo_Nombre', 'Primer_Apellido', 'Segundo_Apellido',
@@ -114,7 +130,7 @@ class MigracionController extends Controller
       }else{
         $descripcion = 'Persona Natural Regimen Simplificado';
       }
-      $vendedor = User::where("id", "=", $cliente->cltUsuarioCreador)->get();
+      $vendedor = User::where('id', '=', $cliente->cltUsuarioCreador)->first();
       $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltTipoDocumento, //tipo documento
                                 'Terceros_Identificacion' => $cliente->cltCedula, //número cédula
                                 'Ciudad' => $cliente->cltCiudad,
@@ -134,7 +150,7 @@ class MigracionController extends Controller
                                 'Descripcion' => $descripcion, //personal natural o jurídica
                                 'TarifaIca' => $cliente->cltTarifaICA, //ni idea '0'
                                 'Cargo' => '',
-                                'Terceros_1_Identificacion' => $vendedor->id, //céudla vendedor
+                                'Terceros_1_Identificacion' => $vendedor->usrCedula, //cédula vendedor
                                 'ListPrecios' => 'Precio 1', //pendiente preguntar
                                 'Personalizado1' => '',
                                 'Personalizado2' => '',
@@ -155,19 +171,17 @@ class MigracionController extends Controller
                                 'ZonaDos' => '',
                                 'Clasificacion_Dian' => 'Normal');
     }
-    Excel::create('TERCEROS', function($excel) use ($customer_array){
+    return Excel::create('TERCEROS', function($excel) use ($customer_array){
       $excel->setTitle('TERCEROS');
       $excel->sheet('TERCEROS', function($sheet) use ($customer_array){
         $sheet->fromArray($customer_array, null, 'A1', false, false);
       });
-    })->download('xlsx');
+    })->save('xlsx');
   }
 
-  private function generateMigrationTercerosDirecciones($clientes)
+  public function generateMigrationTercerosDirecciones($clientes)
   {
     //Aquí se genera el excel de terceros direcciones con los clientes y órdenes especificados.
-    // $clientes= Cliente::where("cltMigrado", "=", 0)->get();
-    //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
     $customer_array[] = array('TipoDeIdentificacion', 'Terceros_Identificacion', 'Ciudad', 'CódigoTercero',
                               'Primer_Nombre', 'Segundo_Nombre', 'Primer_Apellido', 'Segundo_Apellido',
                               'Terceros_Propiedades', 'Nota', 'Activo', 'Terceros - ClasificaciónUno_Clasificación',
@@ -217,7 +231,7 @@ class MigracionController extends Controller
       }else{
         $descripcion = 'Persona Natural Regimen Simplificado';
       }
-      $vendedor = User::where("id", "=", $cliente->cltUsuarioCreador)->get();
+      $vendedor = User::where("id", "=", $cliente->cltUsuarioCreador)->first();
       $customer_array[] = array('TipoDeIdentificacion' => $cliente->cltTipoDocumento, //tipo documento
                                 'Terceros_Identificacion' => $cliente->cltCedula, //número cédula
                                 'Ciudad' => $cliente->cltCiudad,
@@ -237,7 +251,7 @@ class MigracionController extends Controller
                                 'Descripcion' => $descripcion, //personal natural o jurídica
                                 'TarifaIca' => $cliente->cltTarifaICA, //ni idea '0'
                                 'Cargo' => '',
-                                'Terceros_1_Identificacion' => $vendedor->id, //céudla vendedor
+                                'Terceros_1_Identificacion' => $vendedor->usrCedula, //céudla vendedor
                                 'ListPrecios' => 'Precio 1', //pendiente preguntar
                                 'Personalizado1' => '',
                                 'Personalizado2' => '',
@@ -261,19 +275,17 @@ class MigracionController extends Controller
                                 'Ciudad_Direccion' => $cliente->cltCiudad,
                                 'Dir_Principal' => '-1');
     }
-    Excel::create('TERCEROS DIRECCIONES', function($excel) use ($customer_array){
+    return Excel::create('TERCEROS DIRECCIONES', function($excel) use ($customer_array){
       $excel->setTitle('TERCEROS DIRECCIONES');
       $excel->sheet('TERCEROS DIRECCIONES', function($sheet) use ($customer_array){
         $sheet->fromArray($customer_array, null, 'A1', false, false);
       });
-    })->download('xlsx');
+    })->save('xlsx');
   }
 
   public function generateMigrationPedidos($ordenes)
   {
     //Aquí se genera el excel de pedidos con los clientes y órdenes especificados.
-    // $ordenes= Orden::where("ordMigrado", "=", 0)->get();
-    //Aquí se genera el excel de terceros con los clientes y órdenes especificados.
     $customer_array[] = array('Empresa', 'IdCuentaContableDocumento', 'prefijo', 'DocumentoNúmero',
                               'Fecha', 'Terceros_Identificacion', 'NúmDocumentoExterno', 'Terceros_1_Identificacion',
                               'CuentasContables - Asientos_Nota', 'Verificado', 'FormaDePago', 'Clasificación',
@@ -445,12 +457,11 @@ class MigracionController extends Controller
         }
       }
     }
-    Excel::create('PEDIDOS', function($excel) use ($customer_array){
+    return Excel::create('PEDIDOS', function($excel) use ($customer_array){
       $excel->setTitle('PEDIDOS');
       $excel->sheet('PEDIDOS', function($sheet) use ($customer_array){
         $sheet->fromArray($customer_array, null, 'A1', false, false);
       });
-    })->download('xlsx');
+    })->save('xlsx');
   }
-
 }
