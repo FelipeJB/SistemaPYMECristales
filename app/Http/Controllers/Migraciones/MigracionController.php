@@ -11,7 +11,7 @@ use App\Cliente;
 use App\User;
 use App\Sistema;
 use App\SistemaDetalle;
-use App\CodigoWOVidrio;
+use App\CodigoWoVidrio;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
