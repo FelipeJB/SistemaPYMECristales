@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use PDF;
+use ZipArchive;
 use Response;
 
 class MedidaController extends Controller
@@ -884,18 +885,11 @@ class MedidaController extends Controller
 
     $relaciones = array('relacion');
     $cliente = \App\Cliente::where('cltID', '=', $orden->ordClienteID)->first();
-    $file_path = storage_path("exports");
+    $file_path = public_path();
     $files = scandir($file_path);
     $zip = new ZipArchive();
-    $filename = storage_path("exports/")."planosMedidas".$orden->ordNumeroPedido.".zip";
-    if($zip->open($filename, ZipArchive::CREATE)!==TRUE){
-      dd('issues');
-    }else{
-      $zip->addFile($file_path."/TERCEROS.xlsx");
-      $zip->addFile($file_path."/TERCEROS DIRECCIONES.xlsx");
-      $zip->addFile($file_path."/PEDIDOS.xlsx");
-      $zip->close();
-    }
+    $filename = public_path("/")."planosMedidas-N".$orden->ordNumeroPedido.".zip";
+
     foreach ($detalles as $detalle) {
       $imagen = '';
       $generarPDF = true;
@@ -1088,7 +1082,7 @@ class MedidaController extends Controller
           }
             break;
           case 'DIALAN':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_NOTOALLERO.jpg';
@@ -1103,7 +1097,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1128,7 +1122,7 @@ class MedidaController extends Controller
           }
             break;
           case 'K1':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/K1_IZQUIERDA_NOTOALLERO.jpg';
@@ -1143,7 +1137,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/K1 EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1168,7 +1162,7 @@ class MedidaController extends Controller
           }
             break;
           case 'K2':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/K2_IZQUIERDA_NOTOALLERO.jpg';
@@ -1183,7 +1177,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/K2 EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1208,7 +1202,7 @@ class MedidaController extends Controller
           }
             break;
           case 'K3':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/K3_IZQUIERDA_NOTOALLERO.jpg';
@@ -1223,7 +1217,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/K3 EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1248,7 +1242,7 @@ class MedidaController extends Controller
           }
             break;
           case 'K4':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/K4_IZQUIERDA_NOTOALLERO.jpg';
@@ -1263,7 +1257,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/K4 EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1288,7 +1282,7 @@ class MedidaController extends Controller
           }
             break;
           case 'K7':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_NOTOALLERO.jpg';
@@ -1303,7 +1297,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1328,7 +1322,7 @@ class MedidaController extends Controller
           }
             break;
           case 'TOGO':
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/TOGO_IZQUIERDA_NOTOALLERO.jpg';
@@ -1343,7 +1337,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/TOGO EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1368,7 +1362,7 @@ class MedidaController extends Controller
           }
             break;
           default:
-          if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+          if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
             if($detalle->orddLadoPuerta == 'Izquierda'){
               if($detalle->orddCantToalleros = 0){
                 $imagen = 'imagenes-medidas/DIALAN_IZQUIERDA_NOTOALLERO.jpg';
@@ -1383,7 +1377,7 @@ class MedidaController extends Controller
               }
             }
           }else{
-            if(!in_array('relacion', $detalle->orddRelacion)){
+            if(!in_array($detalle->orddRelacion, $relaciones)){
               if($detalle->orddLadoPuerta == 'Izquierda'){
                 if($detalle->orddCantToalleros = 0){
                   $imagen = 'imagenes-medidas/DIALAN EN L_2 PUERTAS_NOTOALLERO.jpg';
@@ -1411,7 +1405,7 @@ class MedidaController extends Controller
       }
       if($generarPDF){
 
-        if($detalle->orddRelacion == null || $detalle->orddRelacion == ''){
+        if($detalle->orddRelacion == null || $detalle->orddRelacion == '' || $detalle->orddRelacion == 0){
           foreach($vidrios as $vidrio){
             if($vidrio->mvdTipo == 'Fijo'){
               $vidrioF = $vidrio;
@@ -1422,7 +1416,16 @@ class MedidaController extends Controller
           $generarPlanos = $this->generarPlanosPDF($orden, $detalle, $id, $auxiliar,
                                   $sistema, $color, $milimetraje, $diseno,
                                   $cliente, $imagen, $vidrioF, $vidrioP);
+
         }else{
+          $ordenDetalleL = \App\OrdenDetalle::where('orddOrdenID', '=', $detalle->orddOrdenID)
+                                       ->where('orddRelacion', '=', $detalle->orddRelacion)
+                                       ->where('orddID', '!=', $detalle->orddID)->first();
+          $vidrios2 = \App\MedidaVidrio::where('mvdOrddID', '=', $ordenDetalleL->orddID)
+                                      ->where('mvdOrdID', '=', $detalle->orddOrdenID)->get();
+          $vidrios[2] = $vidrios2[0];
+          $vidrios[3] = $vidrios2[1];
+
           $f = 1;
           $p = 1;
           foreach($vidrios as $vidrio){
@@ -1442,13 +1445,21 @@ class MedidaController extends Controller
               }
             }
           }
-          $generarPlanosL = $this->generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
+          // var_dump($imagen);die('muere');
+          $generarPlanos = $this->generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
                                   $sistema, $color, $milimetraje, $diseno,
                                   $cliente, $imagen, $vidrioF1, $vidrioP1,
                                   $vidrioF2, $vidrioP2);
         }
+        if($zip->open($filename, ZipArchive::CREATE)!==TRUE){
+          dd('issues');
+        }else{
+          $zip->addFile($file_path.'/Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf', 'Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
+          $zip->close();
+        }
       }
     }
+    return Response::download($filename, "planosMedidas-N".$orden->ordNumeroPedido.".zip");
     //return Redirect::to('/')->with('success', 'Planos generados existosamente');
   }
 
@@ -1456,7 +1467,7 @@ class MedidaController extends Controller
                                   $sistema, $color, $milimetraje, $diseno,
                                   $cliente, $imagen, $vidrioF, $vidrioP){
     //Generar planos
-    $pdf = PDF::loadView('medidas/generarPlanosPdf', [
+    return PDF::loadView('medidas/generarPlanosPdf', [
       'orden' => $orden,
       'detalle' => $detalle,
       'id' => $id,
@@ -1469,8 +1480,7 @@ class MedidaController extends Controller
       'imagen' => $imagen,
       'vidrioF' => $vidrioF,
       'vidrioP' => $vidrioP
-    ]);
-    return $pdf->download('Planos de medidas N'.$id.'.pdf');
+    ])->save('Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
   }
 
   public function generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
@@ -1478,7 +1488,7 @@ class MedidaController extends Controller
                                   $cliente, $imagen, $vidrioF1, $vidrioP1,
                                   $vidrioF2, $vidrioP2){
     //Generar planos
-    $pdf = PDF::loadView('medidas/generarPlanosPdfL', [
+    return PDF::loadView('medidas/generarPlanosPdfL', [
       'orden' => $orden,
       'detalle' => $detalle,
       'id' => $id,
@@ -1493,8 +1503,7 @@ class MedidaController extends Controller
       'vidrioP1' => $vidrioP1,
       'vidrioF2' => $vidrioF2,
       'vidrioP2' => $vidrioP2
-    ]);
-    return $pdf->download('Planos de medidas N'.$id.'.pdf');
+    ])->save('Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
   }
 
   public function cancel()

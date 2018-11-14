@@ -43,7 +43,7 @@
         </tr>
         <tr>
           <td align="center" width="100%">
-            <b>Cristales Templados La Torre S.A.S</b><br>
+            <br><b>Cristales Templados La Torre S.A.S</b><br>
             <b>Formato de planos</b>
           </td>
         </tr>
@@ -130,5 +130,10 @@
     </table>
   </div>
 </div>
+<br><b>Observaciones: <b><br>
+  @if($detalle->orddObservaciones != null && $detalle->orddObservaciones != '' && $detalle->orddObservaciones != 'undefined')
+<b>     {{$detalle->orddObservaciones}}<b><br>
+  @endif
+<b>     {{$detalle->orddObservacionesVidrio}}<b><br>
 </body>
 </html>

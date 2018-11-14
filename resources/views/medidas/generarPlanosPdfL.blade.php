@@ -44,7 +44,7 @@
         </tr>
         <tr>
           <td align="center" width="100%">
-            <b>Cristales Templados La Torre S.A.S</b><br>
+            <br><b>Cristales Templados La Torre S.A.S</b><br>
             <b>Formato de planos</b>
           </td>
         </tr>
@@ -80,7 +80,7 @@
           <b>{{$color->clrDescripcion}}</b><br>
           <b>{{$milimetraje->mlmNumero}} mm</b><br>
           <b>NA</b><br>
-          <b>{{detalle->orddTotal}}</b>
+          <b>{{$detalle->orddTotal}}</b>
         </td>
       </tr>
     </table>
@@ -159,5 +159,10 @@
     </table>
   </div>
 </div>
+<br><b>Observaciones: <b><br>
+  @if($detalle->orddObservaciones != null && $detalle->orddObservaciones != '' && $detalle->orddObservaciones != 'undefined')
+<b>     {{$detalle->orddObservaciones}}<b><br>
+  @endif
+<b>     {{$detalle->orddObservacionesVidrio}}<b><br>
 </body>
 </html>
