@@ -113,7 +113,7 @@ class MigracionController extends Controller
       $lastNameArray = array();
       $lastNameArray = explode(" ", $cliente->cltApellido);
       $primerApellido = $lastNameArray[0];
-      $segundoNombre = '';
+      $segundoApellido = '';
       if(sizeof($lastNameArray) == 1){
         $segundoApellido = '';
       }
@@ -191,7 +191,8 @@ class MigracionController extends Controller
                               'ListPrecios', 'Personalizado1', 'Personalizado2', 'Personalizado3', 'Personalizado4', 'Personalizado5',
                               'Personalizado6', 'Personalizado7', 'Personalizado8', 'Personalizado9', 'Personalizado10',
                               'Personalizado11', 'Personalizado12', 'Personalizado13', 'Personalizado14', 'Personalizado15',
-                              'ZonaUno', 'ZonaDos', 'Clasificacion_Dian');
+                              'ZonaUno', 'ZonaDos', 'Dirección', 'Teléfonos', 'Ciudad_Direccion', 'Dir_Principal');
+
     foreach ($clientes as $cliente) {
       //separates name
       $nameArray = array();
@@ -214,7 +215,7 @@ class MigracionController extends Controller
       $lastNameArray = array();
       $lastNameArray = explode(" ", $cliente->cltApellido);
       $primerApellido = $lastNameArray[0];
-      $segundoNombre = '';
+      $segundoApellido = '';
       if(sizeof($lastNameArray) == 1){
         $segundoApellido = '';
       }
