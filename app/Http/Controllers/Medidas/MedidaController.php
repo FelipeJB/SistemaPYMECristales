@@ -881,14 +881,14 @@ class MedidaController extends Controller
   {
     //Obtener datos para el documento
     $orden = \App\Orden::where('ordID','=',$id)->first();
-    $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->get();
+    $detalles = \App\OrdenDetalle::where('orddOrdenID','=',$id)->where('orddEstadoMedidasID','=',2)->get();
 
     $relaciones = array('relacion');
     $cliente = \App\Cliente::where('cltID', '=', $orden->ordClienteID)->first();
-    $file_path = public_path();
+    $file_path = storage_path("planos/");
     $files = scandir($file_path);
     $zip = new ZipArchive();
-    $filename = public_path("/")."planosMedidas-N".$orden->ordNumeroPedido.".zip";
+    $filename = storage_path("planos/")."planosMedidas-N".$orden->ordNumeroPedido.".zip";
 
     foreach ($detalles as $detalle) {
       $imagen = '';
@@ -1480,7 +1480,7 @@ class MedidaController extends Controller
       'imagen' => $imagen,
       'vidrioF' => $vidrioF,
       'vidrioP' => $vidrioP
-    ])->save('Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
+    ])->save(storage_path("planos/").'Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
   }
 
   public function generarPlanosPDFL($orden, $detalle, $id, $auxiliar,
@@ -1503,7 +1503,7 @@ class MedidaController extends Controller
       'vidrioP1' => $vidrioP1,
       'vidrioF2' => $vidrioF2,
       'vidrioP2' => $vidrioP2
-    ])->save('Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
+    ])->save(storage_path("planos/").'Planos de medidas-OrdenN'.$id.'-Item'.$detalle->orddItem.'.pdf');
   }
 
   public function cancel()
