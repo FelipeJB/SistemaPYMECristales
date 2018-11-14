@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use PDF;
+use DB;
 
 class InformeController extends Controller
 {
@@ -38,13 +39,17 @@ class InformeController extends Controller
     switch ($tipo) {
     case 'ventas':
       $puntosVenta = PuntoVenta::where('pvActivo', '=', 1)->get();
-      $puntoOrdenes[] = array('puntoVenta', 'ordenes', 'totalPuntoVenta', 'totalMes');
+      //$puntoOrdenes[] = array('puntoVenta', 'ordenes', 'totalPuntoVenta');
+      $puntoOrdenes= array();
       $i = 0;
-      $puntoOrdenes[0]['totalMes'] = 0;
+      $totalmes = 0;
+      $totalmesU = 0;
       foreach($puntosVenta as $puntoVenta){
         $ordenes = Orden::whereMonth('ordFecha', '=', $mes)->whereYear('ordFecha', '=', $anio)->where('ordPuntoVentaID', '=', $puntoVenta->pvID)->get();
-        if(count(json_encode(json_decode($ordenes))) > 0){
+        if(count($ordenes) > 0){
           $puntoOrdenes[$i]['totalPuntoVenta'] = 0;
+          $puntoOrdenes[$i]['totalPuntoVentaC'] = 0;
+          $puntoOrdenes[$i]['totalPuntoVentaU'] = 0;
           $puntoOrdenes[$i]['puntoVenta'] = $puntoVenta->pvNombre;
           $puntoOrdenes[$i]['ordenes'] = array();
           $k = 0;
@@ -52,15 +57,18 @@ class InformeController extends Controller
             $puntoOrdenes[$i]['ordenes'][$k] = $orden;
             $orden->ordTotalUtilidades = $orden->ordTotal - $orden->ordTotalCompra;
             $puntoOrdenes[$i]['totalPuntoVenta'] += $orden->ordTotal;
-            $puntoOrdenes[0]['totalMes'] += $orden->ordTotal;
+            $puntoOrdenes[$i]['totalPuntoVentaC'] += $orden->ordTotalCompra;
+            $puntoOrdenes[$i]['totalPuntoVentaU'] += $orden->ordTotalUtilidades;
+            $totalmes += $orden->ordTotal;
+            $totalmesU += $orden->ordTotalUtilidades;
             $k++;
           }
           $i++;
         }
       }
-
+      //print_r($puntoOrdenes);
       if (count($puntoOrdenes)>0){
-        return $this->generateInformVentas($puntoOrdenes, $mes, $anio);
+        return $this->generateInformVentas($puntoOrdenes, $mes, $anio, $totalmes, $totalmesU);
       }else{
         return Redirect::back()->with('error', 'No se encontraron ventas para el año y mes especificados')
         ->withInput();
@@ -147,13 +155,15 @@ class InformeController extends Controller
     //->withInput();
   }
 
-  public function generateInformVentas($puntoOrdenes, $mes, $anio)
+  public function generateInformVentas($puntoOrdenes, $mes, $anio, $totalmes, $totalmesU)
   {
     //Aquí se genera el informe de ventas para el año y mes especificado. En la variable ordenes se encuentran las órdenes de dichas fechas.
     $pdf = PDF::loadView('informes/informeVentasPdf', [
       'puntoOrdenes' => $puntoOrdenes,
       'mes' => $mes,
-      'anio' => $anio
+      'anio' => $anio,
+      'totalmes' => $totalmes,
+      'totalmesU' => $totalmesU
     ]);
     return $pdf->download('Informe de Ventas '.$mes.'/'.$anio.'.pdf');
   }

@@ -51,6 +51,8 @@
     </div>
   </div>
 
+  <hr>
+
   <div class="row">
     <div class="column">
       @for($i = 0; $i < count($puntoOrdenes); $i++)
@@ -66,13 +68,13 @@
             Número de Orden
           </th>
           <th width="25%" align="center">
-            Total Venta
+            Precio Venta
           </th>
           <th width="25%" align="center">
-            Total Compra
+            Precio Compra
           </th>
           <th width="25%" align="center">
-            Total Utilidades
+            Utilidades
           </th>
         </tr>
         @for($j = 0; $j < count($puntoOrdenes[$i]['ordenes']); $j++)
@@ -81,31 +83,35 @@
             {{$puntoOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
           </td>
           <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordTotal}}
+            ${{number_format($puntoOrdenes[$i]['ordenes'][$j]->ordTotal)}}
           </td>
           <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordTotalCompra}}
+            ${{number_format($puntoOrdenes[$i]['ordenes'][$j]->ordTotalCompra)}}
           </td>
           <td width="25%" align="center">
-            {{$puntoOrdenes[$i]['ordenes'][$j]->ordTotalUtilidades}}
+            ${{number_format($puntoOrdenes[$i]['ordenes'][$j]->ordTotalUtilidades)}}
           </td>
         </tr>
         @endfor
         <tr>
           <th width="100%" align="left" colspan="4">
-            Total Ventas: {{$puntoOrdenes[$i]['totalPuntoVenta']}}
+            Total Venta: ${{number_format($puntoOrdenes[$i]['totalPuntoVenta'])}}<br>
+            Total Compra: ${{number_format($puntoOrdenes[$i]['totalPuntoVentaC'])}}<br>
+            Total Utilidades: ${{number_format($puntoOrdenes[$i]['totalPuntoVentaU'])}}
           </th>
         </tr>
       </table>
       @endfor
     </div>
   </div>
+  <hr>
   <div class="row">
     <div class="column">
       <table border="0" width="100%">
         <tr>
           <th width="100%">
-            TOTAL MES: {{$puntoOrdenes[0]['totalMes']}}
+            TOTAL VENTAS DEL MES: ${{number_format($totalmes)}}<br>
+            TOTAL UTILIDADES DEL MES: ${{number_format($totalmesU)}}
           </th>
         </tr>
       </table>
