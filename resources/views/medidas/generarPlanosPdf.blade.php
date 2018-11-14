@@ -90,7 +90,7 @@
     <table border="0" width="100%">
       <tr>
         <th width="100%" align="center">
-          <img src={{$imagen}} width="450" align="center">
+          <img src={{str_replace(" ", '_',$imagen)}} width="450" align="center">
         </th>
       </tr>
     </table>
