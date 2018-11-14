@@ -118,7 +118,7 @@
           @foreach($detalles as $d)
           <tr>
             <th align="center" width="8%">{{$d->orddItem}}</th>
-            <th align="center" width="8%">{{$d->orddCantVidrio}}</th>
+            <th align="center" width="8%">1</th>
             <th align="center" width="45%">{{$sistemas[$d->orddItem-1]->stmDescripcion}} {{$milimetrajes[$d->orddItem-1]->mlmNumero}} mm {{$colores[$d->orddItem-1]->clrDescripcion}} Diseño: {{$disenos[$d->orddItem-1]->dsnDescripcion}} Toalleros: {{$d->orddCantToalleros}}</th>
             <th align="center" width="8%">{{$d->orddAlto}}</th>
             <th align="center" width="8%">{{$d->orddAncho}}</th>

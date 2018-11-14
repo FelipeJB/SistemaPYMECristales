@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Informe de Instalaciones {{$mes}}-{{$anio}}</title>
+    <title>Informe de Garantías {{$mes}}-{{$anio}}</title>
     <style>
     body{
       margin-top: 1px;
@@ -44,103 +44,68 @@
           <td align="center" width="50%">
             <b>Cristales Templados La Torre S.A.S</b><br>
             <b>Nit 900593026-1</b><br><br>
-            <b>Informe de Instalaciones {{$mes}}-{{$anio}}</b><br>
+            <b>Informe de Garantías {{$mes}}-{{$anio}}</b><br>
           </td>
         </tr>
       </table>
     </div>
   </div>
-
+<hr>
   <div class="row">
     <div class="column">
-      @for($i = 0; $i < count($instaladorOrdenes); $i++)
+      @for($i = 0; $i < count($instaladorGarantias); $i++)
       <table border="0" align="center" width="100%">
         <tr>
           <th width="100%" align="left">
-            Instalador: {{$instaladorOrdenes[$i]['insNombre']}} {{$instaladorOrdenes[$i]['insApellido']}}
+            Instalador: {{$instaladorGarantias[$i]['insNombre']}} {{$instaladorGarantias[$i]['insApellido']}}
           </th>
         </tr>
       </table>
       <table border="1" align="center" width="100%">
         <tr>
-          <th width="100%" align="left" colspan="3">
-            Instalaciones programadas: {{$instaladorOrdenes[$i]['totalInstaladorSI']}}
+          <th width="100%" align="left" colspan="4">
+            Garantías registradas: {{$instaladorGarantias[$i]['totalInstalador']}}
           </th>
         </tr>
-        @if($instaladorOrdenes[$i]['totalInstaladorSI'] > 0)
+        @if($instaladorGarantias[$i]['totalInstalador'] > 0)
         <tr>
-          <th width="33%" align="center">
+          <th width="25%" align="center">
             Número de Pedido
           </th>
-          <th width="34%" align="center">
-            Fecha de Instalación
+          <th width="25%" align="center">
+            Observaciones
           </th>
-          <th width="33%" align="center">
+          <th width="25%" align="center">
+            Fecha garantía
+          </th>
+          <th width="25%" align="center">
             Total Orden
           </th>
         </tr>
-        @for($j = 0; $j < count($instaladorOrdenes[$i]['ordenes']); $j++)
-          @if($instaladorOrdenes[$i]['ordenes'][$j]->ordEstadoInstalacionID == 4)
-          <tr>
-            <td width="33%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
-            </td>
-            <td width="34%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordFechaInstalacion}}
-            </td>
-            <td width="33%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordTotal}}
-            </td>
-          </tr>
-          @endif
-        @endfor
-        @endif
-      </table>
-      <table border="1" align="center" width="100%">
-        <tr>
-          <th width="100%" align="left" colspan="3">
-            Instalaciones NO programadas: {{$instaladorOrdenes[$i]['totalInstaladorNO']}}
-          </th>
-        </tr>
-        @if($instaladorOrdenes[$i]['totalInstaladorNO'] > 0)
-        <tr>
-          <th width="33%" align="center">
-            Número de Pedido
-          </th>
-          <th width="34%" align="center">
-            Descripción falla de instalación
-          </th>
-          <th width="33%" align="center">
-            Total Orden
-          </th>
-        </tr>
-        @for($j = 0; $j < count($instaladorOrdenes[$i]['ordenes']); $j++)
-          @if($instaladorOrdenes[$i]['ordenes'][$j]->ordEstadoInstalacionID != 4)
+        @for($j = 0; $j < count($instaladorGarantias[$i]['ordenes']); $j++)
           <tr>
             <td width="25%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
+              {{$instaladorGarantias[$i]['ordenes'][$j]->ordNumeroPedido}}
             </td>
             <td width="25%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordRazonNegativa}}
+              {{$instaladorGarantias[$i]['ordenes'][$j]->grnObservaciones}}
             </td>
             <td width="25%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordTotalCompra}}
+              {{$instaladorGarantias[$i]['ordenes'][$j]->grnFecha}}
+            </td>
+            <td width="25%" align="center">
+              $ <?php echo number_format($instaladorGarantias[$i]['ordenes'][$j]->ordTotal,0,",",".");?>
             </td>
           </tr>
-          @endif
         @endfor
         @endif
       </table>
       @endfor
+      <hr>
       <table border="0" align="center" width="100%">
         <tr>
           <th width="100%" align="left">
-            TOTAL INSTALACIONES PROGRAMADAS EN EL MES: {{$instaladorOrdenes[0]['totalMesSI']}}
-          </th>
-        </tr>
-        <tr>
-          <th width="100%" align="left">
-            TOTAL INSTALACIONES NO PROGRAMADAS EN EL MES: {{$instaladorOrdenes[0]['totalMesNO']}}
+            TOTAL GARANTÍAS REGISTRADAS EN EL MES: {{$totalMes}}
           </th>
         </tr>
       </table>

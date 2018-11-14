@@ -112,7 +112,7 @@
             Instalaciones NO programadas: {{count($ordenesNO)}}
           </th>
         </tr>
-
+        @if({{count($ordenesNO)}} > 0)
         <tr>
           <th width="25%" align="center">
             Número de Pedido
@@ -143,6 +143,7 @@
             </td>
           </tr>
         @endfor
+        @endif
       </table>
       <hr>
     </div>
