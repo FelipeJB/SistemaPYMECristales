@@ -50,7 +50,7 @@
       </table>
     </div>
   </div>
-
+  <hr>
   <div class="row">
     <div class="column">
       @for($i = 0; $i < count($instaladorOrdenes); $i++)
@@ -89,42 +89,7 @@
               {{$instaladorOrdenes[$i]['ordenes'][$j]->ordFechaInstalacion}}
             </td>
             <td width="33%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordTotal}}
-            </td>
-          </tr>
-          @endif
-        @endfor
-        @endif
-      </table>
-      <table border="1" align="center" width="100%">
-        <tr>
-          <th width="100%" align="left" colspan="3">
-            Instalaciones NO programadas: {{$instaladorOrdenes[$i]['totalInstaladorNO']}}
-          </th>
-        </tr>
-        @if($instaladorOrdenes[$i]['totalInstaladorNO'] > 0)
-        <tr>
-          <th width="33%" align="center">
-            Número de Pedido
-          </th>
-          <th width="34%" align="center">
-            Descripción falla de instalación
-          </th>
-          <th width="33%" align="center">
-            Total Orden
-          </th>
-        </tr>
-        @for($j = 0; $j < count($instaladorOrdenes[$i]['ordenes']); $j++)
-          @if($instaladorOrdenes[$i]['ordenes'][$j]->ordEstadoInstalacionID != 4)
-          <tr>
-            <td width="25%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordNumeroPedido}}
-            </td>
-            <td width="25%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordRazonNegativa}}
-            </td>
-            <td width="25%" align="center">
-              {{$instaladorOrdenes[$i]['ordenes'][$j]->ordTotalCompra}}
+              ${{number_format($instaladorOrdenes[$i]['ordenes'][$j]->ordTotal)}}
             </td>
           </tr>
           @endif
@@ -132,18 +97,54 @@
         @endif
       </table>
       @endfor
+      <hr>
       <table border="0" align="center" width="100%">
         <tr>
           <th width="100%" align="left">
-            TOTAL INSTALACIONES PROGRAMADAS EN EL MES: {{$instaladorOrdenes[0]['totalMesSI']}}
-          </th>
-        </tr>
-        <tr>
-          <th width="100%" align="left">
-            TOTAL INSTALACIONES NO PROGRAMADAS EN EL MES: {{$instaladorOrdenes[0]['totalMesNO']}}
+            TOTAL INSTALACIONES PROGRAMADAS EN EL MES: {{$totalMesSi}}
           </th>
         </tr>
       </table>
+      <hr>
+      <table border="1" align="center" width="100%">
+        <tr>
+          <th width="100%" align="left" colspan="4">
+            Instalaciones NO programadas: {{count($ordenesNO)}}
+          </th>
+        </tr>
+
+        <tr>
+          <th width="25%" align="center">
+            Número de Pedido
+          </th>
+          <th width="25%" align="center">
+            Fecha
+          </th>
+          <th width="25%" align="center">
+            Motivo
+          </th>
+          <th width="25%" align="center">
+            Total Orden
+          </th>
+        </tr>
+        @for($j = 0; $j < count($ordenesNO); $j++)
+          <tr>
+            <td width="25%" align="center">
+              {{$ordenesNO[$j]->ordNumeroPedido}}
+            </td>
+            <td width="25%" align="center">
+              {{date("d-m-Y",strToTime($ordenesNO[$j]->ordFechaInstalacion))}}
+            </td>
+            <td width="25%" align="center">
+              {{$ordenesNO[$j]->ordRazonNegativa}}
+            </td>
+            <td width="25%" align="center">
+              ${{number_format($ordenesNO[$j]->ordTotal)}}
+            </td>
+          </tr>
+        @endfor
+      </table>
+      <hr>
     </div>
   </div>
 </body>

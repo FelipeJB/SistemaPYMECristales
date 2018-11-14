@@ -115,13 +115,14 @@ class InformeController extends Controller
       break;
     case 'instalaciones':
       $instaladores = Instalador::where('insActivo', '=', 1)->get();
-      $instaladorOrdenes[] = array('insNombre', 'insApellido', 'ordenes', 'totalMesSI', 'totalMesNO', 'totalInstaladorSI', 'totalInstaladorNO');
+      $instaladorOrdenes = array();
+      //$instaladorOrdenes[] = array('insNombre', 'insApellido', 'ordenes', 'totalMesSI', 'totalMesNO', 'totalInstaladorSI', 'totalInstaladorNO');
       $i = 0;
-      $instaladorOrdenes[0]['totalMesSI'] = 0;
-      $instaladorOrdenes[0]['totalMesNO'] = 0;
+      $totalMesSI = 0;
+      $totalMesNO = 0;
       foreach($instaladores as $instalador){
-        $ordenes = Orden::whereMonth('ordFecha', '=', $mes)->whereYear('ordFecha', '=', $anio)->where('ordInstaladorID', '=', $instalador->insID)->get();
-        if(count(json_encode(json_decode($ordenes))) > 0){
+        $ordenes = Orden::whereMonth('ordFechaInstalacion', '=', $mes)->whereYear('ordFechaInstalacion', '=', $anio)->where('ordInstaladorID', '=', $instalador->insID)->get();
+        if(count($ordenes) > 0){
           $instaladorOrdenes[$i]['insNombre'] = $instalador->insNombre;
           $instaladorOrdenes[$i]['insApellido'] = $instalador->insApellido;
           $instaladorOrdenes[$i]['totalInstaladorSI'] = 0;
@@ -131,10 +132,10 @@ class InformeController extends Controller
           foreach($ordenes as $orden){
             $instaladorOrdenes[$i]['ordenes'][$k] = $orden;
             if($orden->ordEstadoInstalacionID == 4){
-              $instaladorOrdenes[0]['totalMesSI'] += 1;
+              $totalMesSI += 1;
               $instaladorOrdenes[$i]['totalInstaladorSI'] += 1;
             }else{
-              $instaladorOrdenes[0]['totalMesNO'] += 1;
+              $totalMesNO += 1;
               $instaladorOrdenes[$i]['totalInstaladorNO'] += 1;
             }
             $k++;
@@ -142,8 +143,9 @@ class InformeController extends Controller
           $i++;
         }
       }
-      if (count($instaladorOrdenes)>0){
-        return $this->generateInformInstalaciones($instaladorOrdenes, $mes, $anio);
+      $ordenesNO = Orden::whereMonth('ordFechaInstalacion', '=', $mes)->whereYear('ordFechaInstalacion', '=', $anio)->where('ordEstadoInstalacionID', '=', 3)->get();
+      if (count($instaladorOrdenes)>0 || count($ordenesNO)>0){
+        return $this->generateInformInstalaciones($instaladorOrdenes, $mes, $anio, $totalMesSI, $totalMesNO, $ordenesNO);
       }else{
         return Redirect::back()->with('error', 'No se encontraron instalaciones programadas para el año y mes especificados')
         ->withInput();
@@ -179,13 +181,16 @@ class InformeController extends Controller
     return $pdf->download('Informe de Instalaciones '.$mes.'/'.$anio.'.pdf');
 }
 
-  public function generateInformInstalaciones($instaladorOrdenes, $mes, $anio)
+  public function generateInformInstalaciones($instaladorOrdenes, $mes, $anio, $totalMesSi, $totalMesNo, $ordenesNO)
   {
     //Aquí se genera el informe de instalaciones para el año y mes especificado. En la variable ordenes se encuentran las Ordenes instaladas en dichas fechas
     $pdf = PDF::loadView('informes/informeInstalacionesPdf', [
       'instaladorOrdenes' => $instaladorOrdenes,
       'mes' => $mes,
-      'anio' => $anio
+      'anio' => $anio,
+      'totalMesSi' => $totalMesSi,
+      'totalMesNo' => $totalMesNo,
+      'ordenesNO' => $ordenesNO
     ]);
     return $pdf->download('Informe de Instalaciones '.$mes.'/'.$anio.'.pdf');
   }
